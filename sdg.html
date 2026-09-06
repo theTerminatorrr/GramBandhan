@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDG Impact Dashboard — Grambandhan</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="gb-shell">
+    <aside class="gb-sidebar" id="gb-sidebar"></aside>
+    <main class="gb-main">
+      <div class="gb-topbar" id="gb-topbar"></div>
+      <h2>SDG / Social Impact Dashboard</h2>
+      <p style="opacity:0.85;">Aggregate figures computed from platform data — demonstrates SDG 1 (No Poverty), SDG 5 (Gender Equality) and SDG 2 (Zero Hunger) alignment.</p>
+
+      <div class="gb-grid gb-grid-4" id="sdg-stats" style="margin:18px 0;"></div>
+
+      <div class="gb-grid gb-grid-2">
+        <div class="glass-card">
+          <h3>Funds raised by category</h3>
+          <canvas id="chart-category" height="220"></canvas>
+        </div>
+        <div class="glass-card">
+          <h3>Women-led vs other projects</h3>
+          <canvas id="chart-women" height="220"></canvas>
+        </div>
+      </div>
+
+      <div class="glass-card" style="margin-top:18px;">
+        <h3>Estimated income uplift by district</h3>
+        <canvas id="chart-uplift" height="140"></canvas>
+        <div class="gb-hint">Income uplift is an illustrative estimate (funded amount × assumed 15% seasonal return) for demo purposes — a production version would use verified post-harvest income data.</div>
+      </div>
+    </main>
+  </div>
+
+<script src="js/db.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/nav.js"></script>
+<script>
+  const user = gbInitPage(null, 'sdg.html');
+  if (user) {
+    const projects = gbAll('projects');
+    const approved = projects.filter(p => p.status === 'APPROVED');
+    const farmers = gbAll('users').filter(u => u.role === 'FARMER');
+    const farmerProfiles = gbAll('farmerProfiles');
+    const womenLedFarmers = farmerProfiles.filter(fp => fp.isWomenLed).length;
+    const womenLedProjects = projects.filter(p => p.isWomenLed).length;
+    const totalRaised = approved.reduce((s, p) => s + p.fundRaised, 0);
+    const avgUpliftPct = 15; // matches the flat expected-return assumption used in the investment flow
+
+    document.getElementById('sdg-stats').innerHTML = `
+      <div class="glass-card gb-stat-card"><div class="gb-stat-num">${farmers.length}</div><div class="gb-stat-label">Total farmers onboarded</div></div>
+      <div class="glass-card gb-stat-card"><div class="gb-stat-num">${farmerProfiles.length ? Math.round(womenLedFarmers/farmerProfiles.length*100) : 0}%</div><div class="gb-stat-label">Women-led farms</div></div>
+      <div class="glass-card gb-stat-card"><div class="gb-stat-num">${gbCurrency(totalRaised)}</div><div class="gb-stat-label">Total funds distributed</div></div>
+      <div class="glass-card gb-stat-card"><div class="gb-stat-num">${avgUpliftPct}%</div><div class="gb-stat-label">Avg. estimated income uplift</div></div>
+    `;
+
+    const byCategory = {};
+    approved.forEach(p => { byCategory[p.category] = (byCategory[p.category] || 0) + p.fundRaised; });
+
+    new Chart(document.getElementById('chart-category'), {
+      type: 'bar',
+      data: { labels: Object.keys(byCategory), datasets: [{ label: 'Funds raised (৳)', data: Object.values(byCategory), backgroundColor: '#38BDF8' }] },
+      options: { plugins: { legend: { labels: { color: '#F0F9FF' } } }, scales: { x: { ticks: { color: '#F0F9FF' } }, y: { ticks: { color: '#F0F9FF' } } } }
+    });
+
+    new Chart(document.getElementById('chart-women'), {
+      type: 'doughnut',
+      data: { labels: ['Women-led', 'Other'], datasets: [{ data: [womenLedProjects, projects.length - womenLedProjects], backgroundColor: ['#F9A8D4', '#0284C7'] }] },
+      options: { plugins: { legend: { labels: { color: '#F0F9FF' } } } }
+    });
+
+    const byDistrict = {};
+    approved.forEach(p => { byDistrict[p.location] = (byDistrict[p.location] || 0) + Math.round(p.fundRaised * avgUpliftPct / 100); });
+
+    new Chart(document.getElementById('chart-uplift'), {
+      type: 'line',
+      data: { labels: Object.keys(byDistrict), datasets: [{ label: 'Estimated income uplift (৳)', data: Object.values(byDistrict), borderColor: '#F0B429', backgroundColor: 'rgba(240,180,41,0.25)', fill: true, tension: 0.3 }] },
+      options: { plugins: { legend: { labels: { color: '#F0F9FF' } } }, scales: { x: { ticks: { color: '#F0F9FF' } }, y: { ticks: { color: '#F0F9FF' } } } }
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grambandhan — Invest in the Village That Feeds the Nation</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="gb-hero">
+    <nav class="gb-hero-nav">
+      <div class="gb-brand" style="padding:0;"><span class="dot"></span> Grambandhan</div>
+      <div style="display:flex; gap:10px;">
+        <a class="gb-btn gb-btn-ghost" href="login.html">Log in</a>
+        <a class="gb-btn gb-btn-primary" href="register.html">Get started</a>
+      </div>
+    </nav>
+
+    <div class="gb-hero-body">
+      <div class="gb-hero-copy">
+        <span class="gb-badge gb-badge-info">Crowdfunding for rural Bangladesh</span>
+        <h1>Fund a farmer's next harvest. Track it row by row.</h1>
+        <p style="font-size:17px; max-width:520px; color:rgba(240,249,255,0.9);">
+          Grambandhan connects verified farmers and artisans with everyday investors and buyers —
+          transparent progress updates, field-agent verification, and a fair share of the harvest
+          for everyone who backs it.
+        </p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;">
+          <a class="gb-btn gb-btn-gold" href="register.html">Start investing</a>
+          <a class="gb-btn gb-btn-ghost" href="projects.html">Browse open projects</a>
+        </div>
+        <div style="display:flex; gap:28px; margin-top:34px; flex-wrap:wrap;">
+          <div><div class="gb-stat-num" id="stat-farmers">–</div><div class="gb-stat-label">Verified farmers</div></div>
+          <div><div class="gb-stat-num" id="stat-raised">–</div><div class="gb-stat-label">Funds mobilised</div></div>
+          <div><div class="gb-stat-num" id="stat-women">–</div><div class="gb-stat-label">Women-led projects</div></div>
+        </div>
+      </div>
+
+      <div class="gb-hero-visual">
+        <div class="glass-card" style="max-width:380px; margin-left:auto;">
+          <h3>Boro Rice Expansion</h3>
+          <p style="font-size:13.5px; opacity:0.85;">Rangpur · Rice · Farmer: Abdul Karim</p>
+          <div class="gb-progress-track" style="margin:14px 0 6px;"><div class="gb-progress-fill" style="width:65%;"></div></div>
+          <div style="display:flex; justify-content:space-between; font-size:13px;">
+            <span>৳98,000 raised</span><span>of ৳150,000</span>
+          </div>
+          <div style="margin-top:16px; display:flex; gap:8px;">
+            <span class="gb-badge gb-badge-low">Low Risk</span>
+            <span class="gb-badge gb-badge-verified">Field Verified</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding: 10px 40px 40px;">
+      <div class="gb-grid gb-grid-4">
+        <div class="glass-card"><h4>🌾 Fund real harvests</h4><p style="font-size:13.5px;">Browse verified projects by crop, location and risk level.</p></div>
+        <div class="glass-card"><h4>✅ Field-verified progress</h4><p style="font-size:13.5px;">Independent field agents confirm every major milestone.</p></div>
+        <div class="glass-card"><h4>🛒 Buy direct from farms</h4><p style="font-size:13.5px;">A marketplace for produce and handicrafts, including women-led sellers.</p></div>
+        <div class="glass-card"><h4>🛡️ Insurance & fraud checks</h4><p style="font-size:13.5px;">Opt-in coverage plus an admin review queue for suspicious activity.</p></div>
+      </div>
+    </div>
+  </div>
+
+<script src="js/db.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  const projects = gbAll('projects');
+  const approved = projects.filter(p => p.status === 'APPROVED');
+  const farmers = gbAll('users').filter(u => u.role === 'FARMER');
+  const totalRaised = approved.reduce((s, p) => s + p.fundRaised, 0);
+  const womenLed = projects.filter(p => p.isWomenLed).length;
+  document.getElementById('stat-farmers').textContent = farmers.length;
+  document.getElementById('stat-raised').textContent = gbCurrency(totalRaised);
+  document.getElementById('stat-women').textContent = womenLed;
+
+  // if already logged in, offer quick path to dashboard
+  const session = gbGetSession();
+  if (session) {
+    const nav = document.querySelector('.gb-hero-nav div:last-child');
+    nav.innerHTML = '<a class="gb-btn gb-btn-primary" href="dashboard.html">Go to dashboard</a>';
+  }
+</script>
+</body>
+</html>

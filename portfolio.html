@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Grambandhan</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="gb-shell">
+    <aside class="gb-sidebar" id="gb-sidebar"></aside>
+    <main class="gb-main">
+      <div class="gb-topbar" id="gb-topbar"></div>
+      <h2>My Portfolio</h2>
+
+      <div class="gb-grid gb-grid-4" id="portfolio-stats" style="margin-bottom:20px;"></div>
+
+      <div class="gb-tabs">
+        <div class="gb-tab active" data-tab="investments">Investments</div>
+        <div class="gb-tab" data-tab="insurance">Insurance & Claims</div>
+        <div class="gb-tab" data-tab="transactions">Transaction History</div>
+      </div>
+      <div id="tab-investments"></div>
+      <div id="tab-insurance" style="display:none;"></div>
+      <div id="tab-transactions" style="display:none;"></div>
+    </main>
+  </div>
+
+  <div class="gb-modal-overlay" id="claim-modal">
+    <div class="glass-panel-solid gb-modal">
+      <h3 style="color:var(--gb-text-dark);">Submit an insurance claim</h3>
+      <div id="claim-modal-body"></div>
+    </div>
+  </div>
+
+<script src="js/db.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/portfolio.js"></script>
+</body>
+</html>

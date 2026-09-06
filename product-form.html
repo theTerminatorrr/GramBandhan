@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>List a product — Grambandhan</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="gb-shell">
+    <aside class="gb-sidebar" id="gb-sidebar"></aside>
+    <main class="gb-main">
+      <div class="gb-topbar" id="gb-topbar"></div>
+      <h2>List a product</h2>
+      <form id="product-form" class="glass-card" style="max-width:520px;">
+        <div class="gb-field">
+          <label for="p-name">Product name</label>
+          <input class="gb-input" id="p-name" required placeholder="e.g. Organic Mixed Vegetables Basket (5kg)">
+        </div>
+        <div class="gb-grid gb-grid-2">
+          <div class="gb-field">
+            <label for="p-price">Price (৳)</label>
+            <input class="gb-input" type="number" id="p-price" required min="1" placeholder="e.g. 350">
+          </div>
+          <div class="gb-field">
+            <label for="p-qty">Quantity available</label>
+            <input class="gb-input" type="number" id="p-qty" required min="1" placeholder="e.g. 40">
+          </div>
+        </div>
+        <div class="gb-field">
+          <label for="p-category">Category</label>
+          <select class="gb-select" id="p-category">
+            <option>Vegetables</option><option>Grains</option><option>Fruits</option>
+            <option>Dairy</option><option>Handicraft</option><option>Other</option>
+          </select>
+        </div>
+        <div class="gb-field">
+          <label for="p-delivery">Delivery area</label>
+          <input class="gb-input" id="p-delivery" required placeholder="e.g. Rangpur Division">
+        </div>
+        <div class="gb-field">
+          <label>Product images</label>
+          <input class="gb-input" type="file" id="p-images" multiple>
+          <div class="gb-hint">Simulated upload — files aren't actually stored in this demo build.</div>
+        </div>
+        <div id="p-error" class="gb-error-text" style="display:none;"></div>
+        <button class="gb-btn gb-btn-primary" type="submit" style="width:100%;">List product</button>
+      </form>
+    </main>
+  </div>
+
+<script src="js/db.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/nav.js"></script>
+<script>
+  const user = gbInitPage(['FARMER'], 'marketplace.html');
+  if (user) {
+    document.getElementById('product-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('p-name').value.trim();
+      const price = Number(document.getElementById('p-price').value);
+      const qty = Number(document.getElementById('p-qty').value);
+      const delivery = document.getElementById('p-delivery').value.trim();
+      const errEl = document.getElementById('p-error');
+      if (!name || !price || !qty || !delivery) { errEl.textContent = 'Please fill in all fields.'; errEl.style.display = 'block'; return; }
+      const profile = gbFind('farmerProfiles', fp => fp.userId === user.id);
+      gbInsert('productListings', {
+        producerId: user.id, name, price, qty, category: document.getElementById('p-category').value,
+        images: [], deliveryArea: delivery, isWomenLed: !!(profile && profile.isWomenLed), status: 'ACTIVE',
+      });
+      gbToast('Product listed on the marketplace.', 'success');
+      window.location.href = 'marketplace.html';
+    });
+  }
+</script>
+</body>
+</html>

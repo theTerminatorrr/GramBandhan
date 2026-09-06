@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — Grambandhan</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="gb-shell">
+    <aside class="gb-sidebar" id="gb-sidebar"></aside>
+    <main class="gb-main">
+      <div class="gb-topbar" id="gb-topbar"></div>
+      <h2>Admin Panel</h2>
+
+      <div class="gb-tabs">
+        <div class="gb-tab" data-tab="approvals">Project Approvals</div>
+        <div class="gb-tab" data-tab="users">User Management</div>
+        <div class="gb-tab" data-tab="fraud">Fraud Review Queue</div>
+        <div class="gb-tab" data-tab="reports">Financial Reports</div>
+        <div class="gb-tab" data-tab="disputes">Disputes</div>
+      </div>
+
+      <div id="tab-approvals"></div>
+      <div id="tab-users" style="display:none;"></div>
+      <div id="tab-fraud" style="display:none;"></div>
+      <div id="tab-reports" style="display:none;"></div>
+      <div id="tab-disputes" style="display:none;"></div>
+    </main>
+  </div>
+
+  <div class="gb-modal-overlay" id="admin-reject-modal">
+    <div class="glass-panel-solid gb-modal">
+      <h3 style="color:var(--gb-text-dark);">Reject project</h3>
+      <div id="admin-reject-body"></div>
+    </div>
+  </div>
+
+<script src="js/db.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project form — Grambandhan</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="gb-shell">
+    <aside class="gb-sidebar" id="gb-sidebar"></aside>
+    <main class="gb-main">
+      <div class="gb-topbar" id="gb-topbar"></div>
+      <h2 id="form-title">New Project</h2>
+
+      <div class="gb-tabs" id="steps">
+        <div class="gb-tab active" data-step="1">1. Basics</div>
+        <div class="gb-tab" data-step="2">2. Funding & Timeline</div>
+        <div class="gb-tab" data-step="3">3. Review & Submit</div>
+      </div>
+
+      <form id="project-form" class="glass-card" style="max-width:640px;">
+        <div class="step" data-step="1">
+          <div class="gb-field">
+            <label for="title">Project title</label>
+            <input class="gb-input" id="title" required placeholder="e.g. Boro Rice Expansion — Rangpur">
+          </div>
+          <div class="gb-field">
+            <label for="description">Description</label>
+            <textarea class="gb-textarea" id="description" required placeholder="What is this project and what will the funds be used for?"></textarea>
+          </div>
+          <div class="gb-grid gb-grid-2">
+            <div class="gb-field">
+              <label for="category">Category</label>
+              <select class="gb-select" id="category">
+                <option>Crop Farming</option><option>Horticulture</option>
+                <option>Livestock</option><option>Fisheries</option>
+                <option>Infrastructure</option><option>Handicraft</option>
+              </select>
+            </div>
+            <div class="gb-field">
+              <label for="cropType">Crop / product type</label>
+              <select class="gb-select" id="cropType">
+                <option>Rice</option><option>Maize</option><option>Potato</option>
+                <option>Mixed Vegetables</option><option>Jute</option><option>Wheat</option>
+                <option>Fish/Aquaculture</option><option>Poultry</option><option>Handicraft</option><option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="gb-field">
+            <label for="location">Location (district)</label>
+            <input class="gb-input" id="location" required placeholder="e.g. Rangpur Sadar, Rangpur">
+          </div>
+          <div class="gb-field" style="display:flex; align-items:center; gap:8px;">
+            <input type="checkbox" id="isWomenLed" style="width:auto;">
+            <label style="margin:0;" for="isWomenLed">This is a women-led project</label>
+          </div>
+        </div>
+
+        <div class="step" data-step="2" style="display:none;">
+          <div class="gb-grid gb-grid-2">
+            <div class="gb-field">
+              <label for="fundGoal">Funding goal (৳)</label>
+              <input class="gb-input" type="number" id="fundGoal" required min="1000" placeholder="e.g. 150000">
+            </div>
+            <div class="gb-field">
+              <label for="budget">Total budget (৳)</label>
+              <input class="gb-input" type="number" id="budget" required min="1000" placeholder="e.g. 150000">
+            </div>
+          </div>
+          <div class="gb-grid gb-grid-2">
+            <div class="gb-field">
+              <label for="timelineStart">Start date</label>
+              <input class="gb-input" type="date" id="timelineStart" required>
+            </div>
+            <div class="gb-field">
+              <label for="timelineEnd">End date</label>
+              <input class="gb-input" type="date" id="timelineEnd" required>
+            </div>
+          </div>
+          <div class="gb-field">
+            <label>Project images / documents</label>
+            <input class="gb-input" type="file" id="docs" multiple>
+            <div class="gb-hint">Simulated upload — files aren't actually stored in this demo build.</div>
+          </div>
+        </div>
+
+        <div class="step" data-step="3" style="display:none;">
+          <div id="review-summary" class="glass-panel-solid" style="padding:16px; color:var(--gb-text-dark);"></div>
+          <div id="risk-preview" style="margin-top:14px;"></div>
+        </div>
+
+        <div id="form-error" class="gb-error-text" style="display:none; margin-top:10px;"></div>
+
+        <div style="display:flex; justify-content:space-between; margin-top:20px;">
+          <button type="button" class="gb-btn gb-btn-ghost" id="btn-back" style="visibility:hidden;">Back</button>
+          <div style="display:flex; gap:10px;">
+            <button type="button" class="gb-btn gb-btn-ghost" id="btn-next">Next</button>
+            <button type="submit" class="gb-btn gb-btn-primary" id="btn-submit" style="display:none;">Submit for approval</button>
+          </div>
+        </div>
+      </form>
+    </main>
+  </div>
+
+<script src="js/db.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/risk.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/project-form.js"></script>
+</body>
+</html>

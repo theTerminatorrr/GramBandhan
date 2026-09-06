@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create account — Grambandhan</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="gb-auth-wrap">
+    <div class="gb-auth-card" style="max-width:460px;">
+      <div class="gb-brand" style="justify-content:center;"><span class="dot"></span> Grambandhan</div>
+      <div class="glass-card">
+        <h2>Create your account</h2>
+        <p style="font-size:13.5px; opacity:0.85;">Admin accounts are seeded by the platform and can't self-register.</p>
+
+        <form id="register-form">
+          <div class="gb-field">
+            <label>I am a…</label>
+            <div class="gb-role-grid">
+              <div class="gb-role-option selected" data-role="FARMER">🌾 Farmer</div>
+              <div class="gb-role-option" data-role="INVESTOR">💼 Investor</div>
+              <div class="gb-role-option" data-role="FIELD_AGENT">🧭 Field Agent</div>
+              <div class="gb-role-option" data-role="BUYER">🛒 Buyer</div>
+            </div>
+          </div>
+
+          <div class="gb-field">
+            <label for="name">Full name</label>
+            <input class="gb-input" id="name" required placeholder="e.g. Abdul Karim">
+          </div>
+          <div class="gb-field">
+            <label for="email">Email</label>
+            <input class="gb-input" type="email" id="email" required placeholder="you@example.com">
+          </div>
+          <div class="gb-field">
+            <label for="phone">Phone</label>
+            <input class="gb-input" id="phone" required placeholder="017XXXXXXXX">
+          </div>
+          <div class="gb-field">
+            <label for="password">Password</label>
+            <input class="gb-input" type="password" id="password" required minlength="6" placeholder="At least 6 characters">
+          </div>
+
+          <div id="farmer-fields">
+            <div class="gb-field">
+              <label for="location">Farm location</label>
+              <input class="gb-input" id="location" placeholder="e.g. Rangpur Sadar, Rangpur">
+            </div>
+            <div class="gb-field">
+              <label for="landSize">Land size</label>
+              <input class="gb-input" id="landSize" placeholder="e.g. 2.5 acres">
+            </div>
+            <div class="gb-field">
+              <label for="cropsGrown">Crops grown</label>
+              <input class="gb-input" id="cropsGrown" placeholder="e.g. Rice, Maize">
+            </div>
+            <div class="gb-field" style="display:flex; align-items:center; gap:8px;">
+              <input type="checkbox" id="isWomenLed" style="width:auto;">
+              <label for="isWomenLed" style="margin:0;">This is a women-led farm</label>
+            </div>
+          </div>
+
+          <div id="register-error" class="gb-error-text" style="display:none;"></div>
+          <button type="submit" class="gb-btn gb-btn-primary" style="width:100%; margin-top:6px;">Create account</button>
+        </form>
+
+        <p style="margin-top:16px; font-size:13.5px; text-align:center;">
+          Already have an account? <a href="login.html" style="text-decoration:underline; font-weight:700;">Log in</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+<script src="js/db.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/notifications.js"></script>
+<script>
+  if (gbGetSession() && gbCurrentUser()) window.location.href = 'dashboard.html';
+
+  let selectedRole = 'FARMER';
+  document.querySelectorAll('.gb-role-option').forEach(el => {
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.gb-role-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedRole = el.dataset.role;
+      document.getElementById('farmer-fields').style.display = selectedRole === 'FARMER' ? 'block' : 'none';
+    });
+  });
+
+  document.getElementById('register-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = {
+      role: selectedRole,
+      name: document.getElementById('name').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      password: document.getElementById('password').value,
+      location: document.getElementById('location').value.trim(),
+      landSize: document.getElementById('landSize').value.trim(),
+      cropsGrown: document.getElementById('cropsGrown').value.trim(),
+      isWomenLed: document.getElementById('isWomenLed').checked,
+    };
+    const result = gbSignup(data);
+    const errEl = document.getElementById('register-error');
+    if (!result.ok) {
+      errEl.textContent = result.error;
+      errEl.style.display = 'block';
+      return;
+    }
+    window.location.href = 'dashboard.html';
+  });
+</script>
+</body>
+</html>

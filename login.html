@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log in — Grambandhan</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="gb-auth-wrap">
+    <div class="gb-auth-card">
+      <div class="gb-brand" style="justify-content:center;"><span class="dot"></span> Grambandhan</div>
+      <div class="glass-card">
+        <h2>Welcome back</h2>
+        <p style="font-size:13.5px; opacity:0.85;">Log in to your Grambandhan account.</p>
+
+        <form id="login-form">
+          <div class="gb-field">
+            <label for="email">Email</label>
+            <input class="gb-input" type="email" id="email" required placeholder="you@example.com">
+          </div>
+          <div class="gb-field">
+            <label for="password">Password</label>
+            <input class="gb-input" type="password" id="password" required placeholder="••••••••">
+          </div>
+          <div id="login-error" class="gb-error-text" style="display:none;"></div>
+          <button type="submit" class="gb-btn gb-btn-primary" style="width:100%; margin-top:6px;">Log in</button>
+        </form>
+
+        <p style="margin-top:16px; font-size:13.5px; text-align:center;">
+          New here? <a href="register.html" style="text-decoration:underline; font-weight:700;">Create an account</a>
+        </p>
+
+        <div class="glass-panel-solid" style="margin-top:18px; padding:14px; font-size:12.5px;">
+          <strong>Demo accounts</strong> (password: <code>password123</code>)<br>
+          Farmer: karim@grambandhan.bd · Investor: nusrat@grambandhan.bd<br>
+          Field Agent: farzana@grambandhan.bd · Buyer: shamsul@grambandhan.bd<br>
+          Admin: admin@grambandhan.bd
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="js/db.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  // redirect if already logged in
+  if (gbGetSession() && gbCurrentUser()) window.location.href = 'dashboard.html';
+
+  document.getElementById('login-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const result = gbLogin(email, password);
+    const errEl = document.getElementById('login-error');
+    if (!result.ok) {
+      errEl.textContent = result.error;
+      errEl.style.display = 'block';
+      return;
+    }
+    window.location.href = 'dashboard.html';
+  });
+</script>
+</body>
+</html>

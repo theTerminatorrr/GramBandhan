@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketplace — Grambandhan</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="gb-shell">
+    <aside class="gb-sidebar" id="gb-sidebar"></aside>
+    <main class="gb-main">
+      <div class="gb-topbar" id="gb-topbar"></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <h2>Marketplace</h2>
+        <div style="display:flex; gap:10px;" id="marketplace-actions"></div>
+      </div>
+
+      <div class="glass-card" style="margin-bottom:18px;">
+        <div class="gb-grid gb-grid-3">
+          <div class="gb-field" style="margin:0;">
+            <label>Search</label>
+            <input class="gb-input" id="m-search" placeholder="Product name...">
+          </div>
+          <div class="gb-field" style="margin:0;">
+            <label>Category</label>
+            <select class="gb-select" id="m-category"><option value="">All</option></select>
+          </div>
+          <div class="gb-field" style="margin:0; display:flex; flex-direction:column; justify-content:flex-end;">
+            <label style="display:flex; align-items:center; gap:8px; margin-bottom:0;">
+              <input type="checkbox" id="m-women" style="width:auto;"> Women-led sellers only
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="gb-grid gb-grid-3" id="marketplace-grid"></div>
+    </main>
+  </div>
+
+  <div class="gb-modal-overlay" id="cart-modal">
+    <div class="glass-panel-solid gb-modal">
+      <h3 style="color:var(--gb-text-dark);">Your cart</h3>
+      <div id="cart-modal-body"></div>
+    </div>
+  </div>
+
+<script src="js/db.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/marketplace.js"></script>
+</body>
+</html>

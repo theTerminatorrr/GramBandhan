@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile — Grambandhan</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="gb-shell">
+    <aside class="gb-sidebar" id="gb-sidebar"></aside>
+    <main class="gb-main">
+      <div class="gb-topbar" id="gb-topbar"></div>
+      <h2>My Profile</h2>
+      <div id="profile-content"></div>
+    </main>
+  </div>
+
+<script src="js/db.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/nav.js"></script>
+<script>
+  const user = gbInitPage(null, 'profile.html');
+  if (user) renderProfile();
+
+  function renderProfile() {
+    const farmerProfile = gbFind('farmerProfiles', fp => fp.userId === user.id);
+    const investorProfile = gbFind('investorProfiles', ip => ip.userId === user.id);
+    const myRatings = gbWhere('ratings', r => r.targetType === 'USER' && r.targetId === user.id);
+    const avgRating = myRatings.length ? (myRatings.reduce((s, r) => s + r.stars, 0) / myRatings.length) : null;
+
+    document.getElementById('profile-content').innerHTML = `
+      <div class="gb-grid gb-grid-2">
+        <div class="glass-card">
+          <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
+            <div style="width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,var(--gb-sky),var(--gb-blue)); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:18px;">${gbInitials(user.name)}</div>
+            <div>
+              <h3 style="margin:0;">${gbEsc(user.name)}</h3>
+              <div style="font-size:13px; opacity:0.8;">${gbEsc(user.email)} · ${gbEsc(user.phone)}</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
+            <span class="gb-badge gb-badge-info">${user.role.replace('_',' ')}</span>
+            <span class="gb-badge ${user.isVerified ? 'gb-badge-verified' : 'gb-badge-pending'}">${user.isVerified ? '✓ Verified' : 'KYC ' + user.kycStatus}</span>
+            ${avgRating ? `<span class="gb-badge gb-badge-low">${avgRating.toFixed(1)} ★ (${myRatings.length})</span>` : ''}
+          </div>
+
+          ${!user.isVerified ? `
+            <div class="gb-field">
+              <label>Upload NID / verification document</label>
+              <input class="gb-input" type="file" id="kyc-upload">
+              <div class="gb-hint">Simulated upload — submitting will mark your KYC as "pending admin review".</div>
+            </div>
+            <button class="gb-btn gb-btn-primary" id="btn-submit-kyc">Submit for verification</button>
+          ` : '<p style="font-size:13.5px; opacity:0.8;">Your identity has been verified. ✅</p>'}
+        </div>
+
+        <div class="glass-card">
+          <h3>Role details</h3>
+          ${farmerProfile ? `
+            <div class="gb-field"><label>Location</label><input class="gb-input" id="fp-location" value="${gbEsc(farmerProfile.location)}"></div>
+            <div class="gb-field"><label>Land size</label><input class="gb-input" id="fp-land" value="${gbEsc(farmerProfile.landSize)}"></div>
+            <div class="gb-field"><label>Crops grown</label><input class="gb-input" id="fp-crops" value="${gbEsc(farmerProfile.cropsGrown)}"></div>
+            <div style="font-size:13.5px; opacity:0.85; margin-bottom:10px;">Farmer rating: ${farmerProfile.rating.toFixed(1)} ★ · Completed projects: ${farmerProfile.completedProjects}</div>
+            <button class="gb-btn gb-btn-primary" id="btn-save-farmer">Save changes</button>
+          ` : ''}
+          ${investorProfile ? `
+            <div style="font-size:13.5px; opacity:0.85; margin-bottom:6px;">Wallet balance: <strong>${gbCurrency(investorProfile.walletBalance)}</strong></div>
+            <div style="font-size:13.5px; opacity:0.85; margin-bottom:6px;">Total invested: <strong>${gbCurrency(investorProfile.totalInvested)}</strong></div>
+            <div class="gb-field"><label>Risk profile</label>
+              <select class="gb-select" id="ip-risk">
+                <option ${investorProfile.riskProfile==='CONSERVATIVE'?'selected':''}>CONSERVATIVE</option>
+                <option ${investorProfile.riskProfile==='MODERATE'?'selected':''}>MODERATE</option>
+                <option ${investorProfile.riskProfile==='AGGRESSIVE'?'selected':''}>AGGRESSIVE</option>
+              </select>
+            </div>
+            <button class="gb-btn gb-btn-primary" id="btn-save-investor">Save changes</button>
+          ` : ''}
+          ${!farmerProfile && !investorProfile ? '<p style="font-size:13.5px; opacity:0.8;">No additional role-specific fields for your account type.</p>' : ''}
+        </div>
+      </div>
+
+      ${myRatings.length ? `
+        <div class="glass-card" style="margin-top:18px;">
+          <h3>Reputation — what others say</h3>
+          ${myRatings.map(r => `<div style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.12);">
+            <div class="gb-stars">${gbStars(r.stars)}</div>
+            <div style="font-size:13.5px;">${gbEsc(r.comment)}</div>
+          </div>`).join('')}
+        </div>` : ''}
+    `;
+
+    const kycBtn = document.getElementById('btn-submit-kyc');
+    if (kycBtn) kycBtn.addEventListener('click', () => {
+      gbUpdate('users', user.id, { kycStatus: 'PENDING' });
+      gbToast('Documents submitted — pending admin review.', 'success');
+    });
+    const saveFarmerBtn = document.getElementById('btn-save-farmer');
+    if (saveFarmerBtn) saveFarmerBtn.addEventListener('click', () => {
+      gbUpdate('farmerProfiles', farmerProfile.id, {
+        location: document.getElementById('fp-location').value,
+        landSize: document.getElementById('fp-land').value,
+        cropsGrown: document.getElementById('fp-crops').value,
+      });
+      gbToast('Profile updated.', 'success');
+    });
+    const saveInvestorBtn = document.getElementById('btn-save-investor');
+    if (saveInvestorBtn) saveInvestorBtn.addEventListener('click', () => {
+      gbUpdate('investorProfiles', investorProfile.id, { riskProfile: document.getElementById('ip-risk').value });
+      gbToast('Profile updated.', 'success');
+    });
+  }
+</script>
+</body>
+</html>
