@@ -157,6 +157,8 @@ textarea:focus-visible {
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 22px;
+  position: relative;
+  z-index: 100;
 }
 
 .gb-brand {
