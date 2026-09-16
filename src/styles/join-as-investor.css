@@ -1,0 +1,23 @@
+/* =========================================================================
+   GRAMBONDHON INVESTOR PORTAL & ONBOARDING STYLES
+   Feature Domain: Join as Investor & Investor Portal
+   ========================================================================= */
+
+.investor-portal-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.investor-benefit-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--color-forest-primary);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: var(--radius-full);
+  padding: 5px 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}

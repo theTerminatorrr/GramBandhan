@@ -1,0 +1,442 @@
+/* =========================================================================
+   GRAMBONDHON INVESTOR & ACTIVE PROJECTS STYLES
+   Feature Domain: Investor Team
+   Active project cards, profit indicators, and investment modal simulator
+   ========================================================================= */
+/* --------------------------------------------------------------------------
+   ACTIVE PROJECTS SECTION (CLEAN 4-CARD GRID & TIGHT VERTICAL SPACING)
+   -------------------------------------------------------------------------- */
+.projects-section {
+  padding: 24px 0 10px;
+  background-color: var(--color-bg-secondary);
+}
+
+.projects-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.projects-tagline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(13, 56, 42, 0.05) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.32);
+  color: #0A4E38;
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 750;
+  letter-spacing: 0.015em;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 6px rgba(13, 56, 42, 0.04);
+  transition: all 0.2s ease;
+}
+
+.projects-tagline-badge:hover {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(13, 56, 42, 0.08) 100%);
+  border-color: rgba(16, 185, 129, 0.45);
+  transform: translateY(-1px);
+}
+
+.projects-tagline-badge .tagline-icon {
+  color: #10B981;
+  flex-shrink: 0;
+}
+
+.section-title-dark {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--color-forest-dark);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.section-subtitle-dark {
+  font-size: 1.02rem;
+  color: var(--color-text-muted);
+  margin-top: 5px;
+}
+
+.link-view-all {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--color-forest-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(13, 56, 42, 0.05);
+  border: 1px solid rgba(13, 56, 42, 0.1);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.link-view-all:hover {
+  color: var(--color-emerald);
+  background: rgba(13, 56, 42, 0.1);
+}
+
+/* 4-Card Responsive Grid */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  width: 100%;
+}
+
+.projects-bottom-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+
+.btn-expand-projects {
+  background: #FFFFFF;
+  color: var(--color-forest-dark);
+  border: 1.5px solid rgba(13, 56, 42, 0.16);
+  padding: 9px 24px;
+  border-radius: var(--radius-full);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.btn-expand-projects:hover {
+  background: var(--color-forest-primary);
+  color: #FFFFFF;
+  border-color: var(--color-forest-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(13, 56, 42, 0.18);
+}
+
+/* Project Card (Calm, Eye-Soothing, Structured matching media_1789573283421.png) */
+.project-card {
+  width: 100%;
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1px solid rgba(13, 56, 42, 0.09);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 36px rgba(13, 56, 42, 0.12);
+  border-color: rgba(16, 185, 129, 0.32);
+}
+
+/* Card Header (Image with bottom gradient overlay for title and unit price) */
+.project-card-header {
+  position: relative;
+  height: 220px;
+  background-color: #061D15;
+  overflow: hidden;
+}
+
+.project-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.project-card:hover .project-card-image {
+  transform: scale(1.06);
+}
+
+.project-header-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(6, 29, 21, 0.2) 40%, rgba(6, 29, 21, 0.92) 100%);
+  pointer-events: none;
+}
+
+/* Top badges: LIVE & Verified */
+.project-header-top-tags {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.project-live-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(6, 29, 21, 0.75);
+  backdrop-filter: blur(8px);
+  color: #4ADE80;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.live-dot-pulse {
+  color: #4ADE80;
+  font-size: 0.75rem;
+  animation: pulse-dot 1.8s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.project-verified-chip {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
+  color: #0D382A;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Bottom info overlaid on image (matching media_1789573283421.png) */
+.project-header-bottom-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 14px 16px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  z-index: 2;
+  color: #FFFFFF;
+}
+
+.header-info-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.project-title-overlay {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.25;
+  margin: 0 0 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.project-loc-overlay {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-price-right {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.unit-price-overlay {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.unit-label-overlay {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+/* Card Body (Clean, Eye-soothing, White surface) */
+.project-card-body {
+  padding: 16px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  background: #FFFFFF;
+}
+
+.project-tag-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.variable-return-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #D7F2D0;
+  color: #16532B;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* Eye-soothing key-value metrics */
+.soothing-metrics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(13, 56, 42, 0.08);
+}
+
+.metric-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.metric-key {
+  font-size: 0.88rem;
+  color: #64748B;
+  font-weight: 500;
+}
+
+.metric-val {
+  font-size: 0.95rem;
+  color: #084E43;
+  font-weight: 700;
+}
+
+.metric-val.return-val {
+  color: #084E43;
+  font-weight: 800;
+}
+
+.total-return-line {
+  margin-top: 2px;
+}
+
+.metric-val.total-val {
+  font-size: 1.05rem;
+  color: #061D15;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+/* Funding Progress Bar */
+.project-progress-container {
+  margin-bottom: 16px;
+}
+
+.progress-labels-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.82rem;
+  margin-bottom: 6px;
+}
+
+.percent-bold {
+  font-weight: 800;
+  color: #084E43;
+}
+
+.days-left {
+  color: #64748B;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.progress-bar-track {
+  height: 6px;
+  background: #EAE6DB;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10B981 0%, #059669 100%);
+  border-radius: 9999px;
+  transition: width 0.6s ease;
+}
+
+.goal-micro-stat {
+  font-size: 0.72rem;
+  color: #94A3B8;
+  margin-top: 5px;
+  font-weight: 500;
+}
+
+/* Card Button Group */
+.project-card-btn-group {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 9px;
+  margin-top: auto;
+}
+
+.btn-invest-card {
+  background-color: #0D382A;
+  color: #FFFFFF;
+  padding: 10px 14px;
+  border-radius: 9999px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(13, 56, 42, 0.2);
+}
+
+.btn-invest-card:hover {
+  background-color: #155E45;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(13, 56, 42, 0.28);
+}
+
+.btn-view-terms {
+  background-color: #EFEBE0;
+  color: #0D382A;
+  padding: 10px 12px;
+  border-radius: 9999px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  border: 1px solid rgba(13, 56, 42, 0.12);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.btn-view-terms:hover {
+  background-color: #E2DDD0;
+  color: #061D15;
+}
+
