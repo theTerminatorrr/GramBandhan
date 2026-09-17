@@ -1,729 +1,2030 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Grambandhan — Admin Console</title>
-<meta name="description" content="Admin module of Grambandhan: project approvals, user verification, financial oversight, fraud monitoring and reporting.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-/* ==========================================================
-   Grambandhan — Farmer module
-   Palette: field green + harvest gold on a jute-paper ground
-   ========================================================== */
-:root{
-  --paper:#F4F6F1;
-  --surface:#FFFFFF;
-  --surface-2:#EDF1EA;
-  --ink:#16241C;
-  --ink-2:#4E6154;
-  --ink-3:#7C8E82;
-  --line:#DCE4D8;
-  --green-900:#0F3722;
-  --green-700:#1B6B3A;
-  --green-500:#2F8B4E;
-  --green-100:#DCEFE0;
-  --gold:#C8881A;
-  --gold-100:#FBEED2;
-  --clay:#B8482C;
-  --clay-100:#FBE3DC;
-  --sky:#2C6E8F;
-  --sky-100:#DCEBF3;
-  --radius:14px;
-  --radius-sm:9px;
-  --shadow:0 1px 2px rgba(15,55,34,.06), 0 10px 26px -18px rgba(15,55,34,.45);
-  --rail:248px;
-  --font-ui:"Hind Siliguri", "Noto Sans Bengali", system-ui, sans-serif;
-  --font-display:"Bricolage Grotesque", "Hind Siliguri", system-ui, sans-serif;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --paper:#0E1712; --surface:#15211A; --surface-2:#1C2B22;
-    --ink:#E8F0E9; --ink-2:#AFC0B4; --ink-3:#88998D; --line:#27382D;
-    --green-100:#1C3C28; --gold-100:#3A2E14; --clay-100:#3A211A; --sky-100:#16303D;
-    --green-700:#4FB073; --green-500:#3D9A5C;
-    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px -18px rgba(0,0,0,.9);
-  }
-}
-:root[data-theme="dark"]{
-  --paper:#0E1712; --surface:#15211A; --surface-2:#1C2B22;
-  --ink:#E8F0E9; --ink-2:#AFC0B4; --ink-3:#88998D; --line:#27382D;
-  --green-100:#1C3C28; --gold-100:#3A2E14; --clay-100:#3A211A; --sky-100:#16303D;
-  --green-700:#4FB073; --green-500:#3D9A5C;
-}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> Grambandhan — Admin Console </title>
+  <meta name="description"
+    content="Admin module of Grambandhan: project approvals, user verification, financial oversight, fraud monitoring and reporting.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Hind+Siliguri:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --paper: #F4F6F1;
+      --surface: #FFFFFF;
+      --surface-2: #EDF1EA;
+      --ink: #16241C;
+      --ink-2: #4E6154;
+      --ink-3: #7C8E82;
+      --line: #DCE4D8;
+      --green-900: #0F3722;
+      --green-700: #1B6B3A;
+      --green-500: #2F8B4E;
+      --green-100: #DCEFE0;
+      --gold: #C8881A;
+      --gold-100: #FBEED2;
+      --clay: #B8482C;
+      --clay-100: #FBE3DC;
+      --sky: #2C6E8F;
+      --sky-100: #DCEBF3;
+      --radius: 14px;
+      --radius-sm: 9px;
+      --shadow: 0 1px 2px rgba(15, 55, 34, .06), 0 10px 26px -18px rgba(15, 55, 34, .45);
+      --rail: 248px;
+      --font-ui: "Hind Siliguri", "Noto Sans Bengali", system-ui, sans-serif;
+      --font-display: "Bricolage Grotesque", "Hind Siliguri", system-ui, sans-serif;
+    }
 
-*,*::before,*::after{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{
-  font-family:var(--font-ui);
-  background:var(--paper); color:var(--ink);
-  font-size:15px; line-height:1.55;
-  -webkit-font-smoothing:antialiased;
-}
-img{max-width:100%;display:block}
-button{font:inherit;color:inherit}
-a{color:var(--green-700)}
-.is-hidden{display:none !important}
-[hidden]{display:none !important}
-:focus-visible{outline:3px solid var(--gold); outline-offset:2px; border-radius:4px}
-@media (prefers-reduced-motion: reduce){*{animation:none !important; transition:none !important}}
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --paper: #0E1712;
+        --surface: #15211A;
+        --surface-2: #1C2B22;
+        --ink: #E8F0E9;
+        --ink-2: #AFC0B4;
+        --ink-3: #88998D;
+        --line: #27382D;
+        --green-100: #1C3C28;
+        --gold-100: #3A2E14;
+        --clay-100: #3A211A;
+        --sky-100: #16303D;
+        --green-700: #4FB073;
+        --green-500: #3D9A5C;
+        --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 26px -18px rgba(0, 0, 0, .9);
+      }
+    }
 
-h1,h2,h3,h4,legend{font-family:var(--font-display); font-weight:600; letter-spacing:-.015em; margin:0}
-.h1{font-size:clamp(22px,3.4vw,30px)}
-.h2{font-size:20px}
-.h3{font-size:16px}
-.muted{color:var(--ink-2); margin:.35em 0 1.1em}
-.hint{color:var(--ink-3); font-size:12.5px; margin:14px 0 0}
-.skip{position:absolute;left:-999px}
-.skip:focus{left:12px;top:12px;z-index:60;background:var(--surface);padding:8px 12px;border-radius:8px}
+    :root[data-theme="dark"] {
+      --paper: #0E1712;
+      --surface: #15211A;
+      --surface-2: #1C2B22;
+      --ink: #E8F0E9;
+      --ink-2: #AFC0B4;
+      --ink-3: #88998D;
+      --line: #27382D;
+      --green-100: #1C3C28;
+      --gold-100: #3A2E14;
+      --clay-100: #3A211A;
+      --sky-100: #16303D;
+      --green-700: #4FB073;
+      --green-500: #3D9A5C;
+    }
 
-/* ---------- buttons, fields ---------- */
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  border:1px solid transparent;border-radius:10px;padding:11px 18px;
-  font-weight:600;cursor:pointer;background:var(--surface-2);color:var(--ink);
-  transition:background .15s ease, transform .08s ease;
-}
-.btn:active{transform:translateY(1px)}
-.btn--primary{background:var(--green-700);color:#fff}
-.btn--primary:hover{background:var(--green-900)}
-.btn--gold{background:var(--gold);color:#22190A}
-.btn--ghost{background:transparent;border-color:var(--line);color:var(--ink)}
-.btn--ghost:hover{background:var(--surface-2)}
-.btn--danger{background:var(--clay-100);color:var(--clay)}
-.btn--block{width:100%}
-.btn--sm{padding:7px 13px;font-size:13.5px;border-radius:9px}
-.btn[disabled]{opacity:.5;cursor:not-allowed}
-.link{background:none;border:0;padding:0;color:var(--green-700);font-weight:600;cursor:pointer;text-decoration:underline}
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box
+    }
 
-.field{display:block;margin-bottom:15px}
-.field__label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px}
-.field__label em{font-style:normal;font-weight:400;color:var(--ink-3)}
-.field input,.field select,.field textarea,.inp{
-  width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:var(--radius-sm);
-  background:var(--surface);color:var(--ink);font:inherit;
-}
-.field textarea{min-height:96px;resize:vertical}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--green-500);outline:none;box-shadow:0 0 0 3px var(--green-100)}
-.field__error{display:none;color:var(--clay);font-size:12.5px;margin-top:5px}
-.field__error.is-on{display:block}
-.field.is-bad input,.field.is-bad select,.field.is-bad textarea{border-color:var(--clay);background:var(--clay-100)}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
-.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;margin:6px 0 4px}
-.check input{margin-top:4px}
+    html,
+    body {
+      margin: 0;
+      padding: 0
+    }
 
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:13.5px;background:var(--surface)}
-.chip input{display:none}
-.chip:has(input:checked){background:var(--green-100);border-color:var(--green-500);color:var(--green-900);font-weight:600}
-.roles{display:grid;gap:10px}
-.role{border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;cursor:pointer;background:var(--surface);display:block}
-.role input{display:none}
-.role b{display:block}
-.role i{font-style:normal;color:var(--ink-3);font-size:13px}
-.role:has(input:checked){border-color:var(--green-500);background:var(--green-100)}
-.drop{display:block;border:1.5px dashed var(--line);border-radius:var(--radius-sm);padding:20px;text-align:center;cursor:pointer;background:var(--surface)}
-.drop:hover{border-color:var(--green-500);background:var(--green-100)}
-.drop b{display:block}
-.drop i{font-style:normal;color:var(--ink-3);font-size:12.5px}
+    body {
+      font-family: var(--font-ui);
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
 
-/* ---------- auth ---------- */
-.auth{display:grid;grid-template-columns:minmax(320px,44%) 1fr;min-height:100vh}
-.auth__brand{
-  background:
-    radial-gradient(120% 90% at 8% 0%, rgba(111,191,115,.22), transparent 60%),
-    linear-gradient(160deg, var(--green-900), #124A2B 55%, #0B2D1B);
-  color:#E9F3EA;padding:clamp(28px,4vw,56px);display:flex;flex-direction:column;justify-content:center;gap:18px;
-}
-.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:700;font-size:19px}
-.brand__mark{display:grid;place-items:center}
-.auth__headline{font-size:clamp(28px,4.2vw,46px);line-height:1.08;color:#fff}
-.auth__sub{max-width:44ch;color:#BFD8C4;margin:0}
-.auth__stats{display:flex;gap:26px;flex-wrap:wrap;margin:10px 0 0}
-.auth__stats div{margin:0}
-.auth__stats dt{font-size:12.5px;color:#9CBBA5}
-.auth__stats dd{margin:0;font-family:var(--font-display);font-size:21px;color:var(--gold)}
-.auth__seal{margin:0;font-size:12.5px;color:#9CBBA5;border-top:1px solid rgba(255,255,255,.14);padding-top:14px}
-.auth__panel{display:grid;place-items:center;padding:clamp(20px,4vw,48px)}
-.auth__card{width:min(480px,100%)}
-.auth__switch{margin:16px 0 0;font-size:14px;color:var(--ink-2)}
-.auth__actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(20px,3vw,30px);box-shadow:var(--shadow)}
-.steps{display:flex;gap:6px;list-style:none;padding:0;margin:0 0 22px}
-.steps__item{flex:1;font-size:12.5px;color:var(--ink-3);border-top:3px solid var(--line);padding-top:8px}
-.steps__item span{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--surface-2);font-size:11px;margin-right:6px}
-.steps__item.is-active{color:var(--green-700);border-top-color:var(--green-500);font-weight:600}
-.steps__item.is-active span{background:var(--green-700);color:#fff}
-.regstep{display:none;border:0;padding:0;margin:0}
-.regstep.is-active{display:block}
-.regstep legend{margin-bottom:14px}
+    img {
+      max-width: 100%;
+      display: block
+    }
 
-/* ---------- app shell ---------- */
-.app{display:grid;grid-template-columns:var(--rail) 1fr;grid-template-rows:auto 1fr;min-height:100vh}
-.rail{grid-row:1 / 3;background:var(--green-900);color:#D9E8DC;padding:18px 14px;display:flex;flex-direction:column;gap:22px;position:sticky;top:0;height:100vh}
-.rail__brand{display:flex;align-items:center;gap:9px;font-family:var(--font-display);font-weight:700;color:#fff;padding:4px}
-.rail__nav{display:flex;flex-direction:column;gap:2px;flex:1}
-.rail__nav a{display:block;padding:10px 12px;border-radius:10px;color:#C6DCCB;text-decoration:none;font-weight:600;font-size:14.5px}
-.rail__nav a em{display:block;font-style:normal;font-weight:400;font-size:12px;color:#7FA189}
-.rail__nav a:hover{background:rgba(255,255,255,.07);color:#fff}
-.rail__nav a.is-on{background:var(--green-700);color:#fff}
-.rail__nav a.is-on em{color:#C9E6D1}
-.rail__out{background:none;border:1px solid rgba(255,255,255,.2);color:#C6DCCB;border-radius:10px;padding:9px;cursor:pointer}
-.rail__out:hover{background:rgba(255,255,255,.08)}
+    button {
+      font: inherit;
+      color: inherit
+    }
 
-.topbar{display:flex;align-items:center;gap:14px;padding:12px 22px;background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
-.topbar__who{flex:1;min-width:0;line-height:1.25}
-.topbar__who strong{display:block;font-family:var(--font-display)}
-.topbar__who strong,.topbar__who span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.topbar__who span{display:block;font-size:12.5px;color:var(--ink-3)}
-.topbar__right{display:flex;align-items:center;gap:10px}
-.icobtn{background:none;border:1px solid transparent;border-radius:9px;width:38px;height:38px;cursor:pointer;font-size:17px;position:relative}
-.icobtn:hover{background:var(--surface-2)}
-.dot{position:absolute;top:7px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--clay)}
-.avatar{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--green-100);color:var(--green-900);font-weight:700;font-size:13px}
-#menuBtn{display:none}
+    a {
+      color: var(--green-700)
+    }
 
-.main{padding:clamp(18px,2.4vw,30px);max-width:1180px;width:100%}
+    .is-hidden {
+      display: none !important
+    }
 
-/* ---------- generic layout pieces ---------- */
-.pagehead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}
-.pagehead p{margin:4px 0 0;color:var(--ink-2)}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.cards{display:grid;gap:16px}
-.cols-2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
-.cols-3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
-.cols-4{grid-template-columns:repeat(auto-fit,minmax(178px,1fr))}
-.box{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
-.box__head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
-.box__head h3{font-size:15.5px}
+    [hidden] {
+      display: none !important
+    }
 
-.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px}
-.stat dt{font-size:12.5px;color:var(--ink-3);margin-bottom:4px}
-.stat dd{margin:0;font-family:var(--font-display);font-size:26px;letter-spacing:-.02em}
-.stat small{display:block;font-size:12px;color:var(--ink-2);margin-top:2px}
-.stat--gold{background:var(--gold-100);border-color:#EBD9AE}
-.stat--green{background:var(--green-100);border-color:#BFDFC7}
+    :focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 2px;
+      border-radius: 4px
+    }
 
-.tag{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--surface-2);color:var(--ink-2)}
-.tag--pending{background:var(--gold-100);color:#7A5406}
-.tag--active{background:var(--green-100);color:var(--green-900)}
-.tag--funded{background:var(--sky-100);color:var(--sky)}
-.tag--rejected{background:var(--clay-100);color:var(--clay)}
-.tag--completed{background:var(--surface-2);color:var(--ink-2)}
-.tag--draft{background:var(--surface-2);color:var(--ink-3)}
-.risk-low{background:var(--green-100);color:var(--green-900)}
-.risk-medium{background:var(--gold-100);color:#7A5406}
-.risk-high{background:var(--clay-100);color:var(--clay)}
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important
+      }
+    }
 
-.bar{height:8px;border-radius:999px;background:var(--surface-2);overflow:hidden}
-.bar span{display:block;height:100%;background:linear-gradient(90deg,var(--green-500),var(--green-700));border-radius:999px}
-.bar--gold span{background:linear-gradient(90deg,#E5B44E,var(--gold))}
-.meter{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-2);margin:6px 0 0}
+    h1,
+    h2,
+    h3,
+    h4,
+    legend {
+      font-family: var(--font-display);
+      font-weight: 600;
+      letter-spacing: -.015em;
+      margin: 0
+    }
 
-table{width:100%;border-collapse:collapse;font-size:14px}
-th{text-align:left;font-size:12.5px;color:var(--ink-3);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line)}
-td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
-tr:last-child td{border-bottom:0}
-.num{text-align:right;font-variant-numeric:tabular-nums}
+    .h1 {
+      font-size: clamp(22px, 3.4vw, 30px)
+    }
 
-.empty{text-align:center;padding:38px 20px;border:1.5px dashed var(--line);border-radius:var(--radius);color:var(--ink-2)}
-.empty b{display:block;font-family:var(--font-display);font-size:17px;color:var(--ink);margin-bottom:4px}
+    .h2 {
+      font-size: 20px
+    }
 
-/* ---------- project cards ---------- */
-.plist{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
-.pcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;text-decoration:none;color:inherit}
-.pcard:hover{border-color:var(--green-500)}
-.pcard__top{height:104px;display:flex;align-items:flex-start;justify-content:space-between;padding:12px;background:linear-gradient(135deg,var(--green-700),var(--green-900))}
-.pcard__cat{font-size:26px}
-.pcard__body{padding:14px;display:flex;flex-direction:column;gap:9px;flex:1}
-.pcard__body h4{font-family:var(--font-display);font-size:16px;margin:0}
-.pcard__meta{font-size:12.5px;color:var(--ink-3)}
-.pcard__foot{display:flex;justify-content:space-between;font-size:13px;margin-top:auto}
+    .h3 {
+      font-size: 16px
+    }
 
-/* ---------- timeline ---------- */
-.tl{list-style:none;margin:0;padding:0 0 0 22px;border-left:2px solid var(--line)}
-.tl li{position:relative;padding:0 0 20px 16px}
-.tl li::before{content:"";position:absolute;left:-25px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--green-500);border:2px solid var(--surface)}
-.tl time{font-size:12.5px;color:var(--ink-3)}
-.tl h5{margin:2px 0 4px;font-family:var(--font-display);font-size:15px}
-.tl p{margin:0;color:var(--ink-2);font-size:14px}
-.tl .verified{color:var(--green-700);font-size:12.5px;font-weight:600}
+    .muted {
+      color: var(--ink-2);
+      margin: .35em 0 1.1em
+    }
 
-/* ---------- risk ---------- */
-.risk{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
-.risk__score{width:96px;height:96px;border-radius:50%;display:grid;place-items:center;font-family:var(--font-display);font-size:30px;color:#fff;flex:none}
-.risk__score small{display:block;font-size:11px;font-family:var(--font-ui);opacity:.85;text-align:center}
-.risk--low{background:var(--green-700)}
-.risk--medium{background:var(--gold)}
-.risk--high{background:var(--clay)}
-.risk ul{margin:6px 0 0;padding-left:18px;color:var(--ink-2);font-size:14px}
-.risk ul li{margin-bottom:4px}
+    .hint {
+      color: var(--ink-3);
+      font-size: 12.5px;
+      margin: 14px 0 0
+    }
 
-/* ---------- tabs ---------- */
-.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:18px;overflow-x:auto}
-.tabs button{background:none;border:0;border-bottom:2px solid transparent;padding:10px 14px;cursor:pointer;font-weight:600;color:var(--ink-2);white-space:nowrap}
-.tabs button.is-on{color:var(--green-700);border-bottom-color:var(--green-700)}
+    .skip {
+      position: absolute;
+      left: -999px
+    }
 
-/* ---------- misc ---------- */
-.panel{position:fixed;top:64px;right:18px;width:min(340px,92vw);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);z-index:40;padding:14px}
-.panel__head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.panel__head h3{font-size:15px}
-.notif{display:flex;gap:10px;padding:10px 4px;border-bottom:1px solid var(--line);font-size:13.5px}
-.notif:last-of-type{border-bottom:0}
-.notif.is-new{background:var(--green-100);border-radius:8px;padding-left:8px}
-.notif time{display:block;color:var(--ink-3);font-size:12px}
+    .skip:focus {
+      left: 12px;
+      top: 12px;
+      z-index: 60;
+      background: var(--surface);
+      padding: 8px 12px;
+      border-radius: 8px
+    }
 
-.modal{position:fixed;inset:0;background:rgba(10,25,16,.55);display:grid;place-items:center;padding:16px;z-index:50}
-.modal__box{background:var(--surface);border-radius:var(--radius);width:min(560px,100%);max-height:88vh;overflow:auto;box-shadow:var(--shadow)}
-.modal__head{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface)}
-.modal__head h3{font-size:17px}
-.modal__body{padding:18px}
+    /* ---------- buttons, fields ---------- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 11px 18px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--surface-2);
+      color: var(--ink);
+      transition: background .15s ease, transform .08s ease;
+    }
 
-.toasts{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:60;display:flex;flex-direction:column;gap:8px;align-items:center}
-.toast{background:var(--green-900);color:#fff;padding:11px 18px;border-radius:10px;font-size:14px;box-shadow:var(--shadow)}
-.toast--bad{background:var(--clay)}
+    .btn:active {
+      transform: translateY(1px)
+    }
 
-.thumbs{display:flex;gap:8px;flex-wrap:wrap}
-.thumb{width:74px;height:56px;border-radius:8px;background:var(--surface-2);display:grid;place-items:center;font-size:20px;border:1px solid var(--line)}
+    .btn--primary {
+      background: var(--green-700);
+      color: #fff
+    }
 
-.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:14px;margin:0}
-.kv dt{color:var(--ink-3)}
-.kv dd{margin:0;font-weight:600}
+    .btn--primary:hover {
+      background: var(--green-900)
+    }
 
-.expert{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
-.expert .avatar{width:44px;height:44px;font-size:15px}
-.expert b{display:block;font-family:var(--font-display)}
-.expert span{font-size:12.5px;color:var(--ink-3)}
+    .btn--gold {
+      background: var(--gold);
+      color: #22190A
+    }
 
-.stars{color:var(--gold);letter-spacing:2px}
+    .btn--ghost {
+      background: transparent;
+      border-color: var(--line);
+      color: var(--ink)
+    }
 
-/* ---------- responsive ---------- */
-@media (max-width: 980px){
-  .auth{grid-template-columns:1fr}
-  .auth__brand{padding:26px 22px;gap:12px}
-  .auth__headline{font-size:30px}
-  .auth__stats{gap:18px}
-}
-@media (max-width: 860px){
-  .app{grid-template-columns:1fr}
-  .rail{position:fixed;left:0;top:0;bottom:0;width:250px;z-index:45;transform:translateX(-102%);transition:transform .2s ease;height:100dvh}
-  .rail.is-open{transform:none}
-  #menuBtn{display:block}
-  .grid2{grid-template-columns:1fr}
-  .topbar{padding:10px 14px}
-  .main{padding:16px 14px 40px}
-  .panel{right:8px;left:8px;width:auto}
-}
+    .btn--ghost:hover {
+      background: var(--surface-2)
+    }
 
-/* ==========================================================
+    .btn--danger {
+      background: var(--clay-100);
+      color: var(--clay)
+    }
+
+    .btn--block {
+      width: 100%
+    }
+
+    .btn--sm {
+      padding: 7px 13px;
+      font-size: 13.5px;
+      border-radius: 9px
+    }
+
+    .btn[disabled] {
+      opacity: .5;
+      cursor: not-allowed
+    }
+
+    .link {
+      background: none;
+      border: 0;
+      padding: 0;
+      color: var(--green-700);
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline
+    }
+
+    .field {
+      display: block;
+      margin-bottom: 15px
+    }
+
+    .field__label {
+      display: block;
+      font-size: 13.5px;
+      font-weight: 600;
+      margin-bottom: 6px
+    }
+
+    .field__label em {
+      font-style: normal;
+      font-weight: 400;
+      color: var(--ink-3)
+    }
+
+    .field input,
+    .field select,
+    .field textarea,
+    .inp {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--ink);
+      font: inherit;
+    }
+
+    .field textarea {
+      min-height: 96px;
+      resize: vertical
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--green-500);
+      outline: none;
+      box-shadow: 0 0 0 3px var(--green-100)
+    }
+
+    .field__error {
+      display: none;
+      color: var(--clay);
+      font-size: 12.5px;
+      margin-top: 5px
+    }
+
+    .field__error.is-on {
+      display: block
+    }
+
+    .field.is-bad input,
+    .field.is-bad select,
+    .field.is-bad textarea {
+      border-color: var(--clay);
+      background: var(--clay-100)
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 14px
+    }
+
+    .check {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 14px;
+      margin: 6px 0 4px
+    }
+
+    .check input {
+      margin-top: 4px
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 14px;
+      cursor: pointer;
+      font-size: 13.5px;
+      background: var(--surface)
+    }
+
+    .chip input {
+      display: none
+    }
+
+    .chip:has(input:checked) {
+      background: var(--green-100);
+      border-color: var(--green-500);
+      color: var(--green-900);
+      font-weight: 600
+    }
+
+    .roles {
+      display: grid;
+      gap: 10px
+    }
+
+    .role {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      cursor: pointer;
+      background: var(--surface);
+      display: block
+    }
+
+    .role input {
+      display: none
+    }
+
+    .role b {
+      display: block
+    }
+
+    .role i {
+      font-style: normal;
+      color: var(--ink-3);
+      font-size: 13px
+    }
+
+    .role:has(input:checked) {
+      border-color: var(--green-500);
+      background: var(--green-100)
+    }
+
+    .drop {
+      display: block;
+      border: 1.5px dashed var(--line);
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      background: var(--surface)
+    }
+
+    .drop:hover {
+      border-color: var(--green-500);
+      background: var(--green-100)
+    }
+
+    .drop b {
+      display: block
+    }
+
+    .drop i {
+      font-style: normal;
+      color: var(--ink-3);
+      font-size: 12.5px
+    }
+
+    .auth {
+      display: grid;
+      grid-template-columns: minmax(320px, 44%) 1fr;
+      min-height: 100vh
+    }
+
+    .auth__brand {
+      background:
+        radial-gradient(120% 90% at 8% 0%, rgba(111, 191, 115, .22), transparent 60%),
+        linear-gradient(160deg, var(--green-900), #124A2B 55%, #0B2D1B);
+      color: #E9F3EA;
+      padding: clamp(28px, 4vw, 56px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 19px
+    }
+
+    .brand__mark {
+      display: grid;
+      place-items: center
+    }
+
+    .auth__headline {
+      font-size: clamp(28px, 4.2vw, 46px);
+      line-height: 1.08;
+      color: #fff
+    }
+
+    .auth__sub {
+      max-width: 44ch;
+      color: #BFD8C4;
+      margin: 0
+    }
+
+    .auth__stats {
+      display: flex;
+      gap: 26px;
+      flex-wrap: wrap;
+      margin: 10px 0 0
+    }
+
+    .auth__stats div {
+      margin: 0
+    }
+
+    .auth__stats dt {
+      font-size: 12.5px;
+      color: #9CBBA5
+    }
+
+    .auth__stats dd {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 21px;
+      color: var(--gold)
+    }
+
+    .auth__seal {
+      margin: 0;
+      font-size: 12.5px;
+      color: #9CBBA5;
+      border-top: 1px solid rgba(255, 255, 255, .14);
+      padding-top: 14px
+    }
+
+    .auth__panel {
+      display: grid;
+      place-items: center;
+      padding: clamp(20px, 4vw, 48px)
+    }
+
+    .auth__card {
+      width: min(480px, 100%)
+    }
+
+    .auth__switch {
+      margin: 16px 0 0;
+      font-size: 14px;
+      color: var(--ink-2)
+    }
+
+    .auth__actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 18px
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: clamp(20px, 3vw, 30px);
+      box-shadow: var(--shadow)
+    }
+
+    .steps {
+      display: flex;
+      gap: 6px;
+      list-style: none;
+      padding: 0;
+      margin: 0 0 22px
+    }
+
+    .steps__item {
+      flex: 1;
+      font-size: 12.5px;
+      color: var(--ink-3);
+      border-top: 3px solid var(--line);
+      padding-top: 8px
+    }
+
+    .steps__item span {
+      display: inline-grid;
+      place-items: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      font-size: 11px;
+      margin-right: 6px
+    }
+
+    .steps__item.is-active {
+      color: var(--green-700);
+      border-top-color: var(--green-500);
+      font-weight: 600
+    }
+
+    .steps__item.is-active span {
+      background: var(--green-700);
+      color: #fff
+    }
+
+    .regstep {
+      display: none;
+      border: 0;
+      padding: 0;
+      margin: 0
+    }
+
+    .regstep.is-active {
+      display: block
+    }
+
+    .regstep legend {
+      margin-bottom: 14px
+    }
+
+    /* ---------- app shell ---------- */
+    .app {
+      display: grid;
+      grid-template-columns: var(--rail) 1fr;
+      grid-template-rows: auto 1fr;
+      min-height: 100vh
+    }
+
+    .rail {
+      grid-row: 1 / 3;
+      background: var(--green-900);
+      color: #D9E8DC;
+      padding: 18px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden
+    }
+
+    .rail__brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: #fff;
+      padding: 4px
+    }
+
+    .rail__nav {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, .25) transparent
+    }
+
+    .rail__nav::-webkit-scrollbar {
+      width: 6px
+    }
+
+    .rail__nav::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, .22);
+      border-radius: 3px
+    }
+
+    .rail__brand,
+    .rail__out {
+      flex: none
+    }
+
+    .rail__nav a {
+      display: block;
+      padding: 10px 12px;
+      border-radius: 10px;
+      color: #C6DCCB;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14.5px
+    }
+
+    .rail__nav a em {
+      display: block;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      color: #7FA189
+    }
+
+    .rail__nav a:hover {
+      background: rgba(255, 255, 255, .07);
+      color: #fff
+    }
+
+    .rail__nav a.is-on {
+      background: var(--green-700);
+      color: #fff
+    }
+
+    .rail__nav a.is-on em {
+      color: #C9E6D1
+    }
+
+    .rail__out {
+      background: none;
+      border: 1px solid rgba(255, 255, 255, .2);
+      color: #C6DCCB;
+      border-radius: 10px;
+      padding: 9px;
+      cursor: pointer
+    }
+
+    .rail__out:hover {
+      background: rgba(255, 255, 255, .08)
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 22px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 20
+    }
+
+    .topbar__who {
+      flex: 1;
+      min-width: 0;
+      line-height: 1.25
+    }
+
+    .topbar__who strong {
+      display: block;
+      font-family: var(--font-display)
+    }
+
+    .topbar__who strong,
+    .topbar__who span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap
+    }
+
+    .topbar__who span {
+      display: block;
+      font-size: 12.5px;
+      color: var(--ink-3)
+    }
+
+    .topbar__right {
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .icobtn {
+      background: none;
+      border: 1px solid transparent;
+      border-radius: 9px;
+      width: 38px;
+      height: 38px;
+      cursor: pointer;
+      font-size: 17px;
+      position: relative
+    }
+
+    .icobtn:hover {
+      background: var(--surface-2)
+    }
+
+    .dot {
+      position: absolute;
+      top: 7px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--clay)
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--green-100);
+      color: var(--green-900);
+      font-weight: 700;
+      font-size: 13px
+    }
+
+    #menuBtn {
+      display: none
+    }
+
+    .main {
+      padding: clamp(18px, 2.4vw, 30px);
+      max-width: 1180px;
+      width: 100%
+    }
+
+    /* ---------- generic layout pieces ---------- */
+    .pagehead {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px
+    }
+
+    .pagehead p {
+      margin: 4px 0 0;
+      color: var(--ink-2)
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center
+    }
+
+    .cards {
+      display: grid;
+      gap: 16px
+    }
+
+    .cols-2 {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))
+    }
+
+    .cols-3 {
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr))
+    }
+
+    .cols-4 {
+      grid-template-columns: repeat(auto-fit, minmax(178px, 1fr))
+    }
+
+    .box {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px
+    }
+
+    .box__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px
+    }
+
+    .box__head h3 {
+      font-size: 15.5px
+    }
+
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px 18px
+    }
+
+    .stat dt {
+      font-size: 12.5px;
+      color: var(--ink-3);
+      margin-bottom: 4px
+    }
+
+    .stat dd {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 26px;
+      letter-spacing: -.02em
+    }
+
+    .stat small {
+      display: block;
+      font-size: 12px;
+      color: var(--ink-2);
+      margin-top: 2px
+    }
+
+    .stat--gold {
+      background: var(--gold-100);
+      border-color: #EBD9AE
+    }
+
+    .stat--green {
+      background: var(--green-100);
+      border-color: #BFDFC7
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      color: var(--ink-2)
+    }
+
+    .tag--pending {
+      background: var(--gold-100);
+      color: #7A5406
+    }
+
+    .tag--active {
+      background: var(--green-100);
+      color: var(--green-900)
+    }
+
+    .tag--funded {
+      background: var(--sky-100);
+      color: var(--sky)
+    }
+
+    .tag--rejected {
+      background: var(--clay-100);
+      color: var(--clay)
+    }
+
+    .tag--completed {
+      background: var(--surface-2);
+      color: var(--ink-2)
+    }
+
+    .tag--draft {
+      background: var(--surface-2);
+      color: var(--ink-3)
+    }
+
+    .risk-low {
+      background: var(--green-100);
+      color: var(--green-900)
+    }
+
+    .risk-medium {
+      background: var(--gold-100);
+      color: #7A5406
+    }
+
+    .risk-high {
+      background: var(--clay-100);
+      color: var(--clay)
+    }
+
+    .bar {
+      height: 8px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      overflow: hidden
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--green-500), var(--green-700));
+      border-radius: 999px
+    }
+
+    .bar--gold span {
+      background: linear-gradient(90deg, #E5B44E, var(--gold))
+    }
+
+    .meter {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12.5px;
+      color: var(--ink-2);
+      margin: 6px 0 0
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px
+    }
+
+    th {
+      text-align: left;
+      font-size: 12.5px;
+      color: var(--ink-3);
+      font-weight: 600;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--line)
+    }
+
+    td {
+      padding: 11px 10px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle
+    }
+
+    tr:last-child td {
+      border-bottom: 0
+    }
+
+    .num {
+      text-align: right;
+      font-variant-numeric: tabular-nums
+    }
+
+    .empty {
+      text-align: center;
+      padding: 38px 20px;
+      border: 1.5px dashed var(--line);
+      border-radius: var(--radius);
+      color: var(--ink-2)
+    }
+
+    .empty b {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 17px;
+      color: var(--ink);
+      margin-bottom: 4px
+    }
+
+    /* ---------- project cards ---------- */
+    .plist {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr))
+    }
+
+    .pcard {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit
+    }
+
+    .pcard:hover {
+      border-color: var(--green-500)
+    }
+
+    .pcard__top {
+      height: 104px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 12px;
+      background: linear-gradient(135deg, var(--green-700), var(--green-900))
+    }
+
+    .pcard__cat {
+      font-size: 26px
+    }
+
+    .pcard__body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      flex: 1
+    }
+
+    .pcard__body h4 {
+      font-family: var(--font-display);
+      font-size: 16px;
+      margin: 0
+    }
+
+    .pcard__meta {
+      font-size: 12.5px;
+      color: var(--ink-3)
+    }
+
+    .pcard__foot {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-top: auto
+    }
+
+    /* ---------- timeline ---------- */
+    .tl {
+      list-style: none;
+      margin: 0;
+      padding: 0 0 0 22px;
+      border-left: 2px solid var(--line)
+    }
+
+    .tl li {
+      position: relative;
+      padding: 0 0 20px 16px
+    }
+
+    .tl li::before {
+      content: "";
+      position: absolute;
+      left: -25px;
+      top: 4px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green-500);
+      border: 2px solid var(--surface)
+    }
+
+    .tl time {
+      font-size: 12.5px;
+      color: var(--ink-3)
+    }
+
+    .tl h5 {
+      margin: 2px 0 4px;
+      font-family: var(--font-display);
+      font-size: 15px
+    }
+
+    .tl p {
+      margin: 0;
+      color: var(--ink-2);
+      font-size: 14px
+    }
+
+    .tl .verified {
+      color: var(--green-700);
+      font-size: 12.5px;
+      font-weight: 600
+    }
+
+    /* ---------- risk ---------- */
+    .risk {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap
+    }
+
+    .risk__score {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-display);
+      font-size: 30px;
+      color: #fff;
+      flex: none
+    }
+
+    .risk__score small {
+      display: block;
+      font-size: 11px;
+      font-family: var(--font-ui);
+      opacity: .85;
+      text-align: center
+    }
+
+    .risk--low {
+      background: var(--green-700)
+    }
+
+    .risk--medium {
+      background: var(--gold)
+    }
+
+    .risk--high {
+      background: var(--clay)
+    }
+
+    .risk ul {
+      margin: 6px 0 0;
+      padding-left: 18px;
+      color: var(--ink-2);
+      font-size: 14px
+    }
+
+    .risk ul li {
+      margin-bottom: 4px
+    }
+
+    /* ---------- tabs ---------- */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 18px;
+      overflow-x: auto
+    }
+
+    .tabs button {
+      background: none;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--ink-2);
+      white-space: nowrap
+    }
+
+    .tabs button.is-on {
+      color: var(--green-700);
+      border-bottom-color: var(--green-700)
+    }
+
+    /* ---------- misc ---------- */
+    .panel {
+      position: fixed;
+      top: 64px;
+      right: 18px;
+      width: min(340px, 92vw);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      z-index: 40;
+      padding: 14px
+    }
+
+    .panel__head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px
+    }
+
+    .panel__head h3 {
+      font-size: 15px
+    }
+
+    .notif {
+      display: flex;
+      gap: 10px;
+      padding: 10px 4px;
+      border-bottom: 1px solid var(--line);
+      font-size: 13.5px
+    }
+
+    .notif:last-of-type {
+      border-bottom: 0
+    }
+
+    .notif.is-new {
+      background: var(--green-100);
+      border-radius: 8px;
+      padding-left: 8px
+    }
+
+    .notif time {
+      display: block;
+      color: var(--ink-3);
+      font-size: 12px
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 25, 16, .55);
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      z-index: 50
+    }
+
+    .modal__box {
+      background: var(--surface);
+      border-radius: var(--radius);
+      width: min(560px, 100%);
+      max-height: 88vh;
+      overflow: auto;
+      box-shadow: var(--shadow)
+    }
+
+    .modal__head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      background: var(--surface)
+    }
+
+    .modal__head h3 {
+      font-size: 17px
+    }
+
+    .modal__body {
+      padding: 18px
+    }
+
+    .toasts {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 60;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center
+    }
+
+    .toast {
+      background: var(--green-900);
+      color: #fff;
+      padding: 11px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      box-shadow: var(--shadow)
+    }
+
+    .toast--bad {
+      background: var(--clay)
+    }
+
+    .thumbs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    .thumb {
+      width: 74px;
+      height: 56px;
+      border-radius: 8px;
+      background: var(--surface-2);
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      border: 1px solid var(--line)
+    }
+
+    .kv {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 6px 16px;
+      font-size: 14px;
+      margin: 0
+    }
+
+    .kv dt {
+      color: var(--ink-3)
+    }
+
+    .kv dd {
+      margin: 0;
+      font-weight: 600
+    }
+
+    .expert {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface)
+    }
+
+    .expert .avatar {
+      width: 44px;
+      height: 44px;
+      font-size: 15px
+    }
+
+    .expert b {
+      display: block;
+      font-family: var(--font-display)
+    }
+
+    .expert span {
+      font-size: 12.5px;
+      color: var(--ink-3)
+    }
+
+    .stars {
+      color: var(--gold);
+      letter-spacing: 2px
+    }
+
+    /* ---------- responsive ---------- */
+    @media (max-width: 980px) {
+      .auth {
+        grid-template-columns: 1fr
+      }
+
+      .auth__brand {
+        padding: 26px 22px;
+        gap: 12px
+      }
+
+      .auth__headline {
+        font-size: 30px
+      }
+
+      .auth__stats {
+        gap: 18px
+      }
+    }
+
+    @media (max-width: 860px) {
+      .app {
+        grid-template-columns: 1fr
+      }
+
+      .rail {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 250px;
+        z-index: 45;
+        transform: translateX(-102%);
+        transition: transform .2s ease;
+        height: 100dvh
+      }
+
+      .rail.is-open {
+        transform: none
+      }
+
+      #menuBtn {
+        display: block
+      }
+
+      .grid2 {
+        grid-template-columns: 1fr
+      }
+
+      .topbar {
+        padding: 10px 14px
+      }
+
+      .main {
+        padding: 16px 14px 40px
+      }
+
+      .panel {
+        right: 8px;
+        left: 8px;
+        width: auto
+      }
+    }
+
+    /* ==========================================================
    Admin console additions
    ========================================================== */
-.auth--admin .auth__brand{
-  background:
-    radial-gradient(120% 90% at 8% 0%, rgba(224,163,46,.16), transparent 60%),
-    linear-gradient(160deg,#0B2318,#10331F 55%,#08190F);
-}
-.badge{
-  float:right;min-width:20px;height:20px;padding:0 6px;border-radius:999px;
-  background:var(--gold);color:#22190A;font-size:11px;font-weight:700;
-  display:none;place-items:center;font-style:normal;line-height:20px;text-align:center;
-}
-.badge.is-on{display:inline-block}
-.search{
-  width:min(300px,34vw);padding:8px 12px;border:1px solid var(--line);border-radius:9px;
-  background:var(--paper);color:var(--ink);font:inherit;font-size:13.5px;
-}
-.search:focus{outline:none;border-color:var(--green-500);box-shadow:0 0 0 3px var(--green-100)}
-@media (max-width:860px){.search{display:none}}
+    .auth--admin .auth__brand {
+      background:
+        radial-gradient(120% 90% at 8% 0%, rgba(224, 163, 46, .16), transparent 60%),
+        linear-gradient(160deg, #0B2318, #10331F 55%, #08190F);
+    }
 
-.queue{display:flex;gap:14px;align-items:flex-start;padding:16px;border:1px solid var(--line);
-  border-radius:var(--radius);background:var(--surface);margin-bottom:12px;flex-wrap:wrap}
-.queue__ico{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;
-  background:var(--surface-2);font-size:22px;flex:none}
-.queue__main{flex:1;min-width:220px}
-.queue__main h4{font-family:var(--font-display);font-size:16px;margin:0 0 2px}
-.queue__acts{display:flex;gap:8px;flex-wrap:wrap;align-self:center}
+    .badge {
+      float: right;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: var(--gold);
+      color: #22190A;
+      font-size: 11px;
+      font-weight: 700;
+      display: none;
+      place-items: center;
+      font-style: normal;
+      line-height: 20px;
+      text-align: center;
+    }
 
-.sev{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}
-.sev--high{background:var(--clay)}
-.sev--medium{background:var(--gold)}
-.sev--low{background:var(--green-500)}
+    .badge.is-on {
+      display: inline-block
+    }
 
-.chart{display:flex;align-items:flex-end;gap:10px;height:150px;padding-top:8px}
-.chart__col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%}
-.chart__bar{width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--green-500),var(--green-700));min-height:3px}
-.chart__bar--gold{background:linear-gradient(180deg,#E5B44E,var(--gold))}
-.chart__lbl{font-size:11.5px;color:var(--ink-3)}
+    .search {
+      width: min(300px, 34vw);
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--paper);
+      color: var(--ink);
+      font: inherit;
+      font-size: 13.5px;
+    }
 
-.split{display:flex;gap:2px;height:12px;border-radius:999px;overflow:hidden;margin:10px 0}
-.split span{display:block;height:100%}
-.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--ink-2)}
-.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+    .search:focus {
+      outline: none;
+      border-color: var(--green-500);
+      box-shadow: 0 0 0 3px var(--green-100)
+    }
 
-.audit{list-style:none;margin:0;padding:0;font-size:13.5px}
-.audit li{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
-.audit li:last-child{border-bottom:0}
-.audit time{color:var(--ink-3);white-space:nowrap;font-size:12.5px}
+    @media (max-width:860px) {
+      .search {
+        display: none
+      }
+    }
 
-.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.filters input,.filters select{padding:8px 11px;border:1px solid var(--line);border-radius:9px;
-  background:var(--surface);color:var(--ink);font:inherit;font-size:13.5px}
+    .queue {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      margin-bottom: 12px;
+      flex-wrap: wrap
+    }
 
-.map{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:8px}
-.map div{padding:10px 12px;border-radius:10px;background:var(--surface-2);font-size:13px}
-.map b{display:block;font-family:var(--font-display);font-size:17px}
+    .queue__ico {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: var(--surface-2);
+      font-size: 22px;
+      flex: none
+    }
 
-</style>
+    .queue__main {
+      flex: 1;
+      min-width: 220px
+    }
+
+    .queue__main h4 {
+      font-family: var(--font-display);
+      font-size: 16px;
+      margin: 0 0 2px
+    }
+
+    .queue__acts {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-self: center
+    }
+
+    .sev {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      margin-right: 7px
+    }
+
+    .sev--high {
+      background: var(--clay)
+    }
+
+    .sev--medium {
+      background: var(--gold)
+    }
+
+    .sev--low {
+      background: var(--green-500)
+    }
+
+    .chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      height: 150px;
+      padding-top: 8px
+    }
+
+    .chart__col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 6px;
+      height: 100%
+    }
+
+    .chart__bar {
+      width: 100%;
+      border-radius: 6px 6px 0 0;
+      background: linear-gradient(180deg, var(--green-500), var(--green-700));
+      min-height: 3px
+    }
+
+    .chart__bar--gold {
+      background: linear-gradient(180deg, #E5B44E, var(--gold))
+    }
+
+    .chart__lbl {
+      font-size: 11.5px;
+      color: var(--ink-3)
+    }
+
+    .split {
+      display: flex;
+      gap: 2px;
+      height: 12px;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 10px 0
+    }
+
+    .split span {
+      display: block;
+      height: 100%
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--ink-2)
+    }
+
+    .legend i {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      margin-right: 6px
+    }
+
+    .audit {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: 13.5px
+    }
+
+    .audit li {
+      display: flex;
+      gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--line)
+    }
+
+    .audit li:last-child {
+      border-bottom: 0
+    }
+
+    .audit time {
+      color: var(--ink-3);
+      white-space: nowrap;
+      font-size: 12.5px
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px
+    }
+
+    .filters input,
+    .filters select {
+      padding: 8px 11px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--surface);
+      color: var(--ink);
+      font: inherit;
+      font-size: 13.5px
+    }
+
+    .map {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+      gap: 8px
+    }
+
+    .map div {
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: var(--surface-2);
+      font-size: 13px
+    }
+
+    .map b {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 17px
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- ============ ADMIN SIGN IN ============ -->
-<div id="authScreen" class="auth auth--admin">
-  <aside class="auth__brand">
-    <div class="brand">
-      <span class="brand__mark" aria-hidden="true">
-        <svg viewBox="0 0 32 32" width="28" height="28"><path d="M16 29c0-8 4-13 11-15-1 9-5 14-11 15Z" fill="#6FBF73"/><path d="M16 29C16 20 12 15 5 13c1 9 5 14 11 16Z" fill="#2F8B4E"/><path d="M16 29V9" stroke="#E0A32E" stroke-width="2.5" stroke-linecap="round"/><circle cx="16" cy="6" r="3.2" fill="#E0A32E"/></svg>
-      </span>
-      <span class="brand__name">Grambandhan</span>
-    </div>
-    <h1 class="auth__headline">Admin console</h1>
-    <p class="auth__sub">Approvals, money movement, verification and fraud monitoring for the whole platform. Every action here is written to the audit log.</p>
-    <dl class="auth__stats">
-      <div><dt>Restricted</dt><dd>Staff only</dd></div>
-      <div><dt>Session</dt><dd>30 min idle</dd></div>
-      <div><dt>Logging</dt><dd>All actions</dd></div>
-    </dl>
-    <p class="auth__seal">Unauthorised access is an offence under the ICT Act, 2006.</p>
-  </aside>
+  <!-- ============ ADMIN SIGN IN ============ -->
+  <div id="authScreen" class="auth auth--admin">
+    <aside class="auth__brand">
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="28" height="28">
+            <path d="M16 29c0-8 4-13 11-15-1 9-5 14-11 15Z" fill="#6FBF73" />
+            <path d="M16 29C16 20 12 15 5 13c1 9 5 14 11 16Z" fill="#2F8B4E" />
+            <path d="M16 29V9" stroke="#E0A32E" stroke-width="2.5" stroke-linecap="round" />
+            <circle cx="16" cy="6" r="3.2" fill="#E0A32E" />
+          </svg>
+        </span>
+        <span class="brand__name">Grambandhan</span>
+      </div>
+      <h1 class="auth__headline">Admin console</h1>
+      <p class="auth__sub">Approvals, money movement, verification and fraud monitoring for the whole platform. Every
+        action here is written to the audit log.</p>
+      <dl class="auth__stats">
+        <div>
+          <dt>Restricted</dt>
+          <dd>Staff only</dd>
+        </div>
+        <div>
+          <dt>Session</dt>
+          <dd>30 min idle</dd>
+        </div>
+        <div>
+          <dt>Logging</dt>
+          <dd>All actions</dd>
+        </div>
+      </dl>
+      <p class="auth__seal">Unauthorised access is an offence under the ICT Act, 2006.</p>
+    </aside>
 
-  <main class="auth__panel">
-    <section class="card auth__card">
-      <h2 class="h2">Staff sign in</h2>
-      <p class="muted">Use your admin ID and password.</p>
-      <form id="loginForm" novalidate>
-        <label class="field"><span class="field__label">Admin ID</span>
-          <input id="adId" placeholder="e.g. ADM-1042" autocomplete="username">
-          <span class="field__error" data-for="adId"></span></label>
-        <label class="field"><span class="field__label">Password</span>
-          <input id="adPass" type="password" placeholder="••••••••" autocomplete="current-password">
-          <span class="field__error" data-for="adPass"></span></label>
-        <label class="field"><span class="field__label">One-time code sent to your phone</span>
-          <input id="adOtp" inputmode="numeric" placeholder="6 digits">
-          <span class="field__error" data-for="adOtp"></span></label>
-        <button class="btn btn--primary btn--block" type="submit">Sign in</button>
-      </form>
-      <p class="hint">Demo build — ID <b>ADM-1042</b>, any 6+ character password, OTP <b>482913</b>.</p>
-    </section>
-  </main>
-</div>
-
-<!-- ============ CONSOLE ============ -->
-<div id="app" class="app is-hidden">
-  <a class="skip" href="#main">Skip to content</a>
-
-  <aside class="rail" id="rail">
-    <div class="rail__brand">
-      <span class="brand__mark" aria-hidden="true">
-        <svg viewBox="0 0 32 32" width="24" height="24"><path d="M16 29c0-8 4-13 11-15-1 9-5 14-11 15Z" fill="#6FBF73"/><path d="M16 29C16 20 12 15 5 13c1 9 5 14 11 16Z" fill="#2F8B4E"/><path d="M16 29V9" stroke="#E0A32E" stroke-width="2.5" stroke-linecap="round"/><circle cx="16" cy="6" r="3.2" fill="#E0A32E"/></svg>
-      </span>
-      <span>Admin</span>
-    </div>
-    <nav class="rail__nav" aria-label="Admin sections">
-      <a href="#/overview" data-nav="overview">Overview <em>সারসংক্ষেপ</em></a>
-      <a href="#/approvals" data-nav="approvals">Approvals <em>অনুমোদন</em><b class="badge" id="badgeApprovals"></b></a>
-      <a href="#/projects" data-nav="projects">Projects <em>প্রকল্প</em></a>
-      <a href="#/users" data-nav="users">Users &amp; KYC <em>ব্যবহারকারী</em><b class="badge" id="badgeKyc"></b></a>
-      <a href="#/finance" data-nav="finance">Finance <em>অর্থ</em></a>
-      <a href="#/fraud" data-nav="fraud">Fraud &amp; disputes <em>নিরাপত্তা</em><b class="badge" id="badgeFraud"></b></a>
-      <a href="#/claims" data-nav="claims">Insurance claims <em>বিমা</em></a>
-      <a href="#/market" data-nav="market">Marketplace <em>বাজার</em></a>
-      <a href="#/reports" data-nav="reports">Reports &amp; audit <em>রিপোর্ট</em></a>
-    </nav>
-    <button class="rail__out" id="logoutBtn">Sign out</button>
-  </aside>
-
-  <header class="topbar">
-    <button class="icobtn" id="menuBtn" aria-label="Open menu">☰</button>
-    <div class="topbar__who">
-      <strong id="topName">Admin</strong>
-      <span id="topMeta">Platform administrator</span>
-    </div>
-    <div class="topbar__right">
-      <input class="search" id="globalSearch" type="search" placeholder="Search projects, users, transactions…" aria-label="Search">
-      <button class="icobtn" id="bellBtn" aria-label="Alerts">🔔<span class="dot" id="bellDot" hidden></span></button>
-      <span class="avatar">AD</span>
-    </div>
-  </header>
-
-  <main class="main" id="main"></main>
-
-  <div class="panel" id="notifPanel" hidden>
-    <div class="panel__head"><h3>System alerts</h3><button class="icobtn" id="notifClose" aria-label="Close">✕</button></div>
-    <div id="notifList"></div>
-    <button class="btn btn--ghost btn--block" id="notifClear">Mark all as read</button>
+    <main class="auth__panel">
+      <section class="card auth__card">
+        <h2 class="h2">Staff sign in</h2>
+        <p class="muted">Use your admin ID and password.</p>
+        <form id="loginForm" novalidate>
+          <label class="field"><span class="field__label">Admin ID</span>
+            <input id="adId" placeholder="e.g. ADM-1042" autocomplete="username">
+            <span class="field__error" data-for="adId"></span></label>
+          <label class="field"><span class="field__label">Password</span>
+            <input id="adPass" type="password" placeholder="••••••••" autocomplete="current-password">
+            <span class="field__error" data-for="adPass"></span></label>
+          <label class="field"><span class="field__label">One-time code sent to your phone</span>
+            <input id="adOtp" inputmode="numeric" placeholder="6 digits">
+            <span class="field__error" data-for="adOtp"></span></label>
+          <button class="btn btn--primary btn--block" type="submit">Sign in</button>
+        </form>
+        <p class="hint">Demo build — ID <b>ADM-1042</b>, any 6+ character password, OTP <b>482913</b>.</p>
+      </section>
+    </main>
   </div>
-</div>
 
-<div class="modal" id="modal" hidden>
-  <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal__head"><h3 id="modalTitle"></h3><button class="icobtn" id="modalClose" aria-label="Close">✕</button></div>
-    <div class="modal__body" id="modalBody"></div>
+  <!-- ============ CONSOLE ============ -->
+  <div id="app" class="app is-hidden">
+    <a class="skip" href="#main">Skip to content</a>
+
+    <aside class="rail" id="rail">
+      <div class="rail__brand">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="24" height="24">
+            <path d="M16 29c0-8 4-13 11-15-1 9-5 14-11 15Z" fill="#6FBF73" />
+            <path d="M16 29C16 20 12 15 5 13c1 9 5 14 11 16Z" fill="#2F8B4E" />
+            <path d="M16 29V9" stroke="#E0A32E" stroke-width="2.5" stroke-linecap="round" />
+            <circle cx="16" cy="6" r="3.2" fill="#E0A32E" />
+          </svg>
+        </span>
+        <span>Admin</span>
+      </div>
+      <nav class="rail__nav" aria-label="Admin sections">
+        <a href="#/overview" data-nav="overview">Overview <em>সারসংক্ষেপ</em></a>
+        <a href="#/approvals" data-nav="approvals">Approvals <em>অনুমোদন</em><b class="badge"
+            id="badgeApprovals"></b></a>
+        <a href="#/projects" data-nav="projects">Projects <em>প্রকল্প</em></a>
+        <a href="#/users" data-nav="users">Users &amp; KYC <em>ব্যবহারকারী</em><b class="badge" id="badgeKyc"></b></a>
+        <a href="#/finance" data-nav="finance">Finance <em>অর্থ</em></a>
+        <a href="#/fraud" data-nav="fraud">Fraud &amp; disputes <em>নিরাপত্তা</em><b class="badge"
+            id="badgeFraud"></b></a>
+        <a href="#/claims" data-nav="claims">Insurance claims <em>বিমা</em></a>
+        <a href="#/market" data-nav="market">Marketplace <em>বাজার</em></a>
+        <a href="#/reports" data-nav="reports">Reports &amp; audit <em>রিপোর্ট</em></a>
+      </nav>
+      <button class="rail__out" id="logoutBtn">Sign out</button>
+    </aside>
+
+    <header class="topbar">
+      <button class="icobtn" id="menuBtn" aria-label="Open menu">☰</button>
+      <div class="topbar__who">
+        <strong id="topName">Admin</strong>
+        <span id="topMeta">Platform administrator</span>
+      </div>
+      <div class="topbar__right">
+        <input class="search" id="globalSearch" type="search" placeholder="Search projects, users, transactions…"
+          aria-label="Search">
+        <button class="icobtn" id="bellBtn" aria-label="Alerts">🔔<span class="dot" id="bellDot" hidden></span></button>
+        <span class="avatar">AD</span>
+      </div>
+    </header>
+
+    <main class="main" id="main"></main>
+
+    <div class="panel" id="notifPanel" hidden>
+      <div class="panel__head">
+        <h3>System alerts</h3><button class="icobtn" id="notifClose" aria-label="Close">✕</button>
+      </div>
+      <div id="notifList"></div>
+      <button class="btn btn--ghost btn--block" id="notifClear">Mark all as read</button>
+    </div>
   </div>
-</div>
 
-<div class="toasts" id="toasts" aria-live="polite"></div>
-<script>
-/* ==========================================================================
-   Grambandhan — Admin module
-   Covers the SRS admin scope: verify users, approve or reject project
-   listings, monitor every transaction and disbursement, run fraud and
-   dispute handling, settle insurance claims, moderate the marketplace and
-   generate reports. Every state change is written to an audit log.
-   Storage: localStorage. No backend required.
-   ========================================================================== */
-(function () {
-  'use strict';
+  <div class="modal" id="modal" hidden>
+    <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal__head">
+        <h3 id="modalTitle"></h3><button class="icobtn" id="modalClose" aria-label="Close">✕</button>
+      </div>
+      <div class="modal__body" id="modalBody"></div>
+    </div>
+  </div>
 
-  const $ = (s, r = document) => r.querySelector(s);
-  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-  const KEY = 'grambandhan.admin.v1';
-  const uid = (p) => p + '-' + Math.random().toString(36).slice(2, 7).toUpperCase();
-  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) =>
-    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const taka = (n) => '৳' + Number(n || 0).toLocaleString('en-IN');
-  const pct = (a, b) => (!b ? 0 : Math.min(100, Math.round((a / b) * 100)));
-  const nice = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-  const stamp = (d) => new Date(d).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-  const ago = (d) => {
-    const m = Math.round((Date.now() - new Date(d)) / 60000);
-    return m < 60 ? m + ' min ago' : m < 1440 ? Math.round(m / 60) + ' hr ago' : Math.round(m / 1440) + ' d ago';
-  };
-  const d = (days) => new Date(Date.now() - days * 864e5).toISOString();
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+  <script>
+    (function () {
+      'use strict';
 
-  const CAT = { Crop: '🌾', Vegetable: '🥬', Poultry: '🐓', Fisheries: '🐟', Cattle: '🐄', Handicraft: '🧺' };
+      const $ = (s, r = document) => r.querySelector(s);
+      const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+      const KEY = 'grambandhan.admin.v1';
+      const uid = (p) => p + '-' + Math.random().toString(36).slice(2, 7).toUpperCase();
+      const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+      const taka = (n) => '৳' + Number(n || 0).toLocaleString('en-IN');
+      const pct = (a, b) => (!b ? 0 : Math.min(100, Math.round((a / b) * 100)));
+      const nice = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      const stamp = (d) => new Date(d).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+      const ago = (d) => {
+        const m = Math.round((Date.now() - new Date(d)) / 60000);
+        return m < 60 ? m + ' min ago' : m < 1440 ? Math.round(m / 60) + ' hr ago' : Math.round(m / 1440) + ' d ago';
+      };
+      const d = (days) => new Date(Date.now() - days * 864e5).toISOString();
 
-  function toast(msg, bad) {
-    const t = document.createElement('div');
-    t.className = 'toast' + (bad ? ' toast--bad' : '');
-    t.textContent = msg;
-    $('#toasts').appendChild(t);
-    setTimeout(() => t.remove(), 3200);
-  }
+      const CAT = { Crop: '🌾', Vegetable: '🥬', Poultry: '🐓', Fisheries: '🐟', Cattle: '🐄', Handicraft: '🧺' };
 
-  let S = null;
-  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
-  const load = () => { try { const r = localStorage.getItem(KEY); return r ? JSON.parse(r) : null; } catch (e) { return null; } };
+      function toast(msg, bad) {
+        const t = document.createElement('div');
+        t.className = 'toast' + (bad ? ' toast--bad' : '');
+        t.textContent = msg;
+        $('#toasts').appendChild(t);
+        setTimeout(() => t.remove(), 3200);
+      }
 
-  /* Audit log — every admin decision lands here */
-  function log(action, target, note) {
-    S.audit.unshift({ id: uid('LOG'), at: new Date().toISOString(), by: S.admin.id, action, target, note: note || '' });
-    if (S.audit.length > 400) S.audit.length = 400;
-  }
-  function alertMsg(text, sev) {
-    S.alerts.unshift({ id: uid('AL'), at: new Date().toISOString(), text, sev: sev || 'low', read: false });
-    paintBell();
-  }
+      let S = null;
+      const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { } };
+      const load = () => { try { const r = localStorage.getItem(KEY); return r ? JSON.parse(r) : null; } catch (e) { return null; } };
 
-  /* ------------------------------------------------------------ seed data */
-  function seed() {
-    const users = [
-      { id: 'USR-1001', name: 'Rahima Khatun', role: 'Farmer', phone: '01712345678', district: 'Bogura', kyc: 'verified', joined: d(320), rating: 4.8, projects: 3, flagged: false, status: 'active' },
-      { id: 'USR-1002', name: 'Muhutasim Bin Sadik', role: 'Investor', phone: '01822334455', district: 'Dhaka', kyc: 'verified', joined: d(260), rating: 4.9, invested: 385000, flagged: false, status: 'active' },
-      { id: 'USR-1003', name: 'Shamia Akter Tasfi', role: 'Investor', phone: '01911223344', district: 'Dhaka', kyc: 'verified', joined: d(240), rating: 4.7, invested: 210000, flagged: false, status: 'active' },
-      { id: 'USR-1004', name: 'Nusrat Jahan', role: 'Field agent', phone: '01677889900', district: 'Bogura', kyc: 'verified', joined: d(300), rating: 4.9, visits: 62, flagged: false, status: 'active' },
-      { id: 'USR-1005', name: 'Karimul Islam Shezan', role: 'Farmer', phone: '01711111111', district: 'Sirajganj', kyc: 'pending', joined: d(4), rating: 0, projects: 1, flagged: false, status: 'active' },
-      { id: 'USR-1006', name: 'Fariha Tithy', role: 'Artisan', phone: '01533445566', district: 'Rangpur', kyc: 'pending', joined: d(2), rating: 0, projects: 1, flagged: false, status: 'active' },
-      { id: 'USR-1007', name: 'Jasim Uddin', role: 'Farmer', phone: '01399887766', district: 'Jamalpur', kyc: 'rejected', joined: d(11), rating: 0, projects: 2, flagged: true, status: 'suspended' },
-      { id: 'USR-1008', name: 'Toufiq Imroz Khan', role: 'Buyer', phone: '01744556677', district: 'Dhaka', kyc: 'verified', joined: d(90), rating: 4.5, flagged: false, status: 'active' }
-    ];
+      /* Audit log — every admin decision lands here */
+      function log(action, target, note) {
+        S.audit.unshift({ id: uid('LOG'), at: new Date().toISOString(), by: S.admin.id, action, target, note: note || '' });
+        if (S.audit.length > 400) S.audit.length = 400;
+      }
+      function alertMsg(text, sev) {
+        S.alerts.unshift({ id: uid('AL'), at: new Date().toISOString(), text, sev: sev || 'low', read: false });
+        paintBell();
+      }
 
-    const projects = [
-      { id: 'PRJ-2401', title: 'Aman Rice Cultivation — 2 acres', owner: 'Rahima Khatun', ownerId: 'USR-1001', category: 'Crop', district: 'Bogura', goal: 145000, raised: 145000, months: 5, status: 'active', risk: 25, riskLevel: 'low', createdAt: d(46), docs: ['land-deed.pdf'], updates: 3, insured: true, disbursed: 142100, escrow: 0 },
-      { id: 'PRJ-2402', title: 'Organic Tomato Tunnel Farm', owner: 'Rahima Khatun', ownerId: 'USR-1001', category: 'Vegetable', district: 'Bogura', goal: 90000, raised: 32800, months: 4, status: 'funding', risk: 31, riskLevel: 'low', createdAt: d(12), docs: [], updates: 0, insured: false, disbursed: 0, escrow: 32800 },
-      { id: 'PRJ-2403', title: 'Mango Orchard Expansion', owner: 'Rahima Khatun', ownerId: 'USR-1001', category: 'Crop', district: 'Bogura', goal: 60000, raised: 0, months: 12, status: 'pending', risk: 44, riskLevel: 'medium', createdAt: d(2), docs: ['orchard-photo.jpg'], updates: 0, insured: false, disbursed: 0, escrow: 0 },
-      { id: 'PRJ-2404', title: 'Boro Rice on 2 acres', owner: 'Karimul Islam Shezan', ownerId: 'USR-1005', category: 'Crop', district: 'Sirajganj', goal: 120000, raised: 0, months: 5, status: 'pending', risk: 58, riskLevel: 'medium', createdAt: d(1), docs: [], updates: 0, insured: false, disbursed: 0, escrow: 0 },
-      { id: 'PRJ-2405', title: 'Nakshi Kantha Womens Collective', owner: 'Fariha Tithy', ownerId: 'USR-1006', category: 'Handicraft', district: 'Rangpur', goal: 45000, raised: 0, months: 6, status: 'pending', risk: 22, riskLevel: 'low', createdAt: d(1), docs: ['group-registration.pdf'], updates: 0, insured: false, disbursed: 0, escrow: 0 },
-      { id: 'PRJ-2406', title: 'Meghna River Gold Prawn', owner: 'Jasim Uddin', ownerId: 'USR-1007', category: 'Fisheries', district: 'Jamalpur', goal: 480000, raised: 0, months: 8, status: 'pending', risk: 81, riskLevel: 'high', createdAt: d(3), docs: [], updates: 0, insured: false, disbursed: 0, escrow: 0 },
-      { id: 'PRJ-2407', title: 'Layer Poultry Shed — 800 birds', owner: 'Rahima Khatun', ownerId: 'USR-1001', category: 'Poultry', district: 'Bogura', goal: 210000, raised: 210000, months: 6, status: 'active', risk: 38, riskLevel: 'medium', createdAt: d(70), docs: ['shed-plan.pdf'], updates: 7, insured: true, disbursed: 205800, escrow: 0 },
-      { id: 'PRJ-2408', title: 'Bogura Premium Red Chilli', owner: 'Rahima Khatun', ownerId: 'USR-1001', category: 'Crop', district: 'Bogura', goal: 75000, raised: 75000, months: 5, status: 'completed', risk: 27, riskLevel: 'low', createdAt: d(190), docs: ['land-deed.pdf'], updates: 9, insured: true, disbursed: 73500, escrow: 0 },
-      { id: 'PRJ-2409', title: 'Cattle Fattening — 6 head', owner: 'Jasim Uddin', ownerId: 'USR-1007', category: 'Cattle', district: 'Jamalpur', goal: 300000, raised: 0, months: 4, status: 'rejected', risk: 76, riskLevel: 'high', createdAt: d(9), docs: [], updates: 0, insured: false, disbursed: 0, escrow: 0, note: 'No ownership document and the budget did not match the stated herd size.' }
-    ];
+      /* ------------------------------------------------------------ seed data */
+      function seed() {
+        const users = [
+          { id: 'USR-1001', name: 'Rahima Khatun', role: 'Farmer', phone: '01712345678', district: 'Bogura', kyc: 'verified', joined: d(320), rating: 4.8, projects: 3, flagged: false, status: 'active' },
+          { id: 'USR-1002', name: 'Muhutasim Bin Sadik', role: 'Investor', phone: '01822334455', district: 'Dhaka', kyc: 'verified', joined: d(260), rating: 4.9, invested: 385000, flagged: false, status: 'active' },
+          { id: 'USR-1003', name: 'Shamia Akter Tasfi', role: 'Investor', phone: '01911223344', district: 'Dhaka', kyc: 'verified', joined: d(240), rating: 4.7, invested: 210000, flagged: false, status: 'active' },
+          { id: 'USR-1004', name: 'Nusrat Jahan', role: 'Field agent', phone: '01677889900', district: 'Bogura', kyc: 'verified', joined: d(300), rating: 4.9, visits: 62, flagged: false, status: 'active' },
+          { id: 'USR-1005', name: 'Karimul Islam Shezan', role: 'Farmer', phone: '01711111111', district: 'Sirajganj', kyc: 'pending', joined: d(4), rating: 0, projects: 1, flagged: false, status: 'active' },
+          { id: 'USR-1006', name: 'Fariha Tithy', role: 'Artisan', phone: '01533445566', district: 'Rangpur', kyc: 'pending', joined: d(2), rating: 0, projects: 1, flagged: false, status: 'active' },
+          { id: 'USR-1007', name: 'Jasim Uddin', role: 'Farmer', phone: '01399887766', district: 'Jamalpur', kyc: 'rejected', joined: d(11), rating: 0, projects: 2, flagged: true, status: 'suspended' },
+          { id: 'USR-1008', name: 'Toufiq Imroz Khan', role: 'Buyer', phone: '01744556677', district: 'Dhaka', kyc: 'verified', joined: d(90), rating: 4.5, flagged: false, status: 'active' }
+        ];
 
-    const tx = [
-      { id: 'TXN-90121', at: d(0.2), type: 'investment', from: 'Muhutasim Bin Sadik', to: 'Escrow — PRJ-2402', method: 'bKash', amount: 20000, fee: 400, status: 'complete', project: 'PRJ-2402' },
-      { id: 'TXN-90118', at: d(1), type: 'investment', from: 'Shamia Akter Tasfi', to: 'Escrow — PRJ-2402', method: 'Nagad', amount: 12800, fee: 256, status: 'complete', project: 'PRJ-2402' },
-      { id: 'TXN-90114', at: d(2), type: 'withdrawal', from: 'Rahima Khatun', to: 'bKash 017****891', method: 'bKash', amount: 5000, fee: 0, status: 'complete', project: '' },
-      { id: 'TXN-90110', at: d(3), type: 'sale', from: 'Toufiq Imroz Khan', to: 'Rahima Khatun', method: 'Nagad', amount: 1800, fee: 90, status: 'complete', project: '' },
-      { id: 'TXN-90104', at: d(4), type: 'disbursement', from: 'Escrow — PRJ-2407', to: 'Rahima Khatun', method: 'Bank transfer', amount: 205800, fee: 4200, status: 'complete', project: 'PRJ-2407' },
-      { id: 'TXN-90099', at: d(5), type: 'premium', from: 'Rahima Khatun', to: 'Insurance pool', method: 'Wallet', amount: 5250, fee: 0, status: 'complete', project: 'PRJ-2407' },
-      { id: 'TXN-90090', at: d(6), type: 'investment', from: 'Muhutasim Bin Sadik', to: 'Escrow — PRJ-2407', method: 'Bank transfer', amount: 120000, fee: 2400, status: 'complete', project: 'PRJ-2407' },
-      { id: 'TXN-90081', at: d(8), type: 'payout', from: 'Escrow — PRJ-2408', to: 'Muhutasim Bin Sadik', method: 'bKash', amount: 42300, fee: 0, status: 'complete', project: 'PRJ-2408' },
-      { id: 'TXN-90077', at: d(9), type: 'withdrawal', from: 'Jasim Uddin', to: 'bKash 013****766', method: 'bKash', amount: 48000, fee: 0, status: 'held', project: '' },
-      { id: 'TXN-90070', at: d(12), type: 'investment', from: 'Shamia Akter Tasfi', to: 'Escrow — PRJ-2401', method: 'bKash', amount: 50000, fee: 1000, status: 'complete', project: 'PRJ-2401' },
-      { id: 'TXN-90066', at: d(14), type: 'refund', from: 'Escrow — PRJ-2409', to: 'Shamia Akter Tasfi', method: 'bKash', amount: 15000, fee: 0, status: 'complete', project: 'PRJ-2409' },
-      { id: 'TXN-90061', at: d(18), type: 'claim', from: 'Insurance pool', to: 'Rahima Khatun', method: 'Bank transfer', amount: 18000, fee: 0, status: 'complete', project: 'PRJ-2408' }
-    ];
+        const projects = [
+          { id: 'PRJ-2401', title: 'Aman Rice Cultivation — 2 acres', owner: 'Rahima Khatun', ownerId: 'USR-1001', category: 'Crop', district: 'Bogura', goal: 145000, raised: 145000, months: 5, status: 'active', risk: 25, riskLevel: 'low', createdAt: d(46), docs: ['land-deed.pdf'], updates: 3, insured: true, disbursed: 142100, escrow: 0 },
+          { id: 'PRJ-2402', title: 'Organic Tomato Tunnel Farm', owner: 'Rahima Khatun', ownerId: 'USR-1001', category: 'Vegetable', district: 'Bogura', goal: 90000, raised: 32800, months: 4, status: 'funding', risk: 31, riskLevel: 'low', createdAt: d(12), docs: [], updates: 0, insured: false, disbursed: 0, escrow: 32800 },
+          { id: 'PRJ-2403', title: 'Mango Orchard Expansion', owner: 'Rahima Khatun', ownerId: 'USR-1001', category: 'Crop', district: 'Bogura', goal: 60000, raised: 0, months: 12, status: 'pending', risk: 44, riskLevel: 'medium', createdAt: d(2), docs: ['orchard-photo.jpg'], updates: 0, insured: false, disbursed: 0, escrow: 0 },
+          { id: 'PRJ-2404', title: 'Boro Rice on 2 acres', owner: 'Karimul Islam Shezan', ownerId: 'USR-1005', category: 'Crop', district: 'Sirajganj', goal: 120000, raised: 0, months: 5, status: 'pending', risk: 58, riskLevel: 'medium', createdAt: d(1), docs: [], updates: 0, insured: false, disbursed: 0, escrow: 0 },
+          { id: 'PRJ-2405', title: 'Nakshi Kantha Womens Collective', owner: 'Fariha Tithy', ownerId: 'USR-1006', category: 'Handicraft', district: 'Rangpur', goal: 45000, raised: 0, months: 6, status: 'pending', risk: 22, riskLevel: 'low', createdAt: d(1), docs: ['group-registration.pdf'], updates: 0, insured: false, disbursed: 0, escrow: 0 },
+          { id: 'PRJ-2406', title: 'Meghna River Gold Prawn', owner: 'Jasim Uddin', ownerId: 'USR-1007', category: 'Fisheries', district: 'Jamalpur', goal: 480000, raised: 0, months: 8, status: 'pending', risk: 81, riskLevel: 'high', createdAt: d(3), docs: [], updates: 0, insured: false, disbursed: 0, escrow: 0 },
+          { id: 'PRJ-2407', title: 'Layer Poultry Shed — 800 birds', owner: 'Rahima Khatun', ownerId: 'USR-1001', category: 'Poultry', district: 'Bogura', goal: 210000, raised: 210000, months: 6, status: 'active', risk: 38, riskLevel: 'medium', createdAt: d(70), docs: ['shed-plan.pdf'], updates: 7, insured: true, disbursed: 205800, escrow: 0 },
+          { id: 'PRJ-2408', title: 'Bogura Premium Red Chilli', owner: 'Rahima Khatun', ownerId: 'USR-1001', category: 'Crop', district: 'Bogura', goal: 75000, raised: 75000, months: 5, status: 'completed', risk: 27, riskLevel: 'low', createdAt: d(190), docs: ['land-deed.pdf'], updates: 9, insured: true, disbursed: 73500, escrow: 0 },
+          { id: 'PRJ-2409', title: 'Cattle Fattening — 6 head', owner: 'Jasim Uddin', ownerId: 'USR-1007', category: 'Cattle', district: 'Jamalpur', goal: 300000, raised: 0, months: 4, status: 'rejected', risk: 76, riskLevel: 'high', createdAt: d(9), docs: [], updates: 0, insured: false, disbursed: 0, escrow: 0, note: 'No ownership document and the budget did not match the stated herd size.' }
+        ];
 
-    const disbursements = [
-      { id: 'DSB-4401', project: 'PRJ-2402', title: 'Organic Tomato Tunnel Farm', farmer: 'Rahima Khatun', amount: 32800, requested: d(1), agentVerified: true, status: 'pending' },
-      { id: 'DSB-4402', project: 'PRJ-2404', title: 'Boro Rice on 2 acres', farmer: 'Karimul Islam Shezan', amount: 120000, requested: d(0.5), agentVerified: false, status: 'pending' }
-    ];
+        const tx = [
+          { id: 'TXN-90121', at: d(0.2), type: 'investment', from: 'Muhutasim Bin Sadik', to: 'Escrow — PRJ-2402', method: 'bKash', amount: 20000, fee: 400, status: 'complete', project: 'PRJ-2402' },
+          { id: 'TXN-90118', at: d(1), type: 'investment', from: 'Shamia Akter Tasfi', to: 'Escrow — PRJ-2402', method: 'Nagad', amount: 12800, fee: 256, status: 'complete', project: 'PRJ-2402' },
+          { id: 'TXN-90114', at: d(2), type: 'withdrawal', from: 'Rahima Khatun', to: 'bKash 017****891', method: 'bKash', amount: 5000, fee: 0, status: 'complete', project: '' },
+          { id: 'TXN-90110', at: d(3), type: 'sale', from: 'Toufiq Imroz Khan', to: 'Rahima Khatun', method: 'Nagad', amount: 1800, fee: 90, status: 'complete', project: '' },
+          { id: 'TXN-90104', at: d(4), type: 'disbursement', from: 'Escrow — PRJ-2407', to: 'Rahima Khatun', method: 'Bank transfer', amount: 205800, fee: 4200, status: 'complete', project: 'PRJ-2407' },
+          { id: 'TXN-90099', at: d(5), type: 'premium', from: 'Rahima Khatun', to: 'Insurance pool', method: 'Wallet', amount: 5250, fee: 0, status: 'complete', project: 'PRJ-2407' },
+          { id: 'TXN-90090', at: d(6), type: 'investment', from: 'Muhutasim Bin Sadik', to: 'Escrow — PRJ-2407', method: 'Bank transfer', amount: 120000, fee: 2400, status: 'complete', project: 'PRJ-2407' },
+          { id: 'TXN-90081', at: d(8), type: 'payout', from: 'Escrow — PRJ-2408', to: 'Muhutasim Bin Sadik', method: 'bKash', amount: 42300, fee: 0, status: 'complete', project: 'PRJ-2408' },
+          { id: 'TXN-90077', at: d(9), type: 'withdrawal', from: 'Jasim Uddin', to: 'bKash 013****766', method: 'bKash', amount: 48000, fee: 0, status: 'held', project: '' },
+          { id: 'TXN-90070', at: d(12), type: 'investment', from: 'Shamia Akter Tasfi', to: 'Escrow — PRJ-2401', method: 'bKash', amount: 50000, fee: 1000, status: 'complete', project: 'PRJ-2401' },
+          { id: 'TXN-90066', at: d(14), type: 'refund', from: 'Escrow — PRJ-2409', to: 'Shamia Akter Tasfi', method: 'bKash', amount: 15000, fee: 0, status: 'complete', project: 'PRJ-2409' },
+          { id: 'TXN-90061', at: d(18), type: 'claim', from: 'Insurance pool', to: 'Rahima Khatun', method: 'Bank transfer', amount: 18000, fee: 0, status: 'complete', project: 'PRJ-2408' }
+        ];
 
-    const alerts = [
-      { id: uid('AL'), at: d(0.3), text: 'Jasim Uddin attempted a ৳48,000 withdrawal 6 minutes after funds landed. Payout held.', sev: 'high', read: false },
-      { id: uid('AL'), at: d(1), text: 'PRJ-2406 requests ৳4,80,000 from an unverified account with no documents.', sev: 'high', read: false },
-      { id: uid('AL'), at: d(2), text: 'Three accounts registered from the same device in Jamalpur within an hour.', sev: 'medium', read: false },
-      { id: uid('AL'), at: d(4), text: 'PRJ-2402 has had no progress update for 12 days.', sev: 'low', read: true }
-    ];
+        const disbursements = [
+          { id: 'DSB-4401', project: 'PRJ-2402', title: 'Organic Tomato Tunnel Farm', farmer: 'Rahima Khatun', amount: 32800, requested: d(1), agentVerified: true, status: 'pending' },
+          { id: 'DSB-4402', project: 'PRJ-2404', title: 'Boro Rice on 2 acres', farmer: 'Karimul Islam Shezan', amount: 120000, requested: d(0.5), agentVerified: false, status: 'pending' }
+        ];
 
-    const disputes = [
-      { id: 'DSP-301', at: d(2), raisedBy: 'Shamia Akter Tasfi', against: 'Jasim Uddin', project: 'PRJ-2409', subject: 'Funds taken, no progress shown', detail: 'Invested ৳15,000 in the cattle project. No update in five weeks and the farmer does not answer calls.', status: 'open' },
-      { id: 'DSP-302', at: d(6), raisedBy: 'Toufiq Imroz Khan', against: 'Rahima Khatun', project: '', subject: 'Marketplace order arrived short', detail: 'Ordered 3 packs of Chinigura rice, received 2.', status: 'open' },
-      { id: 'DSP-300', at: d(20), raisedBy: 'Muhutasim Bin Sadik', against: 'Platform', project: 'PRJ-2408', subject: 'Profit split calculation query', detail: 'Asked how the 4.4% return was computed.', status: 'resolved', resolution: 'Shared the per-investor breakdown; investor satisfied.' }
-    ];
+        const alerts = [
+          { id: uid('AL'), at: d(0.3), text: 'Jasim Uddin attempted a ৳48,000 withdrawal 6 minutes after funds landed. Payout held.', sev: 'high', read: false },
+          { id: uid('AL'), at: d(1), text: 'PRJ-2406 requests ৳4,80,000 from an unverified account with no documents.', sev: 'high', read: false },
+          { id: uid('AL'), at: d(2), text: 'Three accounts registered from the same device in Jamalpur within an hour.', sev: 'medium', read: false },
+          { id: uid('AL'), at: d(4), text: 'PRJ-2402 has had no progress update for 12 days.', sev: 'low', read: true }
+        ];
 
-    const claims = [
-      { id: 'CLM-201', at: d(3), project: 'PRJ-2407', title: 'Layer Poultry Shed — 800 birds', farmer: 'Rahima Khatun', reason: 'Pest or disease outbreak', amount: 64000, agentVerified: true, status: 'pending' },
-      { id: 'CLM-202', at: d(1), project: 'PRJ-2401', title: 'Aman Rice Cultivation — 2 acres', farmer: 'Rahima Khatun', reason: 'Flood damage', amount: 40000, agentVerified: false, status: 'pending' },
-      { id: 'CLM-199', at: d(18), project: 'PRJ-2408', title: 'Bogura Premium Red Chilli', farmer: 'Rahima Khatun', reason: 'Crop failure', amount: 18000, agentVerified: true, status: 'paid' }
-    ];
+        const disputes = [
+          { id: 'DSP-301', at: d(2), raisedBy: 'Shamia Akter Tasfi', against: 'Jasim Uddin', project: 'PRJ-2409', subject: 'Funds taken, no progress shown', detail: 'Invested ৳15,000 in the cattle project. No update in five weeks and the farmer does not answer calls.', status: 'open' },
+          { id: 'DSP-302', at: d(6), raisedBy: 'Toufiq Imroz Khan', against: 'Rahima Khatun', project: '', subject: 'Marketplace order arrived short', detail: 'Ordered 3 packs of Chinigura rice, received 2.', status: 'open' },
+          { id: 'DSP-300', at: d(20), raisedBy: 'Muhutasim Bin Sadik', against: 'Platform', project: 'PRJ-2408', subject: 'Profit split calculation query', detail: 'Asked how the 4.4% return was computed.', status: 'resolved', resolution: 'Shared the per-investor breakdown; investor satisfied.' }
+        ];
 
-    const products = [
-      { id: 'PRD-701', name: 'Premium Chinigura Rice', seller: 'Rahima Khatun', price: 600, stock: 40, sold: 26, rating: 4.8, status: 'live', reports: 0 },
-      { id: 'PRD-702', name: 'Farm Fresh Brown Eggs', seller: 'Rahima Khatun', price: 240, stock: 18, sold: 54, rating: 4.6, status: 'live', reports: 0 },
-      { id: 'PRD-703', name: 'Handwoven Bamboo Basket', seller: 'Fariha Tithy', price: 350, stock: 12, sold: 3, rating: 0, status: 'live', reports: 0 },
-      { id: 'PRD-704', name: 'Imported Pesticide — bulk', seller: 'Jasim Uddin', price: 2400, stock: 60, sold: 0, rating: 0, status: 'live', reports: 3 }
-    ];
+        const claims = [
+          { id: 'CLM-201', at: d(3), project: 'PRJ-2407', title: 'Layer Poultry Shed — 800 birds', farmer: 'Rahima Khatun', reason: 'Pest or disease outbreak', amount: 64000, agentVerified: true, status: 'pending' },
+          { id: 'CLM-202', at: d(1), project: 'PRJ-2401', title: 'Aman Rice Cultivation — 2 acres', farmer: 'Rahima Khatun', reason: 'Flood damage', amount: 40000, agentVerified: false, status: 'pending' },
+          { id: 'CLM-199', at: d(18), project: 'PRJ-2408', title: 'Bogura Premium Red Chilli', farmer: 'Rahima Khatun', reason: 'Crop failure', amount: 18000, agentVerified: true, status: 'paid' }
+        ];
 
-    return {
-      admin: { id: 'ADM-1042', name: 'System Administrator' },
-      users, projects, tx, disbursements, alerts, disputes, claims, products,
-      audit: [
-        { id: uid('LOG'), at: d(9), by: 'ADM-1042', action: 'Rejected project', target: 'PRJ-2409', note: 'No ownership document.' },
-        { id: uid('LOG'), at: d(11), by: 'ADM-1042', action: 'Suspended user', target: 'USR-1007', note: 'Repeated document mismatch.' },
-        { id: uid('LOG'), at: d(18), by: 'ADM-1042', action: 'Approved claim', target: 'CLM-199', note: 'Field report confirmed the loss.' }
-      ]
-    };
-  }
+        const products = [
+          { id: 'PRD-701', name: 'Premium Chinigura Rice', seller: 'Rahima Khatun', price: 600, stock: 40, sold: 26, rating: 4.8, status: 'live', reports: 0 },
+          { id: 'PRD-702', name: 'Farm Fresh Brown Eggs', seller: 'Rahima Khatun', price: 240, stock: 18, sold: 54, rating: 4.6, status: 'live', reports: 0 },
+          { id: 'PRD-703', name: 'Handwoven Bamboo Basket', seller: 'Fariha Tithy', price: 350, stock: 12, sold: 3, rating: 0, status: 'live', reports: 0 },
+          { id: 'PRD-704', name: 'Imported Pesticide — bulk', seller: 'Jasim Uddin', price: 2400, stock: 60, sold: 0, rating: 0, status: 'live', reports: 3 }
+        ];
 
-  /* ---------------------------------------------------------------- login */
-  function setError(id, msg) {
-    const el = $(`.field__error[data-for="${id}"]`);
-    if (el) { el.textContent = msg; el.classList.add('is-on'); }
-    const i = $('#' + id);
-    if (i && i.closest('.field')) i.closest('.field').classList.add('is-bad');
-  }
-  function clearErrors(root) {
-    $$('.field__error', root || document).forEach((e) => { e.classList.remove('is-on'); e.textContent = ''; });
-    $$('.field.is-bad', root || document).forEach((f) => f.classList.remove('is-bad'));
-  }
+        return {
+          admin: { id: 'ADM-1042', name: 'System Administrator' },
+          users, projects, tx, disbursements, alerts, disputes, claims, products,
+          audit: [
+            { id: uid('LOG'), at: d(9), by: 'ADM-1042', action: 'Rejected project', target: 'PRJ-2409', note: 'No ownership document.' },
+            { id: uid('LOG'), at: d(11), by: 'ADM-1042', action: 'Suspended user', target: 'USR-1007', note: 'Repeated document mismatch.' },
+            { id: uid('LOG'), at: d(18), by: 'ADM-1042', action: 'Approved claim', target: 'CLM-199', note: 'Field report confirmed the loss.' }
+          ]
+        };
+      }
 
-  function bindLogin() {
-    $('#loginForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      clearErrors();
-      let ok = true;
-      if (!/^ADM-\d{4}$/i.test($('#adId').value.trim())) { setError('adId', 'Admin IDs look like ADM-1042.'); ok = false; }
-      if ($('#adPass').value.length < 6) { setError('adPass', 'Password must be at least 6 characters.'); ok = false; }
-      if ($('#adOtp').value.trim() !== '482913') { setError('adOtp', 'That one-time code is wrong or expired.'); ok = false; }
-      if (!ok) return;
-      if (!S) { S = seed(); save(); }
-      enterApp();
-    });
-  }
+      /* ---------------------------------------------------------------- login */
+      function setError(id, msg) {
+        const el = $(`.field__error[data-for="${id}"]`);
+        if (el) { el.textContent = msg; el.classList.add('is-on'); }
+        const i = $('#' + id);
+        if (i && i.closest('.field')) i.closest('.field').classList.add('is-bad');
+      }
+      function clearErrors(root) {
+        $$('.field__error', root || document).forEach((e) => { e.classList.remove('is-on'); e.textContent = ''; });
+        $$('.field.is-bad', root || document).forEach((f) => f.classList.remove('is-bad'));
+      }
 
-  function enterApp() {
-    $('#authScreen').classList.add('is-hidden');
-    $('#app').classList.remove('is-hidden');
-    $('#topName').textContent = S.admin.name;
-    $('#topMeta').textContent = S.admin.id + ' · full access · all actions logged';
-    paintBell(); paintBadges();
-    if (!location.hash.startsWith('#/')) location.hash = '#/overview';
-    route();
-  }
+      function bindLogin() {
+        $('#loginForm').addEventListener('submit', (e) => {
+          e.preventDefault();
+          clearErrors();
+          let ok = true;
+          if (!/^ADM-\d{4}$/i.test($('#adId').value.trim())) { setError('adId', 'Admin IDs look like ADM-1042.'); ok = false; }
+          if ($('#adPass').value.length < 6) { setError('adPass', 'Password must be at least 6 characters.'); ok = false; }
+          if ($('#adOtp').value.trim() !== '482913') { setError('adOtp', 'That one-time code is wrong or expired.'); ok = false; }
+          if (!ok) return;
+          if (!S) { S = seed(); save(); }
+          enterApp();
+        });
+      }
 
-  function paintBell() {
-    const unread = S.alerts.filter((a) => !a.read).length;
-    $('#bellDot').hidden = unread === 0;
-    $('#notifList').innerHTML = S.alerts.length ? S.alerts.slice(0, 12).map((a) => `
+      function enterApp() {
+        $('#authScreen').classList.add('is-hidden');
+        $('#app').classList.remove('is-hidden');
+        $('#topName').textContent = S.admin.name;
+        $('#topMeta').textContent = S.admin.id + ' · full access · all actions logged';
+        paintBell(); paintBadges();
+        if (!location.hash.startsWith('#/')) location.hash = '#/overview';
+        route();
+      }
+
+      function paintBell() {
+        const unread = S.alerts.filter((a) => !a.read).length;
+        $('#bellDot').hidden = unread === 0;
+        $('#notifList').innerHTML = S.alerts.length ? S.alerts.slice(0, 12).map((a) => `
       <div class="notif ${a.read ? '' : 'is-new'}">
         <span class="sev sev--${a.sev}" style="margin-top:7px"></span>
         <div><div>${esc(a.text)}</div><time>${ago(a.at)}</time></div>
       </div>`).join('') : '<p class="muted">No alerts.</p>';
-  }
+      }
 
-  function paintBadges() {
-    const set = (el, n) => { el.textContent = n; el.classList.toggle('is-on', n > 0); };
-    set($('#badgeApprovals'), S.projects.filter((p) => p.status === 'pending').length);
-    set($('#badgeKyc'), S.users.filter((u) => u.kyc === 'pending').length);
-    set($('#badgeFraud'), S.alerts.filter((a) => a.sev === 'high' && !a.read).length +
-      S.disputes.filter((x) => x.status === 'open').length);
-  }
+      function paintBadges() {
+        const set = (el, n) => { el.textContent = n; el.classList.toggle('is-on', n > 0); };
+        set($('#badgeApprovals'), S.projects.filter((p) => p.status === 'pending').length);
+        set($('#badgeKyc'), S.users.filter((u) => u.kyc === 'pending').length);
+        set($('#badgeFraud'), S.alerts.filter((a) => a.sev === 'high' && !a.read).length +
+          S.disputes.filter((x) => x.status === 'open').length);
+      }
 
-  /* --------------------------------------------------------------- router */
-  const routes = {};
-  function route() {
-    const [name, a] = (location.hash.replace(/^#\//, '') || 'overview').split('/');
-    const view = routes[name] || routes.overview;
-    $$('[data-nav]').forEach((el) => el.classList.toggle('is-on', el.dataset.nav === name));
-    $('#main').innerHTML = view(a);
-    $('#rail').classList.remove('is-open');
-    paintBadges();
-    window.scrollTo(0, 0);
-    if (view.after) view.after(a);
-    bindRowActions();
-  }
+      /* --------------------------------------------------------------- router */
+      const routes = {};
+      function route() {
+        const [name, a] = (location.hash.replace(/^#\//, '') || 'overview').split('/');
+        const view = routes[name] || routes.overview;
+        $$('[data-nav]').forEach((el) => el.classList.toggle('is-on', el.dataset.nav === name));
+        $('#main').innerHTML = view(a);
+        $('#rail').classList.remove('is-open');
+        paintBadges();
+        window.scrollTo(0, 0);
+        if (view.after) view.after(a);
+        bindRowActions();
+      }
 
-  const tag = (s) => {
-    const map = {
-      pending: ['pending', 'Awaiting review'], funding: ['active', 'Raising funds'],
-      active: ['active', 'Running'], completed: ['completed', 'Completed'],
-      rejected: ['rejected', 'Rejected'], verified: ['active', 'Verified'],
-      suspended: ['rejected', 'Suspended'], open: ['pending', 'Open'],
-      resolved: ['completed', 'Resolved'], paid: ['completed', 'Paid'],
-      held: ['pending', 'Held'], complete: ['completed', 'Complete'],
-      live: ['active', 'Live'], removed: ['rejected', 'Removed'], approved: ['active', 'Approved']
-    };
-    const [cls, label] = map[s] || ['draft', s];
-    return `<span class="tag tag--${cls}">${label}</span>`;
-  };
+      const tag = (s) => {
+        const map = {
+          pending: ['pending', 'Awaiting review'], funding: ['active', 'Raising funds'],
+          active: ['active', 'Running'], completed: ['completed', 'Completed'],
+          rejected: ['rejected', 'Rejected'], verified: ['active', 'Verified'],
+          suspended: ['rejected', 'Suspended'], open: ['pending', 'Open'],
+          resolved: ['completed', 'Resolved'], paid: ['completed', 'Paid'],
+          held: ['pending', 'Held'], complete: ['completed', 'Complete'],
+          live: ['active', 'Live'], removed: ['rejected', 'Removed'], approved: ['active', 'Approved']
+        };
+        const [cls, label] = map[s] || ['draft', s];
+        return `<span class="tag tag--${cls}">${label}</span>`;
+      };
 
-  /* --------------------------------------------------------------- totals */
-  function totals() {
-    const inflow = S.tx.filter((t) => ['investment', 'sale', 'premium'].includes(t.type) && t.status === 'complete')
-      .reduce((a, t) => a + t.amount, 0);
-    const outflow = S.tx.filter((t) => ['disbursement', 'payout', 'refund', 'claim', 'withdrawal'].includes(t.type) && t.status === 'complete')
-      .reduce((a, t) => a + t.amount, 0);
-    const fees = S.tx.reduce((a, t) => a + (t.fee || 0), 0);
-    const escrow = S.projects.reduce((a, p) => a + (p.escrow || 0), 0);
-    const held = S.tx.filter((t) => t.status === 'held').reduce((a, t) => a + t.amount, 0);
-    return { inflow, outflow, fees, escrow, held };
-  }
+      /* --------------------------------------------------------------- totals */
+      function totals() {
+        const inflow = S.tx.filter((t) => ['investment', 'sale', 'premium'].includes(t.type) && t.status === 'complete')
+          .reduce((a, t) => a + t.amount, 0);
+        const outflow = S.tx.filter((t) => ['disbursement', 'payout', 'refund', 'claim', 'withdrawal'].includes(t.type) && t.status === 'complete')
+          .reduce((a, t) => a + t.amount, 0);
+        const fees = S.tx.reduce((a, t) => a + (t.fee || 0), 0);
+        const escrow = S.projects.reduce((a, p) => a + (p.escrow || 0), 0);
+        const held = S.tx.filter((t) => t.status === 'held').reduce((a, t) => a + t.amount, 0);
+        return { inflow, outflow, fees, escrow, held };
+      }
 
-  /* ------------------------------------------------------------- overview */
-  routes.overview = function () {
-    const T = totals();
-    const pend = S.projects.filter((p) => p.status === 'pending').length;
-    const kyc = S.users.filter((u) => u.kyc === 'pending').length;
-    const openD = S.disputes.filter((x) => x.status === 'open').length;
-    const highA = S.alerts.filter((a) => a.sev === 'high').length;
-    const funded = S.projects.reduce((a, p) => a + p.raised, 0);
-    const goalAll = S.projects.reduce((a, p) => a + p.goal, 0);
+      /* ------------------------------------------------------------- overview */
+      routes.overview = function () {
+        const T = totals();
+        const pend = S.projects.filter((p) => p.status === 'pending').length;
+        const kyc = S.users.filter((u) => u.kyc === 'pending').length;
+        const openD = S.disputes.filter((x) => x.status === 'open').length;
+        const highA = S.alerts.filter((a) => a.sev === 'high').length;
+        const funded = S.projects.reduce((a, p) => a + p.raised, 0);
+        const goalAll = S.projects.reduce((a, p) => a + p.goal, 0);
 
-    const byDistrict = {};
-    S.projects.forEach((p) => { byDistrict[p.district] = (byDistrict[p.district] || 0) + p.raised; });
+        const byDistrict = {};
+        S.projects.forEach((p) => { byDistrict[p.district] = (byDistrict[p.district] || 0) + p.raised; });
 
-    const months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept'];
-    const flow = [180000, 240000, 310000, 268000, 420000, 352000];
-    const max = Math.max.apply(null, flow);
+        const months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept'];
+        const flow = [180000, 240000, 310000, 268000, 420000, 352000];
+        const max = Math.max.apply(null, flow);
 
-    const roles = ['Farmer', 'Investor', 'Field agent', 'Artisan', 'Buyer']
-      .map((r) => ({ r, n: S.users.filter((u) => u.role === r).length }));
-    const colours = ['#1B6B3A', '#2C6E8F', '#C8881A', '#7A4FA3', '#B8482C'];
+        const roles = ['Farmer', 'Investor', 'Field agent', 'Artisan', 'Buyer']
+          .map((r) => ({ r, n: S.users.filter((u) => u.role === r).length }));
+        const colours = ['#1B6B3A', '#2C6E8F', '#C8881A', '#7A4FA3', '#B8482C'];
 
-    return `
+        return `
       <div class="pagehead">
         <div><h1 class="h1">Platform overview</h1>
           <p>${S.users.length} accounts · ${S.projects.length} projects · ${S.tx.length} transactions on record</p></div>
@@ -763,12 +2064,12 @@ tr:last-child td{border-bottom:0}
         <section class="box">
           <div class="box__head"><h3>Who is on the platform</h3></div>
           <div class="split">${roles.map((x, i) =>
-            `<span style="flex:${x.n || 0.001};background:${colours[i]}"></span>`).join('')}</div>
+          `<span style="flex:${x.n || 0.001};background:${colours[i]}"></span>`).join('')}</div>
           <div class="legend">${roles.map((x, i) =>
             `<span><i style="background:${colours[i]}"></i>${x.r} · ${x.n}</span>`).join('')}</div>
           <div class="box__head" style="margin-top:20px"><h3>Funding by district</h3></div>
           <div class="map">${Object.entries(byDistrict).sort((a, b) => b[1] - a[1]).map(([k, v]) =>
-            `<div>${esc(k)}<b>${taka(v)}</b></div>`).join('')}</div>
+              `<div>${esc(k)}<b>${taka(v)}</b></div>`).join('')}</div>
         </section>
       </div>
 
@@ -784,12 +2085,12 @@ tr:last-child td{border-bottom:0}
             ${l.note ? `<div class="pcard__meta">${esc(l.note)}</div>` : ''}</div></li>`).join('')}</ul>
         </section>
       </div>`;
-  };
+      };
 
-  function txTable(rows, compact) {
-    if (!rows.length) return '<div class="empty"><b>Nothing matches</b>Try a different filter.</div>';
-    if (compact) {
-      return `<div style="overflow-x:auto"><table><thead><tr>
+      function txTable(rows, compact) {
+        if (!rows.length) return '<div class="empty"><b>Nothing matches</b>Try a different filter.</div>';
+        if (compact) {
+          return `<div style="overflow-x:auto"><table><thead><tr>
         <th>Transaction</th><th>Type</th><th class="num">Amount</th><th>Status</th></tr></thead><tbody>
         ${rows.map((t) => `<tr>
           <td><b>${t.id}</b><div class="pcard__meta">${esc(t.from)} → ${esc(t.to)}</div>
@@ -797,8 +2098,8 @@ tr:last-child td{border-bottom:0}
           <td>${t.type}</td>
           <td class="num" style="font-weight:600">${taka(t.amount)}</td>
           <td>${tag(t.status)}</td></tr>`).join('')}</tbody></table></div>`;
-    }
-    return `<div style="overflow-x:auto"><table><thead><tr>
+        }
+        return `<div style="overflow-x:auto"><table><thead><tr>
       <th>ID</th><th>When</th><th>Type</th><th>From \u2192 to</th><th>Method</th>
       <th class="num">Fee</th><th class="num">Amount</th><th>Status</th><th></th>
       </tr></thead><tbody>${rows.map((t) => `<tr>
@@ -808,20 +2109,20 @@ tr:last-child td{border-bottom:0}
         <td class="num" style="font-weight:600">${taka(t.amount)}</td>
         <td>${tag(t.status)}</td>
         <td>${t.status === 'held'
-          ? `<button class="btn btn--ghost btn--sm" data-release="${t.id}">Release</button>`
-          : `<button class="btn btn--ghost btn--sm" data-txview="${t.id}">View</button>`}</td>
+            ? `<button class="btn btn--ghost btn--sm" data-release="${t.id}">Release</button>`
+            : `<button class="btn btn--ghost btn--sm" data-txview="${t.id}">View</button>`}</td>
       </tr>`).join('')}</tbody></table></div>`;
-  }
+      }
 
-  /* ------------------------------------------------------------ approvals */
-  routes.approvals = function () {
-    const q = S.projects.filter((p) => p.status === 'pending');
-    return `
+      /* ------------------------------------------------------------ approvals */
+      routes.approvals = function () {
+        const q = S.projects.filter((p) => p.status === 'pending');
+        return `
       <div class="pagehead"><div><h1 class="h1">Approval queue</h1>
         <p>Nothing reaches investors until it is approved here. Aim for a 48-hour turnaround.</p></div></div>
       ${q.length ? q.map((p) => {
-        const owner = S.users.find((u) => u.id === p.ownerId) || {};
-        return `<div class="queue">
+          const owner = S.users.find((u) => u.id === p.ownerId) || {};
+          return `<div class="queue">
           <span class="queue__ico">${CAT[p.category]}</span>
           <div class="queue__main">
             <h4>${esc(p.title)}</h4>
@@ -835,7 +2136,7 @@ tr:last-child td{border-bottom:0}
             ${p.riskLevel === 'high' || !p.docs.length || owner.kyc !== 'verified' ? `
               <p class="pcard__meta" style="color:var(--clay);margin-top:8px">
                 ${[p.riskLevel === 'high' ? 'high risk score' : '', !p.docs.length ? 'no supporting document' : '',
-                   owner.kyc !== 'verified' ? 'owner not KYC verified' : ''].filter(Boolean).join(' · ')}
+              owner.kyc !== 'verified' ? 'owner not KYC verified' : ''].filter(Boolean).join(' · ')}
               </p>` : ''}
           </div>
           <div class="queue__acts">
@@ -844,21 +2145,21 @@ tr:last-child td{border-bottom:0}
             <button class="btn btn--primary btn--sm" data-approve="${p.id}">Approve</button>
           </div>
         </div>`;
-      }).join('')
-      : '<div class="empty"><b>Queue is clear</b>Every submitted project has been reviewed.</div>'}`;
-  };
+        }).join('')
+            : '<div class="empty"><b>Queue is clear</b>Every submitted project has been reviewed.</div>'}`;
+      };
 
-  /* ------------------------------------------------------------- projects */
-  routes.projects = function (filter) {
-    const f = filter || 'all';
-    const list = S.projects.filter((p) => f === 'all' || p.status === f);
-    return `
+      /* ------------------------------------------------------------- projects */
+      routes.projects = function (filter) {
+        const f = filter || 'all';
+        const list = S.projects.filter((p) => f === 'all' || p.status === f);
+        return `
       <div class="pagehead"><div><h1 class="h1">All projects</h1>
         <p>Every listing on the platform, at any stage.</p></div>
         <button class="btn btn--ghost" data-export="projects">Export CSV</button></div>
       <div class="tabs">${[['all', 'All'], ['pending', 'Pending'], ['funding', 'Raising'], ['active', 'Running'],
-        ['completed', 'Completed'], ['rejected', 'Rejected']].map(([k, l]) =>
-        `<button class="${f === k ? 'is-on' : ''}" onclick="location.hash='#/projects/${k}'">${l}</button>`).join('')}</div>
+          ['completed', 'Completed'], ['rejected', 'Rejected']].map(([k, l]) =>
+            `<button class="${f === k ? 'is-on' : ''}" onclick="location.hash='#/projects/${k}'">${l}</button>`).join('')}</div>
       ${list.length ? `<div class="box"><div style="overflow-x:auto"><table><thead><tr>
         <th>Project</th><th>Owner</th><th>District</th><th class="num">Goal</th><th class="num">Raised</th>
         <th>Risk</th><th>Status</th><th></th></tr></thead><tbody>
@@ -871,21 +2172,21 @@ tr:last-child td{border-bottom:0}
           <td>${tag(p.status)}</td>
           <td><button class="btn btn--ghost btn--sm" data-inspect="${p.id}">Open</button></td>
         </tr>`).join('')}</tbody></table></div></div>`
-        : '<div class="empty"><b>No projects in this state</b>Try another tab.</div>'}`;
-  };
+            : '<div class="empty"><b>No projects in this state</b>Try another tab.</div>'}`;
+      };
 
-  /* ---------------------------------------------------------------- users */
-  routes.users = function (filter) {
-    const f = filter || 'all';
-    const list = S.users.filter((u) => f === 'all' ? true : f === 'pending' ? u.kyc === 'pending'
-      : f === 'flagged' ? u.flagged : u.role.toLowerCase().indexOf(f) === 0);
-    return `
+      /* ---------------------------------------------------------------- users */
+      routes.users = function (filter) {
+        const f = filter || 'all';
+        const list = S.users.filter((u) => f === 'all' ? true : f === 'pending' ? u.kyc === 'pending'
+          : f === 'flagged' ? u.flagged : u.role.toLowerCase().indexOf(f) === 0);
+        return `
       <div class="pagehead"><div><h1 class="h1">Users and verification</h1>
         <p>Approve KYC, suspend accounts, and see who is behind every project.</p></div>
         <button class="btn btn--ghost" data-export="users">Export CSV</button></div>
       <div class="tabs">${[['all', 'All'], ['pending', 'KYC pending'], ['farmer', 'Farmers'], ['investor', 'Investors'],
-        ['field', 'Field agents'], ['flagged', 'Flagged']].map(([k, l]) =>
-        `<button class="${f === k ? 'is-on' : ''}" onclick="location.hash='#/users/${k}'">${l}</button>`).join('')}</div>
+          ['field', 'Field agents'], ['flagged', 'Flagged']].map(([k, l]) =>
+            `<button class="${f === k ? 'is-on' : ''}" onclick="location.hash='#/users/${k}'">${l}</button>`).join('')}</div>
       ${list.length ? `<div class="box"><div style="overflow-x:auto"><table><thead><tr>
         <th>User</th><th>Role</th><th>District</th><th>Joined</th><th>KYC</th><th>Account</th><th></th>
         </tr></thead><tbody>${list.map((u) => `<tr>
@@ -897,14 +2198,14 @@ tr:last-child td{border-bottom:0}
             ${u.kyc === 'pending' ? `<button class="btn btn--primary btn--sm" data-kyc="${u.id}">Review KYC</button>` : ''}
             <button class="btn btn--ghost btn--sm" data-user="${u.id}">Open</button>
           </div></td></tr>`).join('')}</tbody></table></div></div>`
-        : '<div class="empty"><b>No users here</b>Try another tab.</div>'}`;
-  };
+            : '<div class="empty"><b>No users here</b>Try another tab.</div>'}`;
+      };
 
-  /* -------------------------------------------------------------- finance */
-  routes.finance = function () {
-    const T = totals();
-    const pend = S.disbursements.filter((x) => x.status === 'pending');
-    return `
+      /* -------------------------------------------------------------- finance */
+      routes.finance = function () {
+        const T = totals();
+        const pend = S.disbursements.filter((x) => x.status === 'pending');
+        return `
       <div class="pagehead"><div><h1 class="h1">Finance</h1>
         <p>Every taka in, out and sitting in escrow.</p></div>
         <button class="btn btn--ghost" data-export="transactions">Export CSV</button></div>
@@ -934,7 +2235,7 @@ tr:last-child td{border-bottom:0}
             <button class="btn btn--danger btn--sm" data-dsbhold="${x.id}">Hold</button>
             <button class="btn btn--primary btn--sm" data-dsbrelease="${x.id}">Release funds</button>
           </div></div>`).join('')
-          : '<div class="empty"><b>No requests waiting</b>Released disbursements appear in the ledger below.</div>'}
+            : '<div class="empty"><b>No requests waiting</b>Released disbursements appear in the ledger below.</div>'}
       </section>
 
       <section class="box">
@@ -943,35 +2244,35 @@ tr:last-child td{border-bottom:0}
           <input id="fqText" placeholder="Search name, ID or project">
           <select id="fqType"><option value="">All types</option>
             ${['investment', 'disbursement', 'withdrawal', 'sale', 'payout', 'premium', 'claim', 'refund']
-              .map((t) => `<option>${t}</option>`).join('')}</select>
+            .map((t) => `<option>${t}</option>`).join('')}</select>
           <select id="fqStatus"><option value="">Any status</option><option>complete</option><option>held</option></select>
           <button class="btn btn--ghost btn--sm" id="fqClear">Clear</button>
         </div>
         <div id="ledger">${txTable(S.tx)}</div>
       </section>`;
-  };
+      };
 
-  routes.finance.after = function () {
-    const apply = () => {
-      const q = $('#fqText').value.trim().toLowerCase();
-      const ty = $('#fqType').value, st = $('#fqStatus').value;
-      const rows = S.tx.filter((t) =>
-        (!ty || t.type === ty) && (!st || t.status === st) &&
-        (!q || [t.id, t.from, t.to, t.project, t.method].join(' ').toLowerCase().includes(q)));
-      $('#ledger').innerHTML = txTable(rows);
-      bindRowActions();
-    };
-    ['fqText', 'fqType', 'fqStatus'].forEach((id) => $('#' + id).addEventListener('input', apply));
-    $('#fqClear').addEventListener('click', () => {
-      $('#fqText').value = ''; $('#fqType').value = ''; $('#fqStatus').value = ''; apply();
-    });
-  };
+      routes.finance.after = function () {
+        const apply = () => {
+          const q = $('#fqText').value.trim().toLowerCase();
+          const ty = $('#fqType').value, st = $('#fqStatus').value;
+          const rows = S.tx.filter((t) =>
+            (!ty || t.type === ty) && (!st || t.status === st) &&
+            (!q || [t.id, t.from, t.to, t.project, t.method].join(' ').toLowerCase().includes(q)));
+          $('#ledger').innerHTML = txTable(rows);
+          bindRowActions();
+        };
+        ['fqText', 'fqType', 'fqStatus'].forEach((id) => $('#' + id).addEventListener('input', apply));
+        $('#fqClear').addEventListener('click', () => {
+          $('#fqText').value = ''; $('#fqType').value = ''; $('#fqStatus').value = ''; apply();
+        });
+      };
 
-  /* ----------------------------------------------------- fraud & disputes */
-  routes.fraud = function () {
-    const open = S.disputes.filter((x) => x.status === 'open');
-    const closed = S.disputes.filter((x) => x.status !== 'open');
-    return `
+      /* ----------------------------------------------------- fraud & disputes */
+      routes.fraud = function () {
+        const open = S.disputes.filter((x) => x.status === 'open');
+        const closed = S.disputes.filter((x) => x.status !== 'open');
+        return `
       <div class="pagehead"><div><h1 class="h1">Fraud and disputes</h1>
         <p>Signals raised by the system, plus complaints raised by people.</p></div></div>
 
@@ -1004,13 +2305,13 @@ tr:last-child td{border-bottom:0}
             <button class="btn btn--primary btn--sm" data-resolve="${x.id}">Resolve</button></div>` : ''}
         </div>`).join('')}
       </section>`;
-  };
+      };
 
-  /* ------------------------------------------------------ insurance claims */
-  routes.claims = function () {
-    const pool = S.tx.filter((t) => t.type === 'premium').reduce((a, t) => a + t.amount, 0);
-    const paid = S.claims.filter((c) => c.status === 'paid').reduce((a, c) => a + c.amount, 0);
-    return `
+      /* ------------------------------------------------------ insurance claims */
+      routes.claims = function () {
+        const pool = S.tx.filter((t) => t.type === 'premium').reduce((a, t) => a + t.amount, 0);
+        const paid = S.claims.filter((c) => c.status === 'paid').reduce((a, c) => a + c.amount, 0);
+        return `
       <div class="pagehead"><div><h1 class="h1">Insurance claims</h1>
         <p>Claims are paid from the central pool once a field agent confirms the loss.</p></div></div>
       <dl class="cards cols-3" style="margin-bottom:18px">
@@ -1032,12 +2333,12 @@ tr:last-child td{border-bottom:0}
           <button class="btn btn--primary btn--sm" data-claimpay="${c.id}" ${c.agentVerified ? '' : 'disabled title="Needs field verification first"'}>Approve payout</button>
         </div>` : ''}
       </div>`).join('')}`;
-  };
+      };
 
-  /* ---------------------------------------------------------- marketplace */
-  routes.market = function () {
-    const gmv = S.products.reduce((a, p) => a + p.price * p.sold, 0);
-    return `
+      /* ---------------------------------------------------------- marketplace */
+      routes.market = function () {
+        const gmv = S.products.reduce((a, p) => a + p.price * p.sold, 0);
+        return `
       <div class="pagehead"><div><h1 class="h1">Marketplace moderation</h1>
         <p>Listings from farmers and artisans. Reported items come to the top.</p></div></div>
       <dl class="cards cols-3" style="margin-bottom:18px">
@@ -1058,19 +2359,19 @@ tr:last-child td{border-bottom:0}
             ? `<button class="btn btn--danger btn--sm" data-takedown="${p.id}">Take down</button>`
             : `<button class="btn btn--ghost btn--sm" data-restore="${p.id}">Restore</button>`}</td>
         </tr>`).join('')}</tbody></table></div></div>`;
-  };
+      };
 
-  /* ------------------------------------------------------ reports & audit */
-  routes.reports = function () {
-    const T = totals();
-    return `
+      /* ------------------------------------------------------ reports & audit */
+      routes.reports = function () {
+        const T = totals();
+        return `
       <div class="pagehead"><div><h1 class="h1">Reports and audit log</h1>
         <p>Export platform data, or read back every decision made in this console.</p></div></div>
       <div class="cards cols-3" style="margin-bottom:18px">
         ${[['projects', 'Projects', 'Every listing with owner, goal, raised amount, risk and status.'],
-           ['users', 'Users and KYC', 'Accounts with role, district, verification and account state.'],
-           ['transactions', 'Transaction ledger', 'All money movements with fees, methods and status.']]
-          .map(([k, t, d2]) => `<section class="box">
+          ['users', 'Users and KYC', 'Accounts with role, district, verification and account state.'],
+          ['transactions', 'Transaction ledger', 'All money movements with fees, methods and status.']]
+            .map(([k, t, d2]) => `<section class="box">
             <h3 class="h3">${t}</h3><p class="pcard__meta" style="margin:6px 0 12px">${d2}</p>
             <button class="btn btn--ghost btn--sm" data-export="${k}">Download CSV</button></section>`).join('')}
       </div>
@@ -1084,7 +2385,7 @@ tr:last-child td{border-bottom:0}
           <dt>Platform revenue</dt><dd>${taka(T.fees)}</dd>
           <dt>Projects funded</dt><dd>${S.projects.filter((p) => p.raised >= p.goal && p.goal > 0).length} of ${S.projects.length}</dd>
           <dt>Approval rate</dt><dd>${pct(S.projects.filter((p) => p.status !== 'rejected' && p.status !== 'pending').length,
-            S.projects.filter((p) => p.status !== 'pending').length)}%</dd>
+              S.projects.filter((p) => p.status !== 'pending').length)}%</dd>
           <dt>Claims paid</dt><dd>${taka(S.claims.filter((c) => c.status === 'paid').reduce((a, c) => a + c.amount, 0))}</dd>
         </dl>
       </section>
@@ -1095,85 +2396,85 @@ tr:last-child td{border-bottom:0}
           <div><b>${esc(l.action)}</b> ${esc(l.target)} <span class="pcard__meta">by ${esc(l.by)}</span>
           ${l.note ? `<div class="pcard__meta">${esc(l.note)}</div>` : ''}</div></li>`).join('')}</ul>
       </section>`;
-  };
+      };
 
-  /* ------------------------------------------------------------- actions */
-  function modal(title, body, onOpen) {
-    $('#modalTitle').textContent = title;
-    $('#modalBody').innerHTML = body;
-    $('#modal').hidden = false;
-    if (onOpen) onOpen();
-  }
-  const closeModal = () => { $('#modal').hidden = true; };
-  const P = (id) => S.projects.find((x) => x.id === id);
-  const U = (id) => S.users.find((x) => x.id === id);
+      /* ------------------------------------------------------------- actions */
+      function modal(title, body, onOpen) {
+        $('#modalTitle').textContent = title;
+        $('#modalBody').innerHTML = body;
+        $('#modal').hidden = false;
+        if (onOpen) onOpen();
+      }
+      const closeModal = () => { $('#modal').hidden = true; };
+      const P = (id) => S.projects.find((x) => x.id === id);
+      const U = (id) => S.users.find((x) => x.id === id);
 
-  function on(attr, fn, root) {
-    $$('[data-' + attr + ']', root || document).forEach((b) =>
-      b.addEventListener('click', () => fn(b.dataset[attr], b)));
-  }
+      function on(attr, fn, root) {
+        $$('[data-' + attr + ']', root || document).forEach((b) =>
+          b.addEventListener('click', () => fn(b.dataset[attr], b)));
+      }
 
-  function bindRowActions() {
-    on('approve', approveProject);
-    on('reject', rejectProject);
-    on('inspect', inspectProject);
-    on('kyc', kycModal);
-    on('user', userModal);
-    on('dsbrelease', releaseDisbursement);
-    on('dsbhold', (id) => {
-      const x = S.disbursements.find((y) => y.id === id);
-      x.status = 'held';
-      log('Held disbursement', x.id, 'Held pending field verification.');
-      alertMsg('Disbursement ' + x.id + ' held by admin.', 'medium');
-      save(); toast('Disbursement held.'); route();
-    });
-    on('release', (id) => {
-      const t = S.tx.find((x) => x.id === id);
-      t.status = 'complete';
-      log('Released held payment', t.id, taka(t.amount) + ' to ' + t.to);
-      save(); toast('Payment released.'); route();
-    });
-    on('txview', (id) => {
-      const t = S.tx.find((x) => x.id === id);
-      modal('Transaction ' + t.id, `<dl class="kv">
+      function bindRowActions() {
+        on('approve', approveProject);
+        on('reject', rejectProject);
+        on('inspect', inspectProject);
+        on('kyc', kycModal);
+        on('user', userModal);
+        on('dsbrelease', releaseDisbursement);
+        on('dsbhold', (id) => {
+          const x = S.disbursements.find((y) => y.id === id);
+          x.status = 'held';
+          log('Held disbursement', x.id, 'Held pending field verification.');
+          alertMsg('Disbursement ' + x.id + ' held by admin.', 'medium');
+          save(); toast('Disbursement held.'); route();
+        });
+        on('release', (id) => {
+          const t = S.tx.find((x) => x.id === id);
+          t.status = 'complete';
+          log('Released held payment', t.id, taka(t.amount) + ' to ' + t.to);
+          save(); toast('Payment released.'); route();
+        });
+        on('txview', (id) => {
+          const t = S.tx.find((x) => x.id === id);
+          modal('Transaction ' + t.id, `<dl class="kv">
         <dt>Type</dt><dd>${t.type}</dd><dt>When</dt><dd>${stamp(t.at)}</dd>
         <dt>From</dt><dd>${esc(t.from)}</dd><dt>To</dt><dd>${esc(t.to)}</dd>
         <dt>Method</dt><dd>${esc(t.method)}</dd><dt>Amount</dt><dd>${taka(t.amount)}</dd>
         <dt>Platform fee</dt><dd>${t.fee ? taka(t.fee) : 'None'}</dd>
         <dt>Project</dt><dd>${t.project || '—'}</dd><dt>Status</dt><dd>${t.status}</dd></dl>`);
-    });
-    on('dismiss', (id) => {
-      S.alerts = S.alerts.filter((a) => a.id !== id);
-      log('Dismissed alert', id, '');
-      save(); paintBell(); toast('Alert dismissed.'); route();
-    });
-    on('escalate', freezeModal);
-    on('resolve', resolveModal);
-    on('claimpay', payClaim);
-    on('claimreject', rejectClaim);
-    on('takedown', (id) => {
-      const p = S.products.find((x) => x.id === id);
-      p.status = 'removed';
-      log('Removed listing', p.id, esc(p.name));
-      save(); toast('Listing taken down.'); route();
-    });
-    on('restore', (id) => {
-      const p = S.products.find((x) => x.id === id);
-      p.status = 'live'; p.reports = 0;
-      log('Restored listing', p.id, esc(p.name));
-      save(); toast('Listing restored.'); route();
-    });
-    on('export', exportCsv);
-  }
+        });
+        on('dismiss', (id) => {
+          S.alerts = S.alerts.filter((a) => a.id !== id);
+          log('Dismissed alert', id, '');
+          save(); paintBell(); toast('Alert dismissed.'); route();
+        });
+        on('escalate', freezeModal);
+        on('resolve', resolveModal);
+        on('claimpay', payClaim);
+        on('claimreject', rejectClaim);
+        on('takedown', (id) => {
+          const p = S.products.find((x) => x.id === id);
+          p.status = 'removed';
+          log('Removed listing', p.id, esc(p.name));
+          save(); toast('Listing taken down.'); route();
+        });
+        on('restore', (id) => {
+          const p = S.products.find((x) => x.id === id);
+          p.status = 'live'; p.reports = 0;
+          log('Restored listing', p.id, esc(p.name));
+          save(); toast('Listing restored.'); route();
+        });
+        on('export', exportCsv);
+      }
 
-  function approveProject(id) {
-    const p = P(id);
-    const owner = U(p.ownerId) || {};
-    const warn = [];
-    if (owner.kyc !== 'verified') warn.push('the owner is not KYC verified');
-    if (!p.docs.length) warn.push('no supporting document is attached');
-    if (p.riskLevel === 'high') warn.push('the risk score is ' + p.risk);
-    modal('Approve ' + p.id, `
+      function approveProject(id) {
+        const p = P(id);
+        const owner = U(p.ownerId) || {};
+        const warn = [];
+        if (owner.kyc !== 'verified') warn.push('the owner is not KYC verified');
+        if (!p.docs.length) warn.push('no supporting document is attached');
+        if (p.riskLevel === 'high') warn.push('the risk score is ' + p.risk);
+        modal('Approve ' + p.id, `
       <p class="muted">Approving publishes this listing to every investor immediately.</p>
       <dl class="kv" style="margin-bottom:14px">
         <dt>Project</dt><dd>${esc(p.title)}</dd>
@@ -1185,17 +2486,17 @@ tr:last-child td{border-bottom:0}
       <label class="field"><span class="field__label">Note for the audit log</span>
         <input id="apNote" placeholder="Optional"></label>
       <button class="btn btn--primary btn--block" id="apGo">Approve and publish</button>`, () => {
-      $('#apGo').addEventListener('click', () => {
-        p.status = 'funding';
-        log('Approved project', p.id, $('#apNote').value.trim() || 'Published to investors.');
-        save(); closeModal(); toast(p.id + ' approved and published.'); route();
-      });
-    });
-  }
+          $('#apGo').addEventListener('click', () => {
+            p.status = 'funding';
+            log('Approved project', p.id, $('#apNote').value.trim() || 'Published to investors.');
+            save(); closeModal(); toast(p.id + ' approved and published.'); route();
+          });
+        });
+      }
 
-  function rejectProject(id) {
-    const p = P(id);
-    modal('Reject ' + p.id, `
+      function rejectProject(id) {
+        const p = P(id);
+        modal('Reject ' + p.id, `
       <p class="muted">The farmer sees your reason and can fix and resubmit.</p>
       <label class="field"><span class="field__label">Reason</span>
         <select id="rjReason">
@@ -1210,22 +2511,22 @@ tr:last-child td{border-bottom:0}
         <textarea id="rjNote" placeholder="Be specific — this is the only guidance they get."></textarea>
         <span class="field__error" data-for="rjNote"></span></label>
       <button class="btn btn--danger btn--block" id="rjGo">Reject listing</button>`, () => {
-      $('#rjGo').addEventListener('click', () => {
-        clearErrors($('#modalBody'));
-        if ($('#rjNote').value.trim().length < 12) { setError('rjNote', 'Write at least a sentence of guidance.'); return; }
-        p.status = 'rejected';
-        p.note = $('#rjReason').value + ' — ' + $('#rjNote').value.trim();
-        log('Rejected project', p.id, p.note);
-        save(); closeModal(); toast(p.id + ' rejected.'); route();
-      });
-    });
-  }
+          $('#rjGo').addEventListener('click', () => {
+            clearErrors($('#modalBody'));
+            if ($('#rjNote').value.trim().length < 12) { setError('rjNote', 'Write at least a sentence of guidance.'); return; }
+            p.status = 'rejected';
+            p.note = $('#rjReason').value + ' — ' + $('#rjNote').value.trim();
+            log('Rejected project', p.id, p.note);
+            save(); closeModal(); toast(p.id + ' rejected.'); route();
+          });
+        });
+      }
 
-  function inspectProject(id) {
-    const p = P(id);
-    const owner = U(p.ownerId) || {};
-    const money = S.tx.filter((t) => t.project === p.id);
-    modal(p.id + ' — ' + p.title, `
+      function inspectProject(id) {
+        const p = P(id);
+        const owner = U(p.ownerId) || {};
+        const money = S.tx.filter((t) => t.project === p.id);
+        modal(p.id + ' — ' + p.title, `
       <dl class="kv" style="margin-bottom:14px">
         <dt>Category</dt><dd>${CAT[p.category]} ${p.category}</dd>
         <dt>Owner</dt><dd>${esc(p.owner)} · ${owner.kyc || 'unknown'} · ${owner.status || ''}</dd>
@@ -1248,23 +2549,23 @@ tr:last-child td{border-bottom:0}
           <button class="btn btn--danger btn--sm" data-reject="${p.id}">Reject</button>` : ''}
         ${['funding', 'active'].includes(p.status) ? `<button class="btn btn--danger btn--sm" data-suspendp="${p.id}">Suspend project</button>` : ''}
       </div>`, () => {
-      const box = $('#modalBody');
-      on('suspendp', (pid) => {
-        const pr = P(pid);
-        pr.status = 'rejected';
-        pr.note = 'Suspended by admin after publication.';
-        log('Suspended project', pr.id, 'Removed from the investor feed.');
-        alertMsg(pr.id + ' suspended by admin.', 'medium');
-        save(); closeModal(); toast('Project suspended.'); route();
-      }, box);
-      on('approve', (pid) => { closeModal(); approveProject(pid); }, box);
-      on('reject', (pid) => { closeModal(); rejectProject(pid); }, box);
-    });
-  }
+          const box = $('#modalBody');
+          on('suspendp', (pid) => {
+            const pr = P(pid);
+            pr.status = 'rejected';
+            pr.note = 'Suspended by admin after publication.';
+            log('Suspended project', pr.id, 'Removed from the investor feed.');
+            alertMsg(pr.id + ' suspended by admin.', 'medium');
+            save(); closeModal(); toast('Project suspended.'); route();
+          }, box);
+          on('approve', (pid) => { closeModal(); approveProject(pid); }, box);
+          on('reject', (pid) => { closeModal(); rejectProject(pid); }, box);
+        });
+      }
 
-  function kycModal(id) {
-    const u = U(id);
-    modal('KYC review — ' + u.name, `
+      function kycModal(id) {
+        const u = U(id);
+        modal('KYC review — ' + u.name, `
       <p class="muted">Check the NID photo against the name and phone on the account.</p>
       <dl class="kv" style="margin-bottom:14px">
         <dt>Name</dt><dd>${esc(u.name)}</dd><dt>Role</dt><dd>${esc(u.role)}</dd>
@@ -1276,24 +2577,24 @@ tr:last-child td{border-bottom:0}
       <div class="row">
         <button class="btn btn--danger" id="kyNo">Reject</button>
         <button class="btn btn--primary" id="kyYes">Verify account</button></div>`, () => {
-      $('#kyYes').addEventListener('click', () => {
-        u.kyc = 'verified';
-        log('Verified user', u.id, $('#kyNote').value.trim() || 'NID matched.');
-        save(); closeModal(); toast(u.name + ' is verified.'); route();
-      });
-      $('#kyNo').addEventListener('click', () => {
-        u.kyc = 'rejected';
-        log('Rejected KYC', u.id, $('#kyNote').value.trim() || 'Document did not match.');
-        save(); closeModal(); toast('KYC rejected.', true); route();
-      });
-    });
-  }
+          $('#kyYes').addEventListener('click', () => {
+            u.kyc = 'verified';
+            log('Verified user', u.id, $('#kyNote').value.trim() || 'NID matched.');
+            save(); closeModal(); toast(u.name + ' is verified.'); route();
+          });
+          $('#kyNo').addEventListener('click', () => {
+            u.kyc = 'rejected';
+            log('Rejected KYC', u.id, $('#kyNote').value.trim() || 'Document did not match.');
+            save(); closeModal(); toast('KYC rejected.', true); route();
+          });
+        });
+      }
 
-  function userModal(id) {
-    const u = U(id);
-    const own = S.projects.filter((p) => p.ownerId === u.id);
-    const money = S.tx.filter((t) => t.from === u.name || t.to === u.name);
-    modal(u.name, `
+      function userModal(id) {
+        const u = U(id);
+        const own = S.projects.filter((p) => p.ownerId === u.id);
+        const money = S.tx.filter((t) => t.from === u.name || t.to === u.name);
+        modal(u.name, `
       <dl class="kv" style="margin-bottom:14px">
         <dt>User ID</dt><dd>${u.id}</dd><dt>Role</dt><dd>${esc(u.role)}</dd>
         <dt>Phone</dt><dd>${esc(u.phone)}</dd><dt>District</dt><dd>${esc(u.district)}</dd>
@@ -1303,33 +2604,33 @@ tr:last-child td{border-bottom:0}
         ${u.invested ? `<dt>Invested</dt><dd>${taka(u.invested)}</dd>` : ''}
         ${u.visits ? `<dt>Field visits</dt><dd>${u.visits}</dd>` : ''}</dl>
       ${own.length ? `<h4 class="h3">Projects</h4><ul class="audit">${own.map((p) =>
-        `<li><time>${nice(p.createdAt)}</time><div><b>${esc(p.title)}</b> ${p.status} · ${taka(p.goal)}</div></li>`).join('')}</ul>` : ''}
+          `<li><time>${nice(p.createdAt)}</time><div><b>${esc(p.title)}</b> ${p.status} · ${taka(p.goal)}</div></li>`).join('')}</ul>` : ''}
       <h4 class="h3" style="margin-top:14px">Money</h4>
       ${money.length ? txTable(money.slice(0, 6), true) : '<p class="muted">No transactions.</p>'}
       <div class="row" style="margin-top:14px">
         ${u.status === 'active'
-          ? `<button class="btn btn--danger btn--sm" id="suspU">Suspend account</button>`
-          : `<button class="btn btn--primary btn--sm" id="restU">Restore account</button>`}
+            ? `<button class="btn btn--danger btn--sm" id="suspU">Suspend account</button>`
+            : `<button class="btn btn--primary btn--sm" id="restU">Restore account</button>`}
       </div>`, () => {
-      const s = $('#suspU'), r = $('#restU');
-      if (s) s.addEventListener('click', () => {
-        u.status = 'suspended'; u.flagged = true;
-        log('Suspended user', u.id, 'Account frozen by admin.');
-        alertMsg(u.name + ' was suspended.', 'medium');
-        save(); closeModal(); toast('Account suspended.', true); route();
-      });
-      if (r) r.addEventListener('click', () => {
-        u.status = 'active'; u.flagged = false;
-        log('Restored user', u.id, 'Account reinstated.');
-        save(); closeModal(); toast('Account restored.'); route();
-      });
-    });
-  }
+          const s = $('#suspU'), r = $('#restU');
+          if (s) s.addEventListener('click', () => {
+            u.status = 'suspended'; u.flagged = true;
+            log('Suspended user', u.id, 'Account frozen by admin.');
+            alertMsg(u.name + ' was suspended.', 'medium');
+            save(); closeModal(); toast('Account suspended.', true); route();
+          });
+          if (r) r.addEventListener('click', () => {
+            u.status = 'active'; u.flagged = false;
+            log('Restored user', u.id, 'Account reinstated.');
+            save(); closeModal(); toast('Account restored.'); route();
+          });
+        });
+      }
 
-  function releaseDisbursement(id) {
-    const x = S.disbursements.find((y) => y.id === id);
-    const p = P(x.project);
-    modal('Release ' + taka(x.amount), `
+      function releaseDisbursement(id) {
+        const x = S.disbursements.find((y) => y.id === id);
+        const p = P(x.project);
+        modal('Release ' + taka(x.amount), `
       <p class="muted">Money leaves escrow and reaches the farmer's wallet immediately.</p>
       <dl class="kv" style="margin-bottom:14px">
         <dt>Project</dt><dd>${esc(x.title)} (${x.project})</dd>
@@ -1343,27 +2644,27 @@ tr:last-child td{border-bottom:0}
       <label class="field"><span class="field__label">Send via</span>
         <select id="dsMethod"><option>bKash</option><option>Nagad</option><option>Bank transfer</option></select></label>
       <button class="btn btn--primary btn--block" id="dsGo">Release funds</button>`, () => {
-      $('#dsGo').addEventListener('click', () => {
-        const fee = Math.round(x.amount * 0.02);
-        const net = x.amount - fee;
-        x.status = 'released';
-        if (p) { p.escrow = Math.max(0, p.escrow - x.amount); p.disbursed += net; }
-        S.disbursements = S.disbursements.filter((y) => y.id !== x.id);
-        S.tx.unshift({
-          id: uid('TXN'), at: new Date().toISOString(), type: 'disbursement',
-          from: 'Escrow — ' + x.project, to: x.farmer, method: $('#dsMethod').value,
-          amount: net, fee, status: 'complete', project: x.project
+          $('#dsGo').addEventListener('click', () => {
+            const fee = Math.round(x.amount * 0.02);
+            const net = x.amount - fee;
+            x.status = 'released';
+            if (p) { p.escrow = Math.max(0, p.escrow - x.amount); p.disbursed += net; }
+            S.disbursements = S.disbursements.filter((y) => y.id !== x.id);
+            S.tx.unshift({
+              id: uid('TXN'), at: new Date().toISOString(), type: 'disbursement',
+              from: 'Escrow — ' + x.project, to: x.farmer, method: $('#dsMethod').value,
+              amount: net, fee, status: 'complete', project: x.project
+            });
+            log('Released disbursement', x.id, taka(net) + ' to ' + x.farmer +
+              (x.agentVerified ? '' : ' (no field verification)'));
+            save(); closeModal(); toast('Funds released.'); route();
+          });
         });
-        log('Released disbursement', x.id, taka(net) + ' to ' + x.farmer +
-          (x.agentVerified ? '' : ' (no field verification)'));
-        save(); closeModal(); toast('Funds released.'); route();
-      });
-    });
-  }
+      }
 
-  function freezeModal(alertId) {
-    const a = S.alerts.find((x) => x.id === alertId);
-    modal('Freeze an account', `
+      function freezeModal(alertId) {
+        const a = S.alerts.find((x) => x.id === alertId);
+        modal('Freeze an account', `
       <p class="muted">${esc(a.text)}</p>
       <label class="field"><span class="field__label">Account to freeze</span>
         <select id="fzUser">${S.users.map((u) => `<option value="${u.id}">${esc(u.name)} — ${u.role}</option>`).join('')}</select></label>
@@ -1371,23 +2672,23 @@ tr:last-child td{border-bottom:0}
         <textarea id="fzNote" placeholder="What the signal was and why freezing is proportionate."></textarea>
         <span class="field__error" data-for="fzNote"></span></label>
       <button class="btn btn--danger btn--block" id="fzGo">Freeze account and hold payouts</button>`, () => {
-      $('#fzGo').addEventListener('click', () => {
-        clearErrors($('#modalBody'));
-        if ($('#fzNote').value.trim().length < 12) { setError('fzNote', 'Record why — this is a serious action.'); return; }
-        const u = U($('#fzUser').value);
-        u.status = 'suspended'; u.flagged = true;
-        S.tx.filter((t) => t.from === u.name && t.type === 'withdrawal' && t.status !== 'complete')
-          .forEach((t) => { t.status = 'held'; });
-        a.read = true;
-        log('Froze account', u.id, $('#fzNote').value.trim());
-        save(); closeModal(); toast(u.name + ' frozen, payouts held.', true); route();
-      });
-    });
-  }
+          $('#fzGo').addEventListener('click', () => {
+            clearErrors($('#modalBody'));
+            if ($('#fzNote').value.trim().length < 12) { setError('fzNote', 'Record why — this is a serious action.'); return; }
+            const u = U($('#fzUser').value);
+            u.status = 'suspended'; u.flagged = true;
+            S.tx.filter((t) => t.from === u.name && t.type === 'withdrawal' && t.status !== 'complete')
+              .forEach((t) => { t.status = 'held'; });
+            a.read = true;
+            log('Froze account', u.id, $('#fzNote').value.trim());
+            save(); closeModal(); toast(u.name + ' frozen, payouts held.', true); route();
+          });
+        });
+      }
 
-  function resolveModal(id) {
-    const x = S.disputes.find((y) => y.id === id);
-    modal('Resolve ' + x.id, `
+      function resolveModal(id) {
+        const x = S.disputes.find((y) => y.id === id);
+        modal('Resolve ' + x.id, `
       <p class="muted">${esc(x.subject)} — ${esc(x.raisedBy)} against ${esc(x.against)}</p>
       <label class="field"><span class="field__label">Outcome</span>
         <select id="dsOut">
@@ -1400,20 +2701,20 @@ tr:last-child td{border-bottom:0}
       <label class="field"><span class="field__label">What you decided and why</span>
         <textarea id="dsNote"></textarea><span class="field__error" data-for="dsNote"></span></label>
       <button class="btn btn--primary btn--block" id="dsRes">Close dispute</button>`, () => {
-      $('#dsRes').addEventListener('click', () => {
-        clearErrors($('#modalBody'));
-        if ($('#dsNote').value.trim().length < 12) { setError('dsNote', 'Both parties see this. Write a proper explanation.'); return; }
-        x.status = 'resolved';
-        x.resolution = $('#dsOut').value + ' — ' + $('#dsNote').value.trim();
-        log('Resolved dispute', x.id, x.resolution);
-        save(); closeModal(); toast('Dispute closed.'); route();
-      });
-    });
-  }
+          $('#dsRes').addEventListener('click', () => {
+            clearErrors($('#modalBody'));
+            if ($('#dsNote').value.trim().length < 12) { setError('dsNote', 'Both parties see this. Write a proper explanation.'); return; }
+            x.status = 'resolved';
+            x.resolution = $('#dsOut').value + ' — ' + $('#dsNote').value.trim();
+            log('Resolved dispute', x.id, x.resolution);
+            save(); closeModal(); toast('Dispute closed.'); route();
+          });
+        });
+      }
 
-  function payClaim(id) {
-    const c = S.claims.find((x) => x.id === id);
-    modal('Approve claim ' + c.id, `
+      function payClaim(id) {
+        const c = S.claims.find((x) => x.id === id);
+        modal('Approve claim ' + c.id, `
       <dl class="kv" style="margin-bottom:14px">
         <dt>Project</dt><dd>${esc(c.title)}</dd><dt>Farmer</dt><dd>${esc(c.farmer)}</dd>
         <dt>Cause</dt><dd>${esc(c.reason)}</dd><dt>Payout</dt><dd>${taka(c.amount)}</dd>
@@ -1421,132 +2722,135 @@ tr:last-child td{border-bottom:0}
       <label class="field"><span class="field__label">Assessor note</span>
         <input id="clNote" placeholder="Optional"></label>
       <button class="btn btn--primary btn--block" id="clGo">Pay ${taka(c.amount)} from the pool</button>`, () => {
-      $('#clGo').addEventListener('click', () => {
-        c.status = 'paid';
-        S.tx.unshift({
-          id: uid('TXN'), at: new Date().toISOString(), type: 'claim',
-          from: 'Insurance pool', to: c.farmer, method: 'Bank transfer',
-          amount: c.amount, fee: 0, status: 'complete', project: c.project
+          $('#clGo').addEventListener('click', () => {
+            c.status = 'paid';
+            S.tx.unshift({
+              id: uid('TXN'), at: new Date().toISOString(), type: 'claim',
+              from: 'Insurance pool', to: c.farmer, method: 'Bank transfer',
+              amount: c.amount, fee: 0, status: 'complete', project: c.project
+            });
+            log('Approved claim', c.id, taka(c.amount) + ' paid — ' + ($('#clNote').value.trim() || c.reason));
+            save(); closeModal(); toast('Claim paid.'); route();
+          });
         });
-        log('Approved claim', c.id, taka(c.amount) + ' paid — ' + ($('#clNote').value.trim() || c.reason));
-        save(); closeModal(); toast('Claim paid.'); route();
-      });
-    });
-  }
+      }
 
-  function rejectClaim(id) {
-    const c = S.claims.find((x) => x.id === id);
-    modal('Reject claim ' + c.id, `
+      function rejectClaim(id) {
+        const c = S.claims.find((x) => x.id === id);
+        modal('Reject claim ' + c.id, `
       <label class="field"><span class="field__label">Why the claim fails</span>
         <textarea id="crNote" placeholder="The farmer sees this and can appeal once."></textarea>
         <span class="field__error" data-for="crNote"></span></label>
       <button class="btn btn--danger btn--block" id="crGo">Reject claim</button>`, () => {
-      $('#crGo').addEventListener('click', () => {
-        clearErrors($('#modalBody'));
-        if ($('#crNote').value.trim().length < 12) { setError('crNote', 'Give a reason the farmer can act on.'); return; }
-        c.status = 'rejected';
-        log('Rejected claim', c.id, $('#crNote').value.trim());
-        save(); closeModal(); toast('Claim rejected.', true); route();
-      });
-    });
-  }
-
-  /* ----------------------------------------------------------- CSV export */
-  function exportCsv(kind) {
-    const sets = {
-      projects: {
-        head: ['id', 'title', 'owner', 'category', 'district', 'goal', 'raised', 'risk', 'status'],
-        rows: S.projects.map((p) => [p.id, p.title, p.owner, p.category, p.district, p.goal, p.raised, p.risk, p.status])
-      },
-      users: {
-        head: ['id', 'name', 'role', 'phone', 'district', 'kyc', 'status', 'joined'],
-        rows: S.users.map((u) => [u.id, u.name, u.role, u.phone, u.district, u.kyc, u.status, u.joined.slice(0, 10)])
-      },
-      transactions: {
-        head: ['id', 'date', 'type', 'from', 'to', 'method', 'amount', 'fee', 'status', 'project'],
-        rows: S.tx.map((t) => [t.id, t.at.slice(0, 10), t.type, t.from, t.to, t.method, t.amount, t.fee || 0, t.status, t.project])
+          $('#crGo').addEventListener('click', () => {
+            clearErrors($('#modalBody'));
+            if ($('#crNote').value.trim().length < 12) { setError('crNote', 'Give a reason the farmer can act on.'); return; }
+            c.status = 'rejected';
+            log('Rejected claim', c.id, $('#crNote').value.trim());
+            save(); closeModal(); toast('Claim rejected.', true); route();
+          });
+        });
       }
-    };
-    const set = sets[kind];
-    if (!set) return;
-    const csv = [set.head, ...set.rows]
-      .map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
-    log('Exported report', kind, set.rows.length + ' rows');
-    save();
-    try {
-      const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'grambandhan-' + kind + '-' + new Date().toISOString().slice(0, 10) + '.csv';
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-      toast(kind + ' report downloaded.');
-    } catch (e) {
-      modal('Report — ' + kind, `<p class="muted">Downloads are blocked here. Copy the CSV below.</p>
-        <textarea class="inp" rows="12" readonly>${esc(csv)}</textarea>`);
-    }
-  }
 
-  /* ------------------------------------------------------- global search */
-  function globalSearch(q) {
-    q = q.trim().toLowerCase();
-    if (q.length < 2) return;
-    const hits = [];
-    S.projects.filter((p) => (p.id + p.title + p.owner).toLowerCase().includes(q))
-      .forEach((p) => hits.push(['Project', p.title, p.id, () => inspectProject(p.id)]));
-    S.users.filter((u) => (u.id + u.name + u.phone).toLowerCase().includes(q))
-      .forEach((u) => hits.push(['User', u.name, u.id, () => userModal(u.id)]));
-    S.tx.filter((t) => (t.id + t.from + t.to).toLowerCase().includes(q))
-      .forEach((t) => hits.push(['Transaction', t.type + ' ' + taka(t.amount), t.id, null]));
-    modal('Search results for "' + q + '"', hits.length
-      ? `<ul class="audit">${hits.slice(0, 20).map((h, i) => `<li>
+      /* ----------------------------------------------------------- CSV export */
+      function exportCsv(kind) {
+        const sets = {
+          projects: {
+            head: ['id', 'title', 'owner', 'category', 'district', 'goal', 'raised', 'risk', 'status'],
+            rows: S.projects.map((p) => [p.id, p.title, p.owner, p.category, p.district, p.goal, p.raised, p.risk, p.status])
+          },
+          users: {
+            head: ['id', 'name', 'role', 'phone', 'district', 'kyc', 'status', 'joined'],
+            rows: S.users.map((u) => [u.id, u.name, u.role, u.phone, u.district, u.kyc, u.status, u.joined.slice(0, 10)])
+          },
+          transactions: {
+            head: ['id', 'date', 'type', 'from', 'to', 'method', 'amount', 'fee', 'status', 'project'],
+            rows: S.tx.map((t) => [t.id, t.at.slice(0, 10), t.type, t.from, t.to, t.method, t.amount, t.fee || 0, t.status, t.project])
+          }
+        };
+        const set = sets[kind];
+        if (!set) return;
+        const csv = [set.head, ...set.rows]
+          .map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+        log('Exported report', kind, set.rows.length + ' rows');
+        save();
+        try {
+          const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'grambandhan-' + kind + '-' + new Date().toISOString().slice(0, 10) + '.csv';
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+          toast(kind + ' report downloaded.');
+        } catch (e) {
+          modal('Report — ' + kind, `<p class="muted">Downloads are blocked here. Copy the CSV below.</p>
+        <textarea class="inp" rows="12" readonly>${esc(csv)}</textarea>`);
+        }
+      }
+
+      /* ------------------------------------------------------- global search */
+      function globalSearch(q) {
+        q = q.trim().toLowerCase();
+        if (q.length < 2) return;
+        const hits = [];
+        S.projects.filter((p) => (p.id + p.title + p.owner).toLowerCase().includes(q))
+          .forEach((p) => hits.push(['Project', p.title, p.id, () => inspectProject(p.id)]));
+        S.users.filter((u) => (u.id + u.name + u.phone).toLowerCase().includes(q))
+          .forEach((u) => hits.push(['User', u.name, u.id, () => userModal(u.id)]));
+        S.tx.filter((t) => (t.id + t.from + t.to).toLowerCase().includes(q))
+          .forEach((t) => hits.push(['Transaction', t.type + ' ' + taka(t.amount), t.id, null]));
+        modal('Search results for "' + q + '"', hits.length
+          ? `<ul class="audit">${hits.slice(0, 20).map((h, i) => `<li>
           <time>${h[0]}</time><div><b>${esc(h[1])}</b> <span class="pcard__meta">${h[2]}</span>
           ${h[3] ? `<button class="link" data-hit="${i}" style="margin-left:8px">Open</button>` : ''}</div></li>`).join('')}</ul>`
-      : '<p class="muted">Nothing matched. Try an ID, a name or a phone number.</p>', () => {
-      $$('[data-hit]').forEach((b) => b.addEventListener('click', () => {
-        const fn = hits[+b.dataset.hit][3];
-        closeModal(); if (fn) fn();
-      }));
-    });
-  }
+          : '<p class="muted">Nothing matched. Try an ID, a name or a phone number.</p>', () => {
+            $$('[data-hit]').forEach((b) => b.addEventListener('click', () => {
+              const fn = hits[+b.dataset.hit][3];
+              closeModal(); if (fn) fn();
+            }));
+          });
+      }
 
-  /* ----------------------------------------------------------------- boot */
-  function boot() {
-    try {
-      const t = localStorage.getItem(KEY + '.theme');
-      if (t) document.documentElement.setAttribute('data-theme', t);
-    } catch (e) {}
-    bindLogin();
-    S = load();
+      /* ----------------------------------------------------------------- boot */
+      function boot() {
+        try {
+          const t = localStorage.getItem(KEY + '.theme');
+          if (t) document.documentElement.setAttribute('data-theme', t);
+        } catch (e) { }
+        bindLogin();
+        S = load();
 
-    $('#menuBtn').addEventListener('click', () => $('#rail').classList.toggle('is-open'));
-    $('#bellBtn').addEventListener('click', () => { $('#notifPanel').hidden = !$('#notifPanel').hidden; });
-    $('#notifClose').addEventListener('click', () => { $('#notifPanel').hidden = true; });
-    $('#notifClear').addEventListener('click', () => {
-      S.alerts.forEach((a) => { a.read = true; });
-      save(); paintBell(); paintBadges(); toast('Alerts marked as read.');
-    });
-    $('#logoutBtn').addEventListener('click', () => {
-      $('#app').classList.add('is-hidden');
-      $('#authScreen').classList.remove('is-hidden');
-      $('#adOtp').value = '';
-    });
-    $('#globalSearch').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') globalSearch(e.target.value);
-    });
-    $('#modalClose').addEventListener('click', closeModal);
-    $('#modal').addEventListener('click', (e) => { if (e.target.id === 'modal') closeModal(); });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') { closeModal(); $('#notifPanel').hidden = true; }
-    });
-    window.addEventListener('hashchange', () => { if (S) route(); });
+        $('#menuBtn').addEventListener('click', () => $('#rail').classList.toggle('is-open'));
+        $('#bellBtn').addEventListener('click', () => { $('#notifPanel').hidden = !$('#notifPanel').hidden; });
+        $('#notifClose').addEventListener('click', () => { $('#notifPanel').hidden = true; });
+        $('#notifClear').addEventListener('click', () => {
+          S.alerts.forEach((a) => { a.read = true; });
+          save(); paintBell(); paintBadges(); toast('Alerts marked as read.');
+        });
+        $('#logoutBtn').addEventListener('click', () => {
+          $('#app').classList.add('is-hidden');
+          $('#authScreen').classList.remove('is-hidden');
+          $('#adOtp').value = '';
+        });
+        $('#globalSearch').addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') globalSearch(e.target.value);
+        });
+        $('#modalClose').addEventListener('click', closeModal);
+        $('#modal').addEventListener('click', (e) => { if (e.target.id === 'modal') closeModal(); });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') { closeModal(); $('#notifPanel').hidden = true; }
+        });
+        window.addEventListener('hashchange', () => { if (S) route(); });
 
-    if (S && S.admin) enterApp();
-  }
+        if (S && S.admin) enterApp();
+      }
 
-  document.addEventListener('DOMContentLoaded', boot);
-})();
+      document.addEventListener('DOMContentLoaded', boot);
+    })();
 
-</script>
+  </script>
+  
 </body>
+
 </html>
+
