@@ -672,7 +672,7 @@
 .flash-curr-price {
   font-size: 1.05rem;
   font-weight: 800;
-  color: #EA580C;
+  color: #0D382A;
 }
 
 .flash-orig-price {
@@ -691,15 +691,15 @@
 }
 
 .flash-stock-fill {
-  background: linear-gradient(90deg, #F97316, #EF4444);
+  background: linear-gradient(90deg, #10B981, #0D382A);
   height: 100%;
   border-radius: 3px;
 }
 
 .flash-stock-text {
   font-size: 0.68rem;
-  color: #6B7280;
-  font-weight: 600;
+  color: #0D382A;
+  font-weight: 700;
   display: flex;
   justify-content: space-between;
 }

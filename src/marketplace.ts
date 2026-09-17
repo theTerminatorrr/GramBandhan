@@ -412,7 +412,6 @@ export class MarketplaceController {
                 <span>🌾 GramBondhon</span>
                 <span style="font-size:0.75rem;background:#10B981;color:#FFF;padding:1px 6px;border-radius:10px;">Store</span>
               </div>
-              <div class="market-brand-location">📍 Delivery to: Banani, Dhaka</div>
             </div>
           </div>
 
@@ -427,7 +426,7 @@ export class MarketplaceController {
                 type="text" 
                 class="market-search-input" 
                 id="market-search-input" 
-                placeholder="Search 100+ rural items (try typing 'r' for Rice, Rui, Radhuni...)" 
+                placeholder="Search 50+ rural items (try typing 'r' for Rice, Rui, Radhuni...)" 
                 value="${this.searchQuery}"
                 autocomplete="off"
               />
@@ -1120,7 +1119,7 @@ export class MarketplaceController {
           <div class="market-empty-state">
             <div style="font-size: 3rem; margin-bottom: 12px;">🛍️</div>
             <h3>Your Shopping Bag is Empty</h3>
-            <p>Explore 100+ authentic village items from verified Bangladeshi producers.</p>
+            <p>Explore 50+ authentic village items from verified Bangladeshi producers.</p>
             <button class="btn btn-primary" id="btn-empty-shop-now" style="margin-top: 14px;">
               Start Shopping Now
             </button>
