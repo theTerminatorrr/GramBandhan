@@ -102,23 +102,7 @@ Every file in this project is divided by feature with **zero redundancy**, makin
 
 ---
 
-## 4. Teacher Viva / Defense Q&A Cheat Sheet
 
-### Q1: "How did you divide and name your project files?"
-> **Answer**:  
-> *"The project is divided cleanly by feature domain with zero redundancy. Every sector has a matching set of files across HTML, CSS, TypeScript, and JavaScript. For example, the Investor Marketplace feature has `investor_marketplace.html`, `css/investor_marketplace.css`, `src/investor_marketplace.ts`, and `js/investor_marketplace.js`. Similarly, the Hero Section, Dashboard, Projects, Financials, AI Risk, and Profile each have dedicated, self-explanatory files."*
-
-### Q2: "Why was the Capital Outflow & Return Inflow Ledger redesigned?"
-> **Answer**:  
-> *"Inside each project card, 4 sequential stages must be audited. In a multi-column portfolio layout, displaying 4 vertical columns inside a 320px card squished each column to ~70px, causing severe text wrapping and excessive vertical stretching. I redesigned it into a balanced 2×2 grid (`repeat(2, 1fr)`). This doubled the readable width per milestone, cut the card height by more than half, and removed all awkward empty whitespace while preserving the 100% Shariah audit trail."*
-
-### Q3: "How does the marketplace search autocomplete work?"
-> **Answer**:  
-> *"In `src/marketplace.ts`, the search input listens to the `input` event. When the user types (e.g., 'r'), it filters the 100 authentic Bangladeshi products using `product.name.toLowerCase().startsWith(query)` and displays an instant dropdown with matching items like Chinigura Rice, Rui Fish, and Radhuni Ghee. Selecting an item immediately opens that product's detail modal."*
-
-### Q4: "How does the system ensure ethical Shariah-compliant calculations?"
-> **Answer**:  
-> *"In `src/investor_projects.ts`, the return calculator simulates Mudarabah profit sharing (65% Farmer / 35% Investor) rather than charging interest (Riba). Returns are calculated dynamically as a variable range rather than a fixed guarantee, and every return value is accompanied by a DEMO DATA disclaimer explaining that returns depend on actual agricultural yields."*
 
 ---
 
