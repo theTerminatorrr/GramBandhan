@@ -1,10 +1,9 @@
 import { authManager } from './auth';
-import { HeroSectionController } from './hero-section';
-import { JoinAsInvestorController } from './join-as-investor';
-import { ActiveProjectsController } from './active-projects';
+import { HeroSectionController } from './homepage';
+import { JoinAsInvestorController, InvestorProfileController } from './investor';
+import { ActiveProjectsController } from './projects';
 import { MarketplaceController } from './marketplace';
 import { JoinAsFarmerController } from './join-as-farmer';
-import { InvestorProfileController } from './investor-profile';
 
 /**
  * =========================================================================
@@ -51,6 +50,9 @@ class GramBondhonApp {
     this.setupProjectsAndHeroButtons();
     this.setupModalEscapeKeys();
     this.setupSmoothScroll();
+
+    // 3. Route to dedicated page view if opening specific HTML file
+    this.routeDedicatedPageView();
 
     console.log('🌾 GramBondhon (গ্রামীণ বন্ধন) initialized successfully with sector modules.');
   }
@@ -186,6 +188,136 @@ class GramBondhonApp {
         }
       });
     });
+  }
+
+  private routeDedicatedPageView(): void {
+    const rawPath = window.location.pathname.toLowerCase();
+    const rawHash = window.location.hash.toLowerCase();
+    const pageName = rawPath.split('/').pop() || '';
+
+    // Expose controllers globally
+    (window as any).gramBondhon = {
+      app: this,
+      auth: authManager,
+      hero: this.heroSection,
+      investor: this.investorProfile,
+      projects: this.activeProjects,
+      marketplace: this.marketplace,
+      farmer: this.joinAsFarmer
+    };
+
+    // 1. INVESTOR MARKETPLACE: investor_marketplace.html
+    if (pageName.includes('investor_marketplace')) {
+      if (!authManager.isAuthenticated()) {
+        authManager.demoLogin('investor');
+      }
+      setTimeout(() => {
+        this.investorProfile.openDashboard('marketplace');
+      }, 50);
+      return;
+    }
+
+    // 2. INVESTOR PROJECTS: investor_projects.html
+    if (pageName.includes('investor_projects') || pageName.includes('projects') || rawHash.includes('projects')) {
+      if (!authManager.isAuthenticated()) {
+        authManager.demoLogin('investor');
+      }
+      setTimeout(() => {
+        this.investorProfile.openDashboard('projects');
+      }, 50);
+      return;
+    }
+
+    // 3. INVESTOR DASHBOARD: investor_dashboard.html
+    if (pageName.includes('investor_dashboard') || pageName.includes('dashboard') || rawHash.includes('dashboard')) {
+      if (!authManager.isAuthenticated()) {
+        authManager.demoLogin('investor');
+      }
+      setTimeout(() => {
+        this.investorProfile.openDashboard('dashboard');
+      }, 50);
+      return;
+    }
+
+    // 4. INVESTOR FINANCIALS / PORTFOLIO: investor_financials.html
+    if (pageName.includes('investor_financials') || pageName.includes('financials') || pageName.includes('portfolio')) {
+      if (!authManager.isAuthenticated()) {
+        authManager.demoLogin('investor');
+      }
+      setTimeout(() => {
+        this.investorProfile.openDashboard('financials');
+      }, 50);
+      return;
+    }
+
+    // 5. INVESTOR AI RISK: investor_airisk.html
+    if (pageName.includes('investor_airisk') || pageName.includes('airisk')) {
+      if (!authManager.isAuthenticated()) {
+        authManager.demoLogin('investor');
+      }
+      setTimeout(() => {
+        this.investorProfile.openDashboard('airisk');
+      }, 50);
+      return;
+    }
+
+    // 6. INVESTOR PROFILE: investor_profile.html
+    if (pageName.includes('investor_profile') || pageName.includes('profile')) {
+      if (!authManager.isAuthenticated()) {
+        authManager.demoLogin('investor');
+      }
+      setTimeout(() => {
+        this.investorProfile.openDashboard('settings');
+      }, 50);
+      return;
+    }
+
+    // 7. INVESTOR HOMEPAGE: investor.html
+    if (pageName.includes('investor') || rawHash.includes('investor')) {
+      if (!authManager.isAuthenticated()) {
+        authManager.demoLogin('investor');
+      }
+      this.investorProfile.handleAuthChange(authManager.getUser());
+      return;
+    }
+
+    // 8. PUBLIC MARKETPLACE STORE: marketplace.html
+    if (pageName.includes('market') || rawHash.includes('marketplace')) {
+      setTimeout(() => {
+        this.marketplace.openMarketplace('storefront');
+      }, 50);
+      return;
+    }
+
+    // 9. ORDERS PAGE: orders.html
+    if (pageName.includes('orders') || rawHash.includes('orders')) {
+      setTimeout(() => {
+        this.marketplace.openBuyerProfile('on_the_way');
+      }, 50);
+      return;
+    }
+
+    // 10. LOGIN: login.html
+    if (pageName.includes('login') || rawHash.includes('login')) {
+      setTimeout(() => {
+        this.joinAsInvestor.openAuthModal('login');
+      }, 50);
+      return;
+    }
+
+    // 11. REGISTER: register.html
+    if (pageName.includes('register') || rawHash.includes('register')) {
+      setTimeout(() => {
+        this.joinAsInvestor.openAuthModal('signup');
+      }, 50);
+      return;
+    }
+    if (pageName.includes('register') || rawHash.includes('register')) {
+      setTimeout(() => {
+        this.joinAsInvestor.openAuthModal('signup');
+      }, 50);
+      return;
+    }
   }
 
   public showToast(message: string): void {

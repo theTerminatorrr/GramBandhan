@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GramBandhan - Homepage</title>
+  <title>GramBandhan - Empowering Rural Growth Through Ethical Investment</title>
   
   <meta name="description" content="Connecting global ethical investors with local farmers and rural women artisans to build a sustainable, interest-free future for rural communities in Bangladesh." />
 
@@ -13,6 +13,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="./src/style.css" />
+  <style>
+    /* Direct Marketplace Display */
+    .market-modal-backdrop {
+      display: flex !important;
+    }
+    #hero-slideshow, .spotlight-section, .projects-section, .how-it-works-section, .marketplace-section, .testimonials-section, .impact-stats-section, .main-footer {
+      display: none !important;
+    }
+  </style>
 </head>
 <body>
 
@@ -23,7 +32,7 @@
     <div class="container nav-content">
       
       <!-- Brand Logo -->
-      <a href="homepage.html" class="brand-logo" aria-label="GramBandhan Home">
+      <a href="#hero-slideshow" class="brand-logo" aria-label="GramBandhan Home">
         <svg class="brand-leaf-icon" viewBox="0 0 24 24" fill="none" style="width:26px;height:26px;flex-shrink:0;">
           <path d="M21 3C13.5 3.5 6 9 4 17.5C3.5 19.5 4.5 21 6.5 21.5C8 22 10 21.5 12 20C17.5 16 20.5 10 21 3Z" fill="#10B981"/>
           <path d="M8.5 17C12 13.5 15.5 10 19 5.5" stroke="#02221A" stroke-width="1.8" stroke-linecap="round"/>
@@ -34,9 +43,9 @@
       <!-- Expanded Desktop Navigation Menu Matching Project Ecosystem -->
       <nav class="nav-menu" aria-label="Main Navigation">
         <ul class="nav-links">
-          <li><a href="homepage.html" class="nav-link active">Home</a></li>
+          <li><a href="homepage.html" class="nav-link">Home</a></li>
           <li><a href="projects.html" class="nav-link">Investor Projects</a></li>
-          <li><a href="market.html" class="nav-link">Marketplace</a></li>
+          <li><a href="market.html" class="nav-link active">Marketplace</a></li>
           <li><a href="investor.html" class="nav-link">Investor</a></li>
           <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
           <li><a href="homepage.html#how-it-works" class="nav-link">How It Works</a></li>
@@ -56,10 +65,10 @@
 
   <main>
     <!-- =========================================================================
-         SECTOR: HERO SECTION (THE SLIDESHOW IS IN IT)
-         Logic: src/hero-section.ts | Styles: css/hero-section.css
+         SECTOR: HERO SECTION
+         Logic: src/hero-section.ts | Styles: src/styles/hero-section.css
          ========================================================================= -->
-    <section class="hero-section" id="hero-slideshow" data-section-name="Hero Section" aria-label="Hero Section - Slideshow">
+    <section class="hero-section" id="hero-slideshow">
       <!-- Fast cycling crystal-clear slides of authentic Bangladeshi agriculture & artisans -->
       <div class="hero-slides-wrapper" id="hero-slides-wrapper"></div>
 

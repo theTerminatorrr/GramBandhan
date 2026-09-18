@@ -411,9 +411,9 @@ export class MarketplaceController {
               <div class="market-brand-title" style="display:flex;align-items:center;gap:6px;">
                 <svg class="brand-leaf-icon" viewBox="0 0 24 24" fill="none" style="width:20px;height:20px;">
                   <path d="M21 3C13.5 3.5 6 9 4 17.5C3.5 19.5 4.5 21 6.5 21.5C8 22 10 21.5 12 20C17.5 16 20.5 10 21 3Z" fill="#10B981"/>
-                  <path d="M8.5 17C12 13.5 15.5 10 19 5.5" stroke="#02221A" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M8.5 17C12 13.5 15.5 10 19 5.5" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"/>
                 </svg>
-                <span style="font-weight:800;color:#02221A;">GramBandhan</span>
+                <span style="font-weight:800;color:#FFFFFF;">GramBandhan</span>
                 <span style="font-size:0.75rem;background:#10B981;color:#FFF;padding:1px 6px;border-radius:10px;">Store</span>
               </div>
             </div>
