@@ -70,6 +70,8 @@ export class InvestorProfileController {
   private aiCoopRating: 'tier1' | 'tier2' = 'tier1';
   private isAiSimulating: boolean = false;
   private aiSimulationStep: number = 4;
+  private aiSelectedPrincipal: number = 20000;
+  private aiActivePreset: 'safe' | 'monsoon' | 'market' | 'custom' = 'safe';
 
   // Notification Drawer state
   private isNotificationOpen: boolean = false;
@@ -692,12 +694,12 @@ export class InvestorProfileController {
       <!-- Header Row -->
       <div class="dash-content-header">
         <div class="dash-title-group">
-          <h1>Portfolio Overview</h1>
-          <p>Real-time performance metrics for AgroVest Bangladesh operations.</p>
+          <h1>My Investment Portfolio</h1>
+          <p>Real-time personal portfolio performance, active field deployments, and profit payouts for ${this.investorProfileSettings.fullName || 'Tariq Rahman'}.</p>
         </div>
 
         <div class="dash-header-actions">
-          <span class="dash-live-badge">Live Updates</span>
+          <span class="dash-live-badge">Live Portfolio</span>
           <span class="dash-sync-time">Last synced: ${s.lastSynced}</span>
           <button class="dash-btn-export" id="btn-export-pdf">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -705,7 +707,7 @@ export class InvestorProfileController {
               <polyline points="7 10 12 15 17 10"></polyline>
               <line x1="12" y1="15" x2="12" y2="3"></line>
             </svg>
-            <span>Export PDF</span>
+            <span>Export Statement</span>
           </button>
         </div>
       </div>
@@ -750,21 +752,21 @@ export class InvestorProfileController {
           </div>
         </div>
 
-        <!-- 3. Total Account Balance / Savings & Insurance Pool -->
+        <!-- 3. Available Wallet Balance -->
         <div class="dash-square-card dash-card-soft-mint">
           <div class="dash-card-top-row">
             <div class="dash-card-icon-wrap">🛡️</div>
-            <span class="dash-card-badge badge-stable">Stable</span>
+            <span class="dash-card-badge badge-stable">Withdrawable</span>
           </div>
           <div>
-            <div class="dash-stat-label">Total Account Balance (Pool)</div>
+            <div class="dash-stat-label">Available Wallet Balance</div>
             <div class="dash-stat-val" style="color: #064E3B;">৳ ${(s.totalAccountBalanceBDT).toLocaleString()}</div>
             <div class="dash-progress-line">
               <div class="dash-progress-fill" style="width: 85%; background: #10B981;"></div>
             </div>
             <div class="dash-stat-subline">
-              <span>Savings: <strong>৳ 12.4M</strong></span>
-              <span>Insurance: <strong>৳ 6.5M</strong></span>
+              <span>Withdrawable: <strong>৳ 125,000</strong></span>
+              <span>Reinvest Ready: <strong>৳ 60,000</strong></span>
             </div>
           </div>
         </div>
@@ -819,16 +821,18 @@ export class InvestorProfileController {
         </div>
       </div>
 
-      <!-- MIDDLE SECTION: MAP & DONUT CHART (PHOTO 3) -->
+      <!-- MIDDLE SECTION: MAP & DONUT CHART (INVESTOR-CENTRIC) -->
       <div class="dash-middle-grid">
-        <!-- Geographical Distribution of Bangladesh -->
+        <!-- Geographical Distribution of My Investments -->
         <div class="dash-panel-card">
           <div class="dash-panel-header">
-            <h3>Geographical Distribution</h3>
+            <div>
+              <h3>My Active Field Locations</h3>
+              <p style="margin: 2px 0 0; font-size: 0.75rem; color: #64748B;">Your ৳ 450,000 capital deployed across partner farms</p>
+            </div>
             <div class="dash-map-legend">
-              <span class="dot-density-high">● High Density</span>
+              <span class="dot-density-high">● High Allocation</span>
               <span class="dot-density-med">● Medium</span>
-              <span class="dot-density-low">● Low</span>
             </div>
           </div>
 
@@ -840,52 +844,55 @@ export class InvestorProfileController {
                     fill="#1C4337" stroke="#34D399" stroke-width="1.5" />
             </svg>
 
-            <!-- Map pins matching Photo 3 -->
-            <div class="map-pin-marker" style="top: 22%; left: 32%;" title="Rangpur Division: ৳ 8.1M">
+            <!-- Map pins showing investor's capital and projects -->
+            <div class="map-pin-marker" style="top: 22%; left: 32%;" title="Rangpur: ৳ 120,000 (2 Projects • Maize & Mustard)">
               <div class="map-pin-dot"></div>
               <span class="map-pin-label">Rangpur</span>
             </div>
 
-            <div class="map-pin-marker" style="top: 38%; left: 24%;" title="Rajshahi Division: ৳ 15.2M">
+            <div class="map-pin-marker" style="top: 38%; left: 24%;" title="Rajshahi: ৳ 160,000 (3 Projects • Paddy & Dairy)">
               <div class="map-pin-dot"></div>
               <span class="map-pin-label">Rajshahi</span>
             </div>
 
-            <div class="map-pin-marker" style="top: 32%; left: 68%;" title="Sylhet Division: ৳ 12.4M">
+            <div class="map-pin-marker" style="top: 32%; left: 68%;" title="Sylhet: ৳ 95,000 (2 Projects • Organic Tea & Fish)">
               <div class="map-pin-dot"></div>
               <span class="map-pin-label">Sylhet</span>
             </div>
 
-            <div class="map-pin-marker" style="top: 68%; left: 66%;" title="Chittagong Division: ৳ 24.6M">
+            <div class="map-pin-marker" style="top: 68%; left: 66%;" title="Chittagong: ৳ 75,000 (1 Project • Nakshi Kantha Artisan)">
               <div class="map-pin-dot"></div>
               <span class="map-pin-label">Chittagong</span>
             </div>
           </div>
 
           <div class="dash-division-stats-row">
-            <div class="dash-div-stat">
-              <span>Sylhet</span>
-              <strong>৳ 12.4M</strong>
-            </div>
-            <div class="dash-div-stat">
-              <span>Rangpur</span>
-              <strong>৳ 8.1M</strong>
-            </div>
-            <div class="dash-div-stat">
-              <span>Chittagong</span>
-              <strong>৳ 24.6M</strong>
-            </div>
-            <div class="dash-div-stat">
+            <div class="dash-div-stat" title="3 Projects • Paddy & Dairy Farm">
               <span>Rajshahi</span>
-              <strong>৳ 15.2M</strong>
+              <strong>৳ 160,000</strong>
+            </div>
+            <div class="dash-div-stat" title="2 Projects • Maize & Mustard">
+              <span>Rangpur</span>
+              <strong>৳ 120,000</strong>
+            </div>
+            <div class="dash-div-stat" title="2 Projects • Organic Tea & Fish">
+              <span>Sylhet</span>
+              <strong>৳ 95,000</strong>
+            </div>
+            <div class="dash-div-stat" title="1 Project • Nakshi Kantha Artisan">
+              <span>Chittagong</span>
+              <strong>৳ 75,000</strong>
             </div>
           </div>
         </div>
 
-        <!-- Quarterly Platform Profit Donut Chart (Photo 3) -->
+        <!-- My Returns by Sector Donut Chart (Investor-Centric) -->
         <div class="dash-panel-card">
           <div class="dash-panel-header">
-            <h3>Quarterly Platform Profit</h3>
+            <div>
+              <h3>My Profit by Sector</h3>
+              <p style="margin: 2px 0 0; font-size: 0.75rem; color: #64748B;">Sector breakdown of your ৳ 68,500 total earnings</p>
+            </div>
           </div>
 
           <div class="donut-chart-wrap">
@@ -894,41 +901,41 @@ export class InvestorProfileController {
               <svg width="160" height="160" viewBox="0 0 160 160">
                 <!-- Background circle -->
                 <circle cx="80" cy="80" r="60" fill="transparent" stroke="#E2E8F0" stroke-width="22" />
-                <!-- Farmers 35% -->
+                <!-- Crops 42% (Arc length 158.3) -->
                 <circle cx="80" cy="80" r="60" fill="transparent" stroke="#047857" stroke-width="22"
-                        stroke-dasharray="131.9 376.9" stroke-dashoffset="0" />
-                <!-- Women Artisans 30% -->
-                <circle cx="80" cy="80" r="60" fill="transparent" stroke="#D97706" stroke-width="22"
-                        stroke-dasharray="113.1 376.9" stroke-dashoffset="-131.9" />
-                <!-- Investors 25% -->
+                        stroke-dasharray="158.3 376.9" stroke-dashoffset="0" />
+                <!-- Livestock & Dairy 28% (Arc length 105.6) -->
                 <circle cx="80" cy="80" r="60" fill="transparent" stroke="#2563EB" stroke-width="22"
-                        stroke-dasharray="94.2 376.9" stroke-dashoffset="-245" />
-                <!-- Platform 10% -->
+                        stroke-dasharray="105.6 376.9" stroke-dashoffset="-158.3" />
+                <!-- Women Artisans 18% (Arc length 67.9) -->
+                <circle cx="80" cy="80" r="60" fill="transparent" stroke="#D97706" stroke-width="22"
+                        stroke-dasharray="67.9 376.9" stroke-dashoffset="-263.9" />
+                <!-- Fisheries 12% (Arc length 45.2) -->
                 <circle cx="80" cy="80" r="60" fill="transparent" stroke="#10B981" stroke-width="22"
-                        stroke-dasharray="37.7 376.9" stroke-dashoffset="-339.2" />
+                        stroke-dasharray="45.2 376.9" stroke-dashoffset="-331.8" />
               </svg>
               <div class="donut-center-info">
-                <span>TOTAL</span>
-                <strong>৳ 4.2M</strong>
+                <span>MY PROFIT</span>
+                <strong>৳ 68.5K</strong>
               </div>
             </div>
 
             <div class="donut-legend-grid">
               <div class="donut-legend-item">
-                <span class="lbl"><span class="donut-legend-dot" style="background:#047857;"></span> Farmers</span>
-                <span class="pct">35%</span>
+                <span class="lbl"><span class="donut-legend-dot" style="background:#047857;"></span> Crops (শস্য)</span>
+                <span class="pct">42% (৳28.8K)</span>
               </div>
               <div class="donut-legend-item">
-                <span class="lbl"><span class="donut-legend-dot" style="background:#D97706;"></span> Women Artisans</span>
-                <span class="pct">30%</span>
+                <span class="lbl"><span class="donut-legend-dot" style="background:#2563EB;"></span> Dairy (দুগ্ধ)</span>
+                <span class="pct">28% (৳19.2K)</span>
               </div>
               <div class="donut-legend-item">
-                <span class="lbl"><span class="donut-legend-dot" style="background:#2563EB;"></span> Investors</span>
-                <span class="pct">25%</span>
+                <span class="lbl"><span class="donut-legend-dot" style="background:#D97706;"></span> Artisans (কারুশিল্প)</span>
+                <span class="pct">18% (৳12.3K)</span>
               </div>
               <div class="donut-legend-item">
-                <span class="lbl"><span class="donut-legend-dot" style="background:#10B981;"></span> Platform</span>
-                <span class="pct">10%</span>
+                <span class="lbl"><span class="donut-legend-dot" style="background:#10B981;"></span> Fisheries (মৎস্য)</span>
+                <span class="pct">12% (৳8.2K)</span>
               </div>
             </div>
           </div>
@@ -2856,6 +2863,10 @@ export class InvestorProfileController {
    * AI RISK ANALYSIS TAB: GramBandhan Krishi-AI Risk & Pre-Investment Forecaster
    * Analyzes risk from 5-year previous data before investing
    */
+  /**
+   * AI RISK ANALYSIS TAB: GramBandhan Krishi-AI Risk & Pre-Investment Forecaster
+   * Analyzes risk from 5-year previous data before investing in plain, easy-to-understand terms
+   */
   private renderAiRiskTab(container: HTMLElement): void {
     const allAvailableProjects = ACTIVE_PROJECTS;
     const selectedProj = allAvailableProjects.find(p => p.id === this.aiSelectedProjectId) || allAvailableProjects[0];
@@ -2880,6 +2891,7 @@ export class InvestorProfileController {
       coopTrustScore * 0.20
     ) / 10;
     const aiScore = Math.min(9.8, Math.max(6.2, parseFloat(rawScore.toFixed(1))));
+    const capitalSafetyPercent = Math.min(98, Math.max(78, Math.round(aiScore * 10)));
 
     // ROI projection based on inputs
     const baseRoi = (selectedProj as any).roiPercentage || selectedProj.returnRangePercent?.[1] || 16.5;
@@ -2887,20 +2899,60 @@ export class InvestorProfileController {
     const minRoi = (parseFloat(projectedRoi) - 1.8).toFixed(1);
     const maxRoi = (parseFloat(projectedRoi) + 2.1).toFixed(1);
 
-    const investmentPrincipal = selectedProj.minInvestmentBDT || 20000;
+    const investmentPrincipal = this.aiSelectedPrincipal || selectedProj.minInvestmentBDT || 20000;
     const estimatedProfit = Math.round((investmentPrincipal * parseFloat(projectedRoi)) / 100);
+    const totalHarvestPayout = investmentPrincipal + estimatedProfit;
 
     container.innerHTML = `
       <!-- Header Row -->
       <div class="dash-content-header">
         <div class="dash-title-group">
           <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-            <span class="ai-engine-chip">⚡ KRISHI-AI v2.8 NEURAL ENGINE</span>
-            <span class="ai-trained-chip">Trained on 5-Year BMD & Sentinel-2 Archives</span>
+            <span class="ai-engine-chip">⚡ KRISHI-AI v2.8 SAFETY CHECKER</span>
+            <span class="ai-trained-chip">5-Year Field & Satellite Archives</span>
           </div>
-          <h1>AI Pre-Investment Risk & Yield Forecaster (কৃষি এআই ঝুঁকি ও ফলন পূর্বাভাস)</h1>
-          <p>Evaluate project feasibility, 5-year flood history, satellite NDVI soil biometrics, and mandi price volatility before committing capital.</p>
+          <h1>AI Pre-Investment Risk & Safety Forecaster (কৃষি এআই ঝুঁকি ও নিরাপত্তা যাচাই)</h1>
+          <p>Evaluate project safety, 5-year flood history, crop greenery biometrics, and market price stability in plain words before investing.</p>
         </div>
+      </div>
+
+      <!-- 3-STEP EASY ONBOARDING GUIDE BANNER -->
+      <div class="ai-easy-guide-banner">
+        <div class="ai-guide-step-card">
+          <div class="ai-guide-icon">🌾</div>
+          <div class="ai-guide-text">
+            <h4>1. Pick a Farm Project</h4>
+            <p>Select any vetted crop, dairy, or artisan project in Bangladesh.</p>
+          </div>
+        </div>
+        <div class="ai-guide-step-card">
+          <div class="ai-guide-icon">🤖</div>
+          <div class="ai-guide-text">
+            <h4>2. AI Checks 4 Key Risks</h4>
+            <p>Checks 5-yr flood history, satellite crop health, market price & farmer trust.</p>
+          </div>
+        </div>
+        <div class="ai-guide-step-card">
+          <div class="ai-guide-icon">💡</div>
+          <div class="ai-guide-text">
+            <h4>3. Plain Safety Rating & Profit</h4>
+            <p>See clear safety verdict (Safe/Moderate), capital protection %, and exact returns.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1-CLICK SCENARIO TEST PRESETS -->
+      <div class="ai-presets-bar">
+        <span class="ai-presets-label">⚡ 1-Click Test Scenarios (এক ক্লিকে পরিস্থিতি যাচাই):</span>
+        <button class="ai-preset-btn ${this.aiActivePreset === 'safe' ? 'active' : ''}" data-preset="safe">
+          <span>🌟 Typical Safe Season (স্বাভাবিক মৌসুম)</span>
+        </button>
+        <button class="ai-preset-btn ${this.aiActivePreset === 'monsoon' ? 'active' : ''}" data-preset="monsoon">
+          <span>🌧️ Heavy Monsoon Stress Test (বন্যা সহনশীলতা)</span>
+        </button>
+        <button class="ai-preset-btn ${this.aiActivePreset === 'market' ? 'active' : ''}" data-preset="market">
+          <span>📉 Wholesale Price Dip Test (বাজার দর পতন)</span>
+        </button>
       </div>
 
       <!-- MAIN AI TWO-COLUMN WORKBENCH -->
@@ -2910,8 +2962,8 @@ export class InvestorProfileController {
           <div class="ai-card-header">
             <span class="ai-header-icon">🎛️</span>
             <div>
-              <h3>Pre-Investment Simulation Parameters</h3>
-              <p>Configure project & historical environmental variables to run predictive inference.</p>
+              <h3>Simulation Controls (সহজ সিমুলেশন সেটিংস)</h3>
+              <p>Adjust environmental and market factors to test how resilient your capital is.</p>
             </div>
           </div>
 
@@ -2933,58 +2985,59 @@ export class InvestorProfileController {
             <div class="ai-mini-info">
               <strong>${selectedProj.name}</strong>
               <span class="mini-meta">📍 ${selectedProj.location} • Category: ${selectedProj.category}</span>
-              <span class="mini-funding">Campaign: <strong>${Math.round((selectedProj.fundingRaisedBDT / (selectedProj.fundingGoalBDT || 1)) * 100)}% Funded</strong> • ${selectedProj.duration}</span>
+              <span class="mini-funding">Campaign: <strong>${Math.round((selectedProj.fundingRaisedBDT / (selectedProj.fundingGoalBDT || 1)) * 100)}% Funded</strong> • Duration: ${selectedProj.duration}</span>
             </div>
           </div>
 
-          <!-- Historical Control 1: Monsoon & Flood History (5-Year BMD Model) -->
+          <!-- Control 1: Monsoon & Flood History -->
           <div class="ai-form-group">
             <div class="ai-lbl-row">
-              <label class="ai-field-lbl">2. 5-Year Historical Flood & Monsoon Risk (বিগত ৫ বছরের বন্যা রেকর্ড)</label>
+              <label class="ai-field-lbl">2. 5-Year Flood History & Drainage (বন্যার ঝুঁকি ও বিগত ৫ বছরের রেকর্ড)</label>
               <span class="ai-badge-val">${floodRiskPercent}% Flood Probability</span>
             </div>
             <select id="ai-flood-risk-select" class="ai-select-input">
-              <option value="low" ${this.aiFloodRiskLevel === 'low' ? 'selected' : ''}>Low Risk: Elevated Char / Polder Embankment (2021-2025: 0 Floods)</option>
-              <option value="medium" ${this.aiFloodRiskLevel === 'medium' ? 'selected' : ''}>Moderate Risk: Low Haor Riverbasin (2022 Monsoon Overtopping)</option>
-              <option value="high" ${this.aiFloodRiskLevel === 'high' ? 'selected' : ''}>High Risk: Active Riverbank Basin (Flash Flood Vulnerable)</option>
+              <option value="low" ${this.aiFloodRiskLevel === 'low' ? 'selected' : ''}>🟢 Low Risk: High Land & Polder Embankment (Zero Floods 2021-2025)</option>
+              <option value="medium" ${this.aiFloodRiskLevel === 'medium' ? 'selected' : ''}>🟡 Medium Risk: Low Riverbasin (Protected with Active Drainage Canals)</option>
+              <option value="high" ${this.aiFloodRiskLevel === 'high' ? 'selected' : ''}>🔴 High Risk: Active Riverbank (Vulnerable to Heavy Flash Floods)</option>
             </select>
-            <span class="ai-hint">Source: Bangladesh Meteorological Dept (BMD) Upazila Precipitation Anomaly Archive.</span>
+            <span class="ai-hint">Source: Bangladesh Meteorological Dept (BMD) 5-year regional rainfall anomalies.</span>
           </div>
 
-          <!-- Historical Control 2: Sentinel-2 Multi-Spectral NDVI Crop Vigour -->
+          <!-- Control 2: Soil & Crop Vigour (NDVI) -->
           <div class="ai-form-group">
             <div class="ai-lbl-row">
-              <label class="ai-field-lbl">3. Satellite Multispectral Soil Vigour (NDVI Biometrics)</label>
-              <span class="ai-badge-val" id="ai-ndvi-val-display">${this.aiNdviIndex} NDVI</span>
+              <label class="ai-field-lbl">3. Satellite Crop & Soil Health (স্যাটেলাইট মাটির উর্বরতা ও স্বাস্থ্য)</label>
+              <span class="ai-badge-val" id="ai-ndvi-val-display">${this.aiNdviIndex} NDVI (${this.aiNdviIndex >= 0.84 ? 'Optimal Greenery' : this.aiNdviIndex >= 0.7 ? 'Healthy' : 'Dry/Stressed'})</span>
             </div>
             <input type="range" id="ai-ndvi-slider" min="0.50" max="0.95" step="0.01" value="${this.aiNdviIndex}" class="ai-range-slider" />
             <div class="ai-slider-ticks">
               <span>0.50 (Dry/Poor)</span>
-              <span>0.70 (Normal)</span>
-              <span>0.84 (Optimal)</span>
-              <span>0.95 (Dense Prime)</span>
+              <span>0.70 (Healthy)</span>
+              <span>0.84 (Optimal Greenery)</span>
+              <span>0.95 (Prime Lush)</span>
             </div>
+            <span class="ai-hint">High NDVI means dense, well-fertilized crops with strong photosynthesis and root growth.</span>
           </div>
 
-          <!-- Historical Control 3: Wholesale Mandi Price Shock Exposure -->
+          <!-- Control 3: Wholesale Mandi Price Shock Exposure -->
           <div class="ai-form-group">
             <div class="ai-lbl-row">
-              <label class="ai-field-lbl">4. Wholesale Mandi Price Volatility (কারওয়ান বাজার ৫ বছরের মূল্য ওঠানামা)</label>
-              <span class="ai-badge-val">${this.aiMandiVolatility.toUpperCase()} VOLATILITY</span>
+              <label class="ai-field-lbl">4. Crop Selling Price Safety (ফসল বিক্রির মূল্য নিশ্চয়তা)</label>
+              <span class="ai-badge-val">${this.aiMandiVolatility === 'low' ? 'LOCKED PRICE (SAFE)' : this.aiMandiVolatility === 'medium' ? 'NORMAL BUFFER' : 'OPEN MARKET SWINGS'}</span>
             </div>
             <select id="ai-volatility-select" class="ai-select-input">
-              <option value="low" ${this.aiMandiVolatility === 'low' ? 'selected' : ''}>Guaranteed Forward Contract: Locked Wholesale Price with Off-taker (PRAN / ACI)</option>
-              <option value="medium" ${this.aiMandiVolatility === 'medium' ? 'selected' : ''}>Moderate Market Fluctuation: +/- 10% Historical Mandi Buffer</option>
-              <option value="high" ${this.aiMandiVolatility === 'high' ? 'selected' : ''}>Open Market Spot Auction: +/- 25% Price Volatility Exposure</option>
+              <option value="low" ${this.aiMandiVolatility === 'low' ? 'selected' : ''}>✅ Guaranteed Buyer: Pre-agreed Fixed Price with PRAN / ACI (Lowest Risk)</option>
+              <option value="medium" ${this.aiMandiVolatility === 'medium' ? 'selected' : ''}>⚠️ Standard Wholesale: +/- 10% Historical Mandi Buffer</option>
+              <option value="high" ${this.aiMandiVolatility === 'high' ? 'selected' : ''}>⚡ Open Spot Auction: +/- 25% Market Price Swings (Higher Risk)</option>
             </select>
           </div>
 
-          <!-- Historical Control 4: Cooperative Farmer Credibility -->
+          <!-- Control 4: Cooperative Farmer Credibility -->
           <div class="ai-form-group">
-            <label class="ai-field-lbl">5. Upazila Farmer Cooperative Track Record (কৃষক সমবায়ের ঋণ পরিশোধ মান)</label>
+            <label class="ai-field-lbl">5. Farmer Cooperative Reliability (কৃষক সমবায়ের সুনাম ও রেকর্ড)</label>
             <select id="ai-coop-select" class="ai-select-input">
-              <option value="tier1" ${this.aiCoopRating === 'tier1' ? 'selected' : ''}>Tier-1 Verified Guild: 99.4% Past Harvest Delivery & Shariah Compliance</option>
-              <option value="tier2" ${this.aiCoopRating === 'tier2' ? 'selected' : ''}>Tier-2 Developing Group: 95.0% Track Record (Under Field Agronomist Supervision)</option>
+              <option value="tier1" ${this.aiCoopRating === 'tier1' ? 'selected' : ''}>⭐ Tier-1 Certified Cooperative: 99.4% On-Time Harvest Delivery & 100% Halal</option>
+              <option value="tier2" ${this.aiCoopRating === 'tier2' ? 'selected' : ''}>🌱 Tier-2 Supervised Group: 95.0% Track Record (Under DAE Agronomist Guidance)</option>
             </select>
           </div>
 
@@ -2992,12 +3045,12 @@ export class InvestorProfileController {
           <button class="btn btn-primary ai-btn-run" id="btn-run-ai-simulation" ${this.isAiSimulating ? 'disabled' : ''}>
             ${this.isAiSimulating ? `
               <span class="ai-spinner"></span>
-              <span>Running Neural Simulation (ধাপ ${this.aiSimulationStep}/4)...</span>
+              <span>Running Neural Risk Simulation (ধাপ ${this.aiSimulationStep}/4)...</span>
             ` : `
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                 <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
               </svg>
-              <span>Run AI Neural Risk Audit (এআই ঝুঁকি বিশ্লেষণ চালান)</span>
+              <span>Run AI Risk Audit (এআই ঝুঁকি বিশ্লেষণ চালান)</span>
             `}
           </button>
         </div>
@@ -3009,24 +3062,24 @@ export class InvestorProfileController {
             <div class="ai-simulating-box">
               <div class="neural-pulse-loader"></div>
               <h3>Krishi-AI Deep Neural Inference in Progress...</h3>
-              <p>Simulating 10,000 Monte Carlo crop growth scenarios across historical climatic data.</p>
+              <p>Testing 10,000 crop growth and market price scenarios using 5-year historical data.</p>
               
               <div class="ai-sim-steps">
                 <div class="sim-step ${this.aiSimulationStep >= 1 ? 'step-done' : ''}">
                   <span>${this.aiSimulationStep > 1 ? '✓' : '1'}</span>
-                  <span>Querying 5-year BMD precipitation & haor flood records for ${selectedProj.location}...</span>
+                  <span>1. Checking 5-year monsoon rainfall & haor flood records for ${selectedProj.location}...</span>
                 </div>
                 <div class="sim-step ${this.aiSimulationStep >= 2 ? 'step-done' : ''}">
                   <span>${this.aiSimulationStep > 2 ? '✓' : '2'}</span>
-                  <span>Ingesting Sentinel-2 Multi-spectral NDVI satellite tensors & moisture saturation...</span>
+                  <span>2. Scanning Sentinel-2 satellite images for soil moisture and crop greenery...</span>
                 </div>
                 <div class="sim-step ${this.aiSimulationStep >= 3 ? 'step-done' : ''}">
                   <span>${this.aiSimulationStep > 3 ? '✓' : '3'}</span>
-                  <span>Executing 10,000-run Monte Carlo harvest mandi price shock simulation...</span>
+                  <span>3. Simulating wholesale crop market prices across Karwan Bazar and regional mandis...</span>
                 </div>
                 <div class="sim-step ${this.aiSimulationStep >= 4 ? 'step-done' : ''}">
                   <span>${this.aiSimulationStep >= 4 ? '✓' : '4'}</span>
-                  <span>Synthesizing Shariah compliance audit and agronomist mitigation advice...</span>
+                  <span>4. Finalizing Shariah compliance audit and expert agronomist safety advice...</span>
                 </div>
               </div>
             </div>
@@ -3040,35 +3093,63 @@ export class InvestorProfileController {
 
               <div class="ai-verdict-info">
                 <div class="ai-verdict-title-row">
-                  <h4>${aiScore >= 8.5 ? 'EXCELLENT • HIGHLY VIABLE' : aiScore >= 7.5 ? 'GOOD • MODERATE RISK' : 'ELEVATED RISK'}</h4>
-                  <span class="ai-shariah-tag">✓ 100% Halal Asset-Backed</span>
+                  <h4>${aiScore >= 8.5 ? 'EXCELLENT • HIGHLY VIABLE' : aiScore >= 7.5 ? 'GOOD • MODERATE RISK' : 'ELEVATED RISK • CAUTION'}</h4>
+                  <span class="ai-safety-badge ${aiScore >= 8.5 ? 'safe' : aiScore >= 7.5 ? 'moderate' : 'caution'}">
+                    ${aiScore >= 8.5 ? '🟢 VERY SAFE (অত্যন্ত নিরাপদ)' : aiScore >= 7.5 ? '🟡 MODERATE RISK (মাঝারি ঝুঁকি)' : '🔴 CAUTION (সতর্কতা)'}
+                  </span>
                 </div>
-                <p class="ai-verdict-summary">
-                  AI predictive engine confirms favorable pre-conditions for <strong>${selectedProj.name}</strong>. Historical flood immunity and active off-take agreements ensure strong capital protection.
-                </p>
+                <div style="display: flex; gap: 8px; align-items: center; margin-top: 4px;">
+                  <span class="ai-shariah-tag">✓ 100% Halal Asset-Backed</span>
+                  <span style="font-size: 0.75rem; font-weight: 750; color: #047857;">🛡️ ${capitalSafetyPercent}% Capital Protection</span>
+                </div>
               </div>
             </div>
 
-            <!-- Return Forecast Distribution Box -->
-            <div class="ai-forecast-box">
-              <div class="forecast-header">
-                <div>
-                  <span class="forecast-lbl">PROJECTED SHARIAH RETURN (পূর্বাভাসকৃত লভ্যাংশ)</span>
-                  <strong class="forecast-val">+${projectedRoi}% ROI</strong>
-                </div>
-                <div style="text-align: right;">
-                  <span class="forecast-lbl">ESTIMATED NET PROFIT</span>
-                  <strong class="forecast-amt">+ ৳ ${estimatedProfit.toLocaleString()} BDT</strong>
-                </div>
+            <!-- Plain-Language Summary Box -->
+            <div class="ai-plain-summary-box">
+              <div class="ai-plain-summary-header">
+                <span>💡</span>
+                <span>In Simple Words (সহজ কথায়):</span>
+              </div>
+              <p class="ai-plain-summary-desc">
+                ${aiScore >= 8.5 
+                  ? `Your investment in <strong>${selectedProj.name}</strong> is well-protected. The farmland is located on elevated ground with zero historical flood damage, and wholesale off-take contracts guarantee selling prices upon harvest.`
+                  : aiScore >= 7.5
+                  ? `This project has moderate risk. While farmland is protected by canals, market price buffers are advised. The cooperative has a solid 95%+ completion record.`
+                  : `Elevated weather or open auction volatility detected. Recommended only for experienced investors with diversified holdings.`}
+              </p>
+            </div>
+
+            <!-- Interactive Return & Profit Calculator -->
+            <div class="ai-calc-box">
+              <div class="ai-calc-header">
+                <span class="ai-calc-title">
+                  <span>💰</span>
+                  <span>Profit & Take-Home Calculator (মুনাফা ও ফেরত ক্যালকুলেটর)</span>
+                </span>
+                <span style="font-size: 0.725rem; font-weight: 800; color: #047857;">+${projectedRoi}% ROI (+${minRoi}% to +${maxRoi}%)</span>
               </div>
 
-              <div class="forecast-range-bar">
-                <div class="range-fill" style="width: 78%; margin-left: 12%;"></div>
+              <div class="ai-calc-pills">
+                <button class="ai-calc-pill ${investmentPrincipal === 10000 ? 'active' : ''}" data-amt="10000">৳ 10,000</button>
+                <button class="ai-calc-pill ${investmentPrincipal === 20000 ? 'active' : ''}" data-amt="20000">৳ 20,000</button>
+                <button class="ai-calc-pill ${investmentPrincipal === 50000 ? 'active' : ''}" data-amt="50000">৳ 50,000</button>
+                <button class="ai-calc-pill ${investmentPrincipal === 100000 ? 'active' : ''}" data-amt="100000">৳ 1,00,000</button>
               </div>
-              <div class="forecast-range-labels">
-                <span>95% Confidence Interval: <strong>+${minRoi}% (Bear Case)</strong></span>
-                <span>Expected: <strong>+${projectedRoi}%</strong></span>
-                <span>Optimistic: <strong>+${maxRoi}% (Bull Case)</strong></span>
+
+              <div class="ai-calc-results-row">
+                <div class="ai-calc-stat-item">
+                  <span class="ai-calc-stat-label">You Invest</span>
+                  <span class="ai-calc-stat-val">৳ ${investmentPrincipal.toLocaleString()}</span>
+                </div>
+                <div class="ai-calc-stat-item">
+                  <span class="ai-calc-stat-label">Projected Net Profit</span>
+                  <span class="ai-calc-stat-val profit">+ ৳ ${estimatedProfit.toLocaleString()}</span>
+                </div>
+                <div class="ai-calc-stat-item">
+                  <span class="ai-calc-stat-label">Total Payout (~${selectedProj.duration})</span>
+                  <span class="ai-calc-stat-val profit">৳ ${totalHarvestPayout.toLocaleString()}</span>
+                </div>
               </div>
             </div>
 
@@ -3077,7 +3158,7 @@ export class InvestorProfileController {
               <div class="factor-gauge-item">
                 <div class="gauge-head">
                   <span class="gauge-icon">🛡️</span>
-                  <span>Climate & Flood Resilience</span>
+                  <span>Flood & Climate Safety</span>
                   <strong>${100 - floodRiskPercent}%</strong>
                 </div>
                 <div class="gauge-track">
@@ -3089,56 +3170,85 @@ export class InvestorProfileController {
               <div class="factor-gauge-item">
                 <div class="gauge-head">
                   <span class="gauge-icon">🌱</span>
-                  <span>Soil Health & Chlorophyll Vigour</span>
+                  <span>Crop Greenery & Health</span>
                   <strong>${soilHealthScore}%</strong>
                 </div>
                 <div class="gauge-track">
                   <div class="gauge-fill" style="width: ${Math.min(100, soilHealthScore)}%; background: #059669;"></div>
                 </div>
-                <span class="gauge-sub">Sentinel-2 NDVI: ${this.aiNdviIndex} (Optimal Nitrogen Uptake)</span>
+                <span class="gauge-sub">Satellite NDVI: ${this.aiNdviIndex} (${this.aiNdviIndex >= 0.8 ? 'Optimal Growth' : 'Standard'})</span>
               </div>
 
               <div class="factor-gauge-item">
                 <div class="gauge-head">
                   <span class="gauge-icon">📈</span>
-                  <span>Mandi Price Shock Resistance</span>
+                  <span>Selling Price Protection</span>
                   <strong>${priceVolatilityScore}%</strong>
                 </div>
                 <div class="gauge-track">
                   <div class="gauge-fill" style="width: ${priceVolatilityScore}%; background: #0D9488;"></div>
                 </div>
-                <span class="gauge-sub">${this.aiMandiVolatility === 'low' ? 'Wholesale off-take contract locked' : 'Subject to Karwan Bazar fluctuations'}</span>
+                <span class="gauge-sub">${this.aiMandiVolatility === 'low' ? 'Guaranteed off-take price locked' : 'Subject to Karwan Bazar spot prices'}</span>
               </div>
 
               <div class="factor-gauge-item">
                 <div class="gauge-head">
                   <span class="gauge-icon">👨‍🌾</span>
-                  <span>Farmer Cooperative Credibility</span>
+                  <span>Farmer Cooperative Trust</span>
                   <strong>${coopTrustScore}%</strong>
                 </div>
                 <div class="gauge-track">
                   <div class="gauge-fill" style="width: ${coopTrustScore}%; background: #047857;"></div>
                 </div>
-                <span class="gauge-sub">${this.aiCoopRating === 'tier1' ? '12 consecutive successful seasons' : 'Supervised by DAE Agronomist'}</span>
+                <span class="gauge-sub">${this.aiCoopRating === 'tier1' ? '12 consecutive successful seasons' : 'Supervised by field agronomists'}</span>
               </div>
             </div>
 
-            <!-- AI Agronomist Actionable Report & Mitigation -->
-            <div class="ai-agronomist-advice-box">
-              <div class="advice-title-row">
-                <span class="advice-icon">🔬</span>
-                <strong>AI Agronomist Intelligence & Mitigation Summary (বিশেষজ্ঞ পরামর্শ)</strong>
+            <!-- "WHAT IF?" SAFETY GUARANTEE CARDS -->
+            <div class="ai-what-if-grid">
+              <div class="ai-what-if-card">
+                <div class="ai-what-if-question">
+                  <span>🌊</span>
+                  <span>What if severe floods strike?</span>
+                </div>
+                <p class="ai-what-if-answer">
+                  Farmland is situated on elevated polders with active perimeter drainage ditches. Zero crop loss recorded across 5 seasons.
+                </p>
               </div>
-              <ul class="advice-points">
-                <li><strong>Monsoon Sowing Window:</strong> Historical meteorological data confirms no severe haor flooding risks during the 120-day production timeline.</li>
-                <li><strong>Crop Health Telemetry:</strong> Spectral chlorophyll index (NDVI ${this.aiNdviIndex}) denotes healthy root establishment with bio-organic slurry.</li>
-                <li><strong>Market Liquidity:</strong> Pre-negotiated off-take ensures guaranteed wholesale settlement upon harvest without middleman markups.</li>
-                <li><strong>Recommendation:</strong> <strong>Approved for Investment.</strong> Capital is fully backed by tangible assets under Shariah Mudarabah contract.</li>
-              </ul>
+
+              <div class="ai-what-if-card">
+                <div class="ai-what-if-question">
+                  <span>📉</span>
+                  <span>What if market prices drop?</span>
+                </div>
+                <p class="ai-what-if-answer">
+                  Pre-negotiated forward contracts with commercial institutional buyers lock in minimum wholesale prices before harvest.
+                </p>
+              </div>
+
+              <div class="ai-what-if-card">
+                <div class="ai-what-if-question">
+                  <span>🌾</span>
+                  <span>What if crops get disease?</span>
+                </div>
+                <p class="ai-what-if-answer">
+                  DAE agronomists conduct weekly field visits. Organic bio-pesticides and cooperative reserve funds safeguard capital.
+                </p>
+              </div>
+
+              <div class="ai-what-if-card">
+                <div class="ai-what-if-question">
+                  <span>🕌</span>
+                  <span>Is this profit 100% Halal?</span>
+                </div>
+                <p class="ai-what-if-answer">
+                  100% Shariah Mudarabah partnership based on physical harvest sharing. Zero fixed interest (Riba-free).
+                </p>
+              </div>
             </div>
 
             <!-- Action Buttons Row -->
-            <div class="ai-actions-footer">
+            <div class="ai-actions-footer" style="margin-top: 18px;">
               <button class="btn btn-primary btn-ai-invest-direct" id="btn-ai-invest-direct">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                   <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -3160,14 +3270,22 @@ export class InvestorProfileController {
         </div>
       </div>
 
-      <!-- 3. HISTORICAL 5-YEAR DATA ARCHIVE TABLE (বিগত ৫ বছরের বাস্তব ফলন ও লভ্যাংশ রেকর্ড) -->
+      <!-- 3. HISTORICAL 5-YEAR DATA ARCHIVE TABLE -->
       <div class="dash-panel-card" style="margin-top: 24px;">
-        <div class="panel-header-row" style="margin-bottom: 14px;">
+        <div class="panel-header-row" style="margin-bottom: 12px;">
           <div>
-            <h3 style="margin: 0; font-size: 1.05rem; color: #02221A;">5-Year Historical Performance Archive for ${selectedProj.location} Cluster</h3>
+            <h3 style="margin: 0; font-size: 1.05rem; color: #02221A;">5-Year Historical Performance Archive (${selectedProj.location} Cluster)</h3>
             <p style="margin: 3px 0 0; font-size: 0.8rem; color: #64748B;">Actual harvest yields, climate records, and dividend returns achieved by partner cooperatives (2021–2025).</p>
           </div>
           <span class="tbl-status-settled">Verified by Bangladesh DAE</span>
+        </div>
+
+        <!-- 5-Year Proof Callout Banner -->
+        <div class="ai-history-proof-banner">
+          <span>🏆</span>
+          <div>
+            <strong>5-Year Real Field Proof:</strong> Even during Bangladesh's severe 2022 monsoon flood, investors in this cluster received <strong>100% of their money back</strong> plus <strong>+15.4% net profit</strong>.
+          </div>
         </div>
 
         <div class="fin-ledger-table-wrap">
@@ -3229,6 +3347,42 @@ export class InvestorProfileController {
       </div>
     `;
 
+    // Hook up Preset Buttons
+    container.querySelectorAll('.ai-preset-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const preset = (e.currentTarget as HTMLElement).getAttribute('data-preset');
+        if (preset === 'safe') {
+          this.aiActivePreset = 'safe';
+          this.aiFloodRiskLevel = 'low';
+          this.aiNdviIndex = 0.84;
+          this.aiMandiVolatility = 'low';
+          this.aiCoopRating = 'tier1';
+        } else if (preset === 'monsoon') {
+          this.aiActivePreset = 'monsoon';
+          this.aiFloodRiskLevel = 'high';
+          this.aiNdviIndex = 0.72;
+          this.aiMandiVolatility = 'medium';
+          this.aiCoopRating = 'tier1';
+        } else if (preset === 'market') {
+          this.aiActivePreset = 'market';
+          this.aiFloodRiskLevel = 'low';
+          this.aiNdviIndex = 0.80;
+          this.aiMandiVolatility = 'high';
+          this.aiCoopRating = 'tier2';
+        }
+        this.renderAiRiskTab(container);
+      });
+    });
+
+    // Hook up Amount Calculator Pills
+    container.querySelectorAll('.ai-calc-pill').forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        const amt = parseInt((e.currentTarget as HTMLElement).getAttribute('data-amt') || '20000');
+        this.aiSelectedPrincipal = amt;
+        this.renderAiRiskTab(container);
+      });
+    });
+
     // Hook up AI control events
     const projectPicker = container.querySelector('#ai-project-picker') as HTMLSelectElement;
     projectPicker?.addEventListener('change', (e) => {
@@ -3239,14 +3393,18 @@ export class InvestorProfileController {
     const floodSelect = container.querySelector('#ai-flood-risk-select') as HTMLSelectElement;
     floodSelect?.addEventListener('change', (e) => {
       this.aiFloodRiskLevel = (e.target as HTMLSelectElement).value as any;
+      this.aiActivePreset = 'custom';
       this.renderAiRiskTab(container);
     });
 
     const ndviSlider = container.querySelector('#ai-ndvi-slider') as HTMLInputElement;
     ndviSlider?.addEventListener('input', (e) => {
       this.aiNdviIndex = parseFloat((e.target as HTMLInputElement).value);
+      this.aiActivePreset = 'custom';
       const display = container.querySelector('#ai-ndvi-val-display');
-      if (display) display.textContent = `${this.aiNdviIndex} NDVI`;
+      if (display) {
+        display.textContent = `${this.aiNdviIndex} NDVI (${this.aiNdviIndex >= 0.84 ? 'Optimal Greenery' : this.aiNdviIndex >= 0.7 ? 'Healthy' : 'Dry/Stressed'})`;
+      }
     });
     ndviSlider?.addEventListener('change', () => {
       this.renderAiRiskTab(container);
@@ -3255,12 +3413,14 @@ export class InvestorProfileController {
     const volSelect = container.querySelector('#ai-volatility-select') as HTMLSelectElement;
     volSelect?.addEventListener('change', (e) => {
       this.aiMandiVolatility = (e.target as HTMLSelectElement).value as any;
+      this.aiActivePreset = 'custom';
       this.renderAiRiskTab(container);
     });
 
     const coopSelect = container.querySelector('#ai-coop-select') as HTMLSelectElement;
     coopSelect?.addEventListener('change', (e) => {
       this.aiCoopRating = (e.target as HTMLSelectElement).value as any;
+      this.aiActivePreset = 'custom';
       this.renderAiRiskTab(container);
     });
 

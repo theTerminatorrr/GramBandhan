@@ -6069,6 +6069,289 @@
   transform: translateY(-1px);
 }
 
+/* AI Risk Simplification & Easy Guide Elements */
+.ai-easy-guide-banner {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-top: 14px;
+  margin-bottom: 6px;
+}
+
+.ai-guide-step-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.ai-guide-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #E8F5EF;
+  color: #047857;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+  border: 1px solid #A7F3D0;
+}
+
+.ai-guide-text h4 {
+  margin: 0 0 2px 0;
+  font-size: 0.825rem;
+  font-weight: 750;
+  color: #02221A;
+}
+
+.ai-guide-text p {
+  margin: 0;
+  font-size: 0.725rem;
+  color: #64748B;
+  line-height: 1.35;
+}
+
+.ai-presets-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #F1F5F9;
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.ai-presets-label {
+  font-size: 0.75rem;
+  font-weight: 750;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ai-preset-btn {
+  background: #FFFFFF;
+  border: 1.5px solid #CBD5E1;
+  color: #334155;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.725rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.ai-preset-btn:hover {
+  border-color: #10B981;
+  color: #047857;
+  background: #F0FDF4;
+}
+
+.ai-preset-btn.active {
+  background: #02221A;
+  color: #FFFFFF;
+  border-color: #02221A;
+  box-shadow: 0 2px 6px rgba(2, 34, 26, 0.2);
+}
+
+.ai-safety-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.ai-safety-badge.safe {
+  background: #E8F5EF;
+  color: #047857;
+  border: 1px solid #A7F3D0;
+}
+
+.ai-safety-badge.moderate {
+  background: #FEF3C7;
+  color: #B45309;
+  border: 1px solid #FCD34D;
+}
+
+.ai-safety-badge.caution {
+  background: #FEE2E2;
+  color: #B91C1C;
+  border: 1px solid #FCA5A5;
+}
+
+.ai-plain-summary-box {
+  background: #F0FDF4;
+  border: 1.5px solid #BBF7D0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.ai-plain-summary-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #065F46;
+  margin-bottom: 4px;
+}
+
+.ai-plain-summary-desc {
+  font-size: 0.8rem;
+  color: #1F2937;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.ai-calc-box {
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.ai-calc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.ai-calc-title {
+  font-size: 0.775rem;
+  font-weight: 750;
+  color: #02221A;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ai-calc-pills {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.ai-calc-pill {
+  flex: 1;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  font-size: 0.75rem;
+  font-weight: 750;
+  color: #334155;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.ai-calc-pill:hover {
+  background: #F0FDF4;
+  border-color: #10B981;
+  color: #047857;
+}
+
+.ai-calc-pill.active {
+  background: #02221A;
+  color: #FFF;
+  border-color: #02221A;
+}
+
+.ai-calc-results-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  background: #F8FAFC;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.ai-calc-stat-item {
+  text-align: center;
+}
+
+.ai-calc-stat-label {
+  font-size: 0.68rem;
+  color: #64748B;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.ai-calc-stat-val {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #02221A;
+}
+
+.ai-calc-stat-val.profit {
+  color: #047857;
+}
+
+.ai-what-if-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.ai-what-if-card {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.ai-what-if-question {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.775rem;
+  font-weight: 750;
+  color: #02221A;
+  margin-bottom: 4px;
+}
+
+.ai-what-if-answer {
+  font-size: 0.725rem;
+  color: #475569;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.ai-history-proof-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #E8F5EF;
+  border: 1.5px solid #A7F3D0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  font-size: 0.8rem;
+  color: #064E3B;
+}
+
+.ai-history-proof-banner strong {
+  color: #02221A;
+}
+
 /* 4. Notification Center Drawer */
 .dash-notif-badge {
   position: absolute;
