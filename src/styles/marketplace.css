@@ -1595,6 +1595,16 @@
   background: #FFFBF5;
 }
 
+/* Bank Transfer Specific Styling */
+.payment-method-card.bank-card.selected {
+  border-color: #047857;
+  background: #F0FDF4;
+}
+
+.payment-method-card.bank-card.selected .payment-account-input:focus {
+  border-color: #047857;
+}
+
 .payment-method-header {
   display: flex;
   align-items: center;

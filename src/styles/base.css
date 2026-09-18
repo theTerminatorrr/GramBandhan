@@ -87,12 +87,30 @@ a {
   text-decoration: none;
 }
 
-/* WIDE FULL-LAYOUT CONTAINER (Prevents excessive empty margins) */
+/* EDGE-TO-EDGE FULL-SCREEN CONTAINER (Eliminates excessive empty corner space across homepage) */
 .container {
-  width: 95%;
-  max-width: 1440px;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 28px;
+  box-sizing: border-box;
+}
+
+.projects-section .container,
+.marketplace-section .container,
+.spotlight-section .container,
+.how-it-works-section .container,
+.why-section .container,
+.farmer-portal-section .container,
+.testimonials-section .container,
+.stats-section .container,
+.footer-section .container,
+.main-navbar .container {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-left: 28px !important;
+  padding-right: 28px !important;
+  box-sizing: border-box !important;
 }
 
 /* Common Buttons */
@@ -269,6 +287,17 @@ a {
 
 .btn-signup-nav:hover {
   background-color: var(--color-forest-medium);
+}
+
+.btn-nav-logout:hover {
+  background-color: #047857 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(4, 120, 87, 0.25) !important;
+}
+
+.user-nav-badge-pill:hover {
+  background-color: #D1FAE5 !important;
+  border-color: #34D399 !important;
 }
 
 .hamburger-btn {
@@ -564,7 +593,7 @@ a {
   inset: 0;
   background: rgba(6, 29, 21, 0.75);
   backdrop-filter: blur(8px);
-  z-index: 1000;
+  z-index: 999999 !important;
   display: none;
   align-items: center;
   justify-content: center;

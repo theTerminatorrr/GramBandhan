@@ -3,7 +3,7 @@
  * Designed for clean maintainability and easy explanation for teachers & evaluators.
  */
 
-export type ProjectCategory = 'all' | 'agriculture' | 'livestock' | 'handicrafts' | 'agro' | 'fisheries' | 'crops';
+export type ProjectCategory = 'all' | 'agriculture' | 'livestock' | 'handicrafts' | 'agro' | 'fisheries' | 'crops' | 'short_term' | 'long_term';
 
 export interface Project {
   id: string;
@@ -88,12 +88,28 @@ export interface Testimonial {
   avatarInitials: string;
 }
 
+export type UserRole = 'farmer' | 'investor' | 'buyer';
+
+export interface UnifiedUser {
+  name: string;
+  email: string;
+  phone: string;
+  roles: UserRole[];
+  nidVerified: boolean;
+  portfolioValueBDT: number;
+  address?: string;
+  city?: string;
+  district?: string;
+  memberSince?: string;
+}
+
 export interface InvestorUser {
   name: string;
   email: string;
   phone: string;
   nidVerified: boolean;
   portfolioValueBDT: number;
+  roles?: UserRole[];
 }
 
 export interface BuyerUser {
@@ -126,7 +142,7 @@ export interface BuyerOrder {
   shippingFee: number;
   discount: number;
   total: number;
-  paymentMethod: 'bKash' | 'Nagad' | 'Cash on Delivery';
+  paymentMethod: 'bKash' | 'Nagad' | 'Bank Transfer' | 'Cash on Delivery';
   paymentDetails?: string;
   shippingAddress: string;
   recipientPhone: string;
@@ -137,3 +153,80 @@ export interface BuyerOrder {
   cancelReason?: string;
   refundStatus?: string;
 }
+
+export type InvestorProjectStatus = 'recent' | 'ongoing' | 'completed';
+
+export interface InvestorPortfolioProject {
+  id: string;
+  name: string;
+  bengaliName: string;
+  category: string;
+  district: string;
+  upazila?: string;
+  investedAmountBDT: number;
+  expectedProfitBDT: number;
+  actualReturnBDT?: number;
+  status: InvestorProjectStatus;
+  statusLabel: string;
+  statusDescription: string;
+  startDate?: string;
+  expectedEndDate?: string;
+  completionDate?: string;
+  payoutReceivedDate?: string;
+  image: string;
+  progressPercent: number;
+  roiPercentage: number;
+  farmerName: string;
+  contractType: string;
+  // Funding Collection Phase fields
+  fundingRaisedBDT?: number;
+  fundingGoalBDT?: number;
+  fundingPercent?: number;
+  daysLeftToClose?: number;
+  // Ongoing Field Progress Tracking fields
+  fieldStage?: string;
+  fieldInspector?: string;
+  soilCondition?: string;
+  weatherStatus?: string;
+  lastAuditDate?: string;
+  progressMilestones?: { label: string; date: string; completed: boolean; active?: boolean }[];
+  // Completed Project Money Send & Receive Audit fields
+  moneySentDate?: string;
+  moneySentChannel?: string;
+  moneySentTrxId?: string;
+  fieldDisbursementDate?: string;
+  mandiSettlementDate?: string;
+  moneyReceivedDate?: string;
+  moneyReceivedChannel?: string;
+  moneyReceivedTrxId?: string;
+  moneyReceivedAccount?: string;
+  harvestWeightKg?: number;
+  mandiRatePerKg?: number;
+}
+
+export interface InvestorActivityItem {
+  id: string;
+  description: string;
+  division: string;
+  status: 'LIVE' | 'COMPLETED' | 'IN REVIEW';
+  timestamp: string;
+}
+
+export interface InvestorDashboardStats {
+  totalAccountBalanceBDT: number;
+  totalProfitBDT: number;
+  totalInvestmentBDT: number;
+  annualInvestmentBDT: number;
+  annualProfitBDT: number;
+  savingsAndInsurancePoolBDT: number;
+  savingsBDT: number;
+  insuranceBDT: number;
+  recentProjectsCount: number; // Invested, not started yet
+  ongoingProjectsCount: number; // Invested, deploying on field
+  completedProjectsCount: number; // Finished & received money
+  marketplaceSalesBDT: number;
+  aiRiskFlaggingCount: number;
+  lastSynced: string;
+  systemUptime: string;
+}
+

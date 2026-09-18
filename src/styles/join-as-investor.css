@@ -21,3 +21,29 @@
   font-size: 0.82rem;
   font-weight: 700;
 }
+
+/* Unified Multi-Role Auth Modal Styles */
+.auth-role-card {
+  transition: all 0.2s ease !important;
+  user-select: none;
+}
+
+.auth-role-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.auth-role-card.selected {
+  border-color: #10B981 !important;
+  background: #ECFDF5 !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+}
+
+.auth-tab-btn {
+  transition: all 0.2s ease;
+}
+
+.auth-tab-btn:hover {
+  color: #02221A !important;
+}
+

@@ -10,14 +10,21 @@
 
 import { authManager } from './auth';
 import { ActiveProjectsController } from './active-projects';
+import { UserRole } from './types';
 
 export class JoinAsInvestorController {
   private closeAuthBtn: HTMLElement | null = null;
+  private formSignup: HTMLFormElement | null = null;
   private formLogin: HTMLFormElement | null = null;
-  private demoLoginBtn: HTMLElement | null = null;
   private becomeInvestorBtn: HTMLElement | null = null;
   private navInvestBtn: HTMLElement | null = null;
+  private navLoginBtn: HTMLElement | null = null;
   private bannerCtaBtn: HTMLElement | null = null;
+
+  private tabBtnSignup: HTMLElement | null = null;
+  private tabBtnLogin: HTMLElement | null = null;
+  private signupView: HTMLElement | null = null;
+  private loginView: HTMLElement | null = null;
 
   private projectsController: ActiveProjectsController;
   private onToastNotification?: (message: string) => void;
@@ -34,71 +41,192 @@ export class JoinAsInvestorController {
 
   private bindElements(): void {
     this.closeAuthBtn = document.getElementById('close-auth-modal');
+    this.formSignup = document.getElementById('form-signup') as HTMLFormElement;
     this.formLogin = document.getElementById('form-login') as HTMLFormElement;
-    this.demoLoginBtn = document.getElementById('btn-demo-login');
     this.becomeInvestorBtn = document.getElementById('cta-become-investor');
     this.navInvestBtn = document.getElementById('nav-invest-btn');
+    this.navLoginBtn = document.getElementById('nav-login-btn');
     this.bannerCtaBtn = document.getElementById('cta-invest-banner');
+
+    this.tabBtnSignup = document.getElementById('tab-btn-signup');
+    this.tabBtnLogin = document.getElementById('tab-btn-login');
+    this.signupView = document.getElementById('form-signup');
+    this.loginView = document.getElementById('auth-login-view');
   }
 
   private setupEventListeners(): void {
-    // "Become an Investor" CTA in hero section
-    this.becomeInvestorBtn?.addEventListener('click', () => {
-      const projectsSection = document.getElementById('projects');
-      projectsSection?.scrollIntoView({ behavior: 'smooth' });
+    // Tab switching: Sign Up vs Sign In
+    this.tabBtnSignup?.addEventListener('click', () => this.switchAuthTab('signup'));
+    this.tabBtnLogin?.addEventListener('click', () => this.switchAuthTab('login'));
+
+    // Role selection cards in Sign Up form
+    const roleCards = [
+      { cardId: 'role-label-farmer', checkId: 'role-check-farmer' },
+      { cardId: 'role-label-investor', checkId: 'role-check-investor' },
+      { cardId: 'role-label-buyer', checkId: 'role-check-buyer' }
+    ];
+
+    roleCards.forEach(({ cardId, checkId }) => {
+      const card = document.getElementById(cardId);
+      const check = document.getElementById(checkId) as HTMLInputElement;
+      card?.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (check) {
+          check.checked = !check.checked;
+          if (check.checked) {
+            card.classList.add('selected');
+            card.style.borderColor = '#10B981';
+            card.style.backgroundColor = '#ECFDF5';
+          } else {
+            // Keep at least one role selected
+            const anyChecked = roleCards.some(r => (document.getElementById(r.checkId) as HTMLInputElement)?.checked);
+            if (!anyChecked) {
+              check.checked = true;
+              return;
+            }
+            card.classList.remove('selected');
+            card.style.borderColor = '#CBD5E1';
+            card.style.backgroundColor = '#FFFFFF';
+          }
+        }
+      });
     });
 
-    // Nav "Sign Up / Invest" button
+    // "Sign Up" button in Navbar
     this.navInvestBtn?.addEventListener('click', (e) => {
       e.preventDefault();
       authManager.clearPendingProject();
-      this.openInvestorModal();
+      this.openAuthModal('signup');
+    });
+
+    // "Become an Investor" CTA in hero section
+    this.becomeInvestorBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      authManager.clearPendingProject();
+      this.openAuthModal('signup');
+    });
+
+    // "Login" button in Navbar
+    this.navLoginBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      authManager.clearPendingProject();
+      this.openAuthModal('login');
     });
 
     // Final Banner CTA
-    this.bannerCtaBtn?.addEventListener('click', () => {
-      const projectsSection = document.getElementById('projects');
-      projectsSection?.scrollIntoView({ behavior: 'smooth' });
+    this.bannerCtaBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      authManager.clearPendingProject();
+      this.openAuthModal('signup');
+    });
+
+    // Footer Investor Portal link
+    document.getElementById('footer-login')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      authManager.clearPendingProject();
+      this.openAuthModal('login');
     });
 
     // Close Modal Button
     this.closeAuthBtn?.addEventListener('click', () => {
-      this.closeInvestorModal();
+      this.closeAuthModal();
     });
 
-    // 1-Click Quick Demo Login as Verified Investor
-    this.demoLoginBtn?.addEventListener('click', () => {
-      const user = authManager.demoLogin();
+    // Quick Demo Logins
+    document.getElementById('btn-quick-demo-investor')?.addEventListener('click', () => {
+      const u = authManager.demoLogin('investor');
+      this.handlePostAuthSuccess(u.name);
+    });
+
+    document.getElementById('btn-quick-demo-farmer')?.addEventListener('click', () => {
+      const u = authManager.demoLogin('farmer');
+      this.handlePostAuthSuccess(u.name);
+    });
+
+    document.getElementById('btn-quick-demo-buyer')?.addEventListener('click', () => {
+      const u = authManager.demoLogin('buyer');
+      this.handlePostAuthSuccess(u.name);
+    });
+
+    document.getElementById('btn-quick-demo-both')?.addEventListener('click', () => {
+      const u = authManager.demoLogin('farmer_investor');
+      this.handlePostAuthSuccess(u.name);
+    });
+
+    // Form Submit: Sign Up
+    this.formSignup?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nameInput = (document.getElementById('signup-name') as HTMLInputElement)?.value.trim() || 'Tanvir Rahman';
+      const idInput = (document.getElementById('signup-identifier') as HTMLInputElement)?.value.trim() || 'tanvir@grambandhan.bd';
+
+      const roles: UserRole[] = [];
+      if ((document.getElementById('role-check-farmer') as HTMLInputElement)?.checked) roles.push('farmer');
+      if ((document.getElementById('role-check-investor') as HTMLInputElement)?.checked) roles.push('investor');
+      if ((document.getElementById('role-check-buyer') as HTMLInputElement)?.checked) roles.push('buyer');
+
+      const user = authManager.signUp(nameInput, idInput, roles.length > 0 ? roles : ['investor']);
       this.handlePostAuthSuccess(user.name);
     });
 
-    // Form submit Login / Registration
+    // Form Submit: Login
     this.formLogin?.addEventListener('submit', (e) => {
       e.preventDefault();
       const emailInput = document.getElementById('login-email') as HTMLInputElement;
-      const email = emailInput?.value.trim() || 'investor@grambondhon.bd';
+      const email = emailInput?.value.trim() || 'investor@grambandhan.bd';
       const user = authManager.login(email);
       this.handlePostAuthSuccess(user.name);
     });
   }
 
-  public openInvestorModal(projectId?: string, directInvest: boolean = false): void {
-    this.projectsController.openAuthModal(projectId, directInvest);
+  public switchAuthTab(tab: 'signup' | 'login'): void {
+    if (tab === 'signup') {
+      if (this.tabBtnSignup) {
+        this.tabBtnSignup.style.borderBottom = '3px solid #02221A';
+        this.tabBtnSignup.style.color = '#02221A';
+      }
+      if (this.tabBtnLogin) {
+        this.tabBtnLogin.style.borderBottom = '3px solid transparent';
+        this.tabBtnLogin.style.color = '#64748B';
+      }
+      if (this.signupView) this.signupView.style.display = 'block';
+      if (this.loginView) this.loginView.style.display = 'none';
+    } else {
+      if (this.tabBtnLogin) {
+        this.tabBtnLogin.style.borderBottom = '3px solid #02221A';
+        this.tabBtnLogin.style.color = '#02221A';
+      }
+      if (this.tabBtnSignup) {
+        this.tabBtnSignup.style.borderBottom = '3px solid transparent';
+        this.tabBtnSignup.style.color = '#64748B';
+      }
+      if (this.loginView) this.loginView.style.display = 'block';
+      if (this.signupView) this.signupView.style.display = 'none';
+    }
   }
 
-  public closeInvestorModal(): void {
+  public openAuthModal(defaultTab: 'signup' | 'login' = 'signup', projectId?: string, directInvest: boolean = false): void {
+    this.projectsController.openAuthModal(projectId, directInvest);
+    this.switchAuthTab(defaultTab);
+  }
+
+  public openInvestorModal(projectId?: string, directInvest: boolean = false): void {
+    this.openAuthModal('signup', projectId, directInvest);
+  }
+
+  public closeAuthModal(): void {
     this.projectsController.closeAuthModal();
   }
 
   public handlePostAuthSuccess(userName: string): void {
-    this.closeInvestorModal();
-    this.notifyToast(`Welcome, ${userName}! Logged in as Verified Ethical Investor.`);
+    this.closeAuthModal();
+    const roleBadge = authManager.getRoleBadgeText();
+    this.notifyToast(`Welcome, ${userName}! Logged in as ${roleBadge}.`);
 
     const pendingProjectId = authManager.getPendingProject();
     if (pendingProjectId) {
       authManager.clearPendingProject();
       setTimeout(() => {
-        this.projectsController.openProjectDetailsModal(pendingProjectId);
+        this.projectsController.openProjectDetailsModal(pendingProjectId, true);
       }, 350);
     }
   }

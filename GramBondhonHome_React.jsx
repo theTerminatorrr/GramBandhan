@@ -686,6 +686,10 @@ export function GramBondhonHome() {
   const [isFarmerModalOpen, setIsFarmerModalOpen] = useState(false);
   const [farmerTab, setFarmerTab] = useState('farmer'); // 'farmer' | 'artisan'
   const [producerUser, setProducerUser] = useState(null);
+  const [isInvestorDashOpen, setIsInvestorDashOpen] = useState(false);
+  const [investorDashTab, setInvestorDashTab] = useState('dashboard');
+  const [investorProjFilter, setInvestorProjFilter] = useState('all');
+  const [investorSearchCategory, setInvestorSearchCategory] = useState('');
 
   // Fast 2.0s continuous slideshow interval
   useEffect(() => {
@@ -771,9 +775,11 @@ export function GramBondhonHome() {
                 🌾 {producerUser.name.split(' ')[0]} (Producer)
               </span>
             ) : isLoggedIn ? (
-              <span style={{ background: '#D1FAE5', color: '#064E3B', padding: '6px 14px', borderRadius: 9999, fontWeight: 700, fontSize: '0.85rem' }}>
-                👤 Tariq Rahman (Verified)
-              </span>
+              <div onClick={() => setIsInvestorDashOpen(true)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, cursor: 'pointer', background: '#E8F5EF', padding: '4px 12px', borderRadius: 20, border: '1px solid #A7F3D0' }}>
+                <span style={{ background: '#02221A', color: '#FFF', borderRadius: '50%', width: 24, height: 24, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 700 }}>TR</span>
+                <span style={{ fontWeight: 700, fontSize: '0.825rem', color: '#02221A' }}>Tariq Rahman</span>
+                <span style={{ fontSize: '0.75rem', background: '#10B981', color: '#fff', padding: '2px 6px', borderRadius: 4, fontWeight: 700 }}>Dashboard</span>
+              </div>
             ) : (
               <button onClick={() => setIsAuthModalOpen(true)} style={{ background: 'none', border: 'none', fontWeight: 700, cursor: 'pointer' }}>
                 Login
@@ -810,7 +816,7 @@ export function GramBondhonHome() {
         ))}
 
         {/* Pure Text Directly Over Image (No frosted/watery card box) */}
-        <div style={{ position: 'relative', zIndex: 5, maxWidth: 920, textAlign: 'center', padding: '0 24px' }}>
+        <div style={{ position: 'relative', zIndex: 5, maxWidth: 920, textAlign: 'center', padding: '100px 24px 60px', margin: '0 auto' }}>
           <h1 style={{ fontSize: 'clamp(2.3rem, 4.6vw, 3.85rem)', fontWeight: 800, lineHeight: 1.15, color: '#FFFFFF', letterSpacing: '-0.025em', marginBottom: 18, textShadow: '0 2px 14px rgba(0,0,0,0.75), 0 4px 28px rgba(0,0,0,0.45)' }}>
             Empowering Rural Growth<br />
             Through Ethical Investment
@@ -826,7 +832,7 @@ export function GramBondhonHome() {
               Join as Farmer
             </button>
             <button 
-              onClick={() => { const el = document.getElementById('projects'); el?.scrollIntoView({ behavior: 'smooth' }); }} 
+              onClick={() => setIsAuthModalOpen(true)} 
               style={{ backgroundColor: '#D6CCA8', color: '#14281E', fontSize: '1.05rem', fontWeight: 700, padding: '15px 36px', borderRadius: 9999, border: '1.5px solid rgba(0,0,0,0.08)', cursor: 'pointer', boxShadow: '0 6px 20px rgba(0,0,0,0.25)' }}
             >
               Become an Investor
@@ -847,6 +853,96 @@ export function GramBondhonHome() {
           </svg>
         </button>
       </section>
+
+      {/* INVESTOR POST-LOGIN HERO (PHOTO 4) */}
+      {isLoggedIn && (
+        <section 
+          className="investor-hero-banner"
+          style={{
+            position: 'relative',
+            minHeight: 460,
+            background: `linear-gradient(180deg, rgba(2, 34, 26, 0.45) 0%, rgba(2, 34, 26, 0.78) 100%), url('/images/hero-bangladesh-farming.jpg') center center / cover no-repeat`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            padding: '60px 20px 70px',
+            color: '#FFFFFF',
+            marginBottom: 24
+          }}
+        >
+          <div style={{ maxWidth: 780, margin: '0 auto', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <h1 style={{ fontSize: '2.85rem', fontWeight: 800, color: '#FFF', marginBottom: 14, textShadow: '0 2px 10px rgba(0,0,0,0.35)' }}>
+              Invest in the Earth’s<br/>Future
+            </h1>
+            <p style={{ fontSize: '1.05rem', lineHeight: 1.6, color: 'rgba(255,255,255,0.92)', marginBottom: 28, maxWidth: 640 }}>
+              Discover vetted agricultural collectives across Bangladesh. Support local farmers while growing your sustainable portfolio.
+            </p>
+            <div style={{ position: 'relative', width: '100%', maxWidth: 520 }}>
+              <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(12px)', border: '1.5px solid rgba(255,255,255,0.38)', borderRadius: 9999, padding: '6px 8px 6px 20px', width: '100%' }}>
+                <input 
+                  type="text" 
+                  value={investorSearchCategory} 
+                  onChange={(e) => setInvestorSearchCategory(e.target.value)} 
+                  placeholder="Search by category (type 'h' for Handicrafts...)" 
+                  style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', color: '#FFF', fontSize: '0.975rem' }} 
+                />
+                <button 
+                  onClick={() => {
+                    const el = document.getElementById('projects');
+                    el?.scrollIntoView({ behavior: 'smooth' });
+                  }} 
+                  style={{ background: '#05261C', color: '#FFF', border: 'none', padding: '10px 24px', borderRadius: 9999, fontWeight: 700, cursor: 'pointer' }}
+                >
+                  Explore
+                </button>
+              </div>
+
+              {/* Recommendation Dropdown */}
+              {investorSearchCategory.trim().length > 0 && (
+                <div style={{ position: 'absolute', top: 'calc(100% + 8px)', left: 0, right: 0, background: '#FFFFFF', borderRadius: 14, boxShadow: '0 16px 36px rgba(0,0,0,0.3)', border: '1px solid #E2E8F0', zIndex: 60, overflow: 'hidden', textAlign: 'left' }}>
+                  <div style={{ padding: '8px 14px', background: '#F8FAFC', fontSize: '0.725rem', fontWeight: 700, color: '#64748B', borderBottom: '1px solid #E2E8F0', display: 'flex', justifyContent: 'space-between' }}>
+                    <span>Recommended Categories</span>
+                    <span>Click to Filter</span>
+                  </div>
+                  {[
+                    { key: 'handicrafts', title: 'Handicrafts & Artisans (হস্তশিল্প)', sub: 'Nakshi Kantha, Jute Bag & Cane Craft', icon: '🧵' },
+                    { key: 'crops', title: 'High-Yield Crops & Grains (শস্য ও ফসল)', sub: 'Boro & Aman Rice, Maize & Chillies', icon: '🌾' },
+                    { key: 'fisheries', title: 'Hilsha & Sustainable Fisheries (মৎস্য সম্পদ)', sub: 'Meghna Hilsha & Freshwater Farming', icon: '🐟' },
+                    { key: 'agro', title: 'Honey & Organic Agro (সুন্দরবন মধু)', sub: 'Wild Honey & Mustard Cold-Press', icon: '🍯' },
+                    { key: 'livestock', title: 'Livestock & Dairy (গাভী ও ছাগল পালন)', sub: 'Layer Poultry & Dairy Cattle', icon: '🐄' },
+                  ]
+                    .filter(c => c.title.toLowerCase().includes(investorSearchCategory.toLowerCase()) || c.sub.toLowerCase().includes(investorSearchCategory.toLowerCase()) || c.key.includes(investorSearchCategory.toLowerCase()))
+                    .map(item => (
+                      <div 
+                        key={item.key} 
+                        onClick={() => {
+                          setInvestorSearchCategory(item.title);
+                          const el = document.getElementById('projects');
+                          el?.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                        style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', cursor: 'pointer', borderBottom: '1px solid #F1F5F9', color: '#1E293B' }}
+                      >
+                        <span style={{ fontSize: '1.2rem' }}>{item.icon}</span>
+                        <div>
+                          <div style={{ fontWeight: 700, fontSize: '0.875rem', color: '#06281E' }}>{item.title}</div>
+                          <div style={{ fontSize: '0.75rem', color: '#64748B' }}>{item.sub}</div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              )}
+            </div>
+            <button 
+              onClick={() => setIsInvestorDashOpen(true)}
+              style={{ marginTop: 18, background: 'rgba(2, 34, 26, 0.75)', border: '1px solid rgba(16, 185, 129, 0.4)', padding: '7px 20px', borderRadius: 9999, color: '#E2E8F0', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8, fontWeight: 600, fontSize: '0.85rem' }}
+            >
+              <span>View My Investor Portfolio & Dashboard (পোর্টফোলিও ড্যাশবোর্ড)</span>
+              <span>→</span>
+            </button>
+          </div>
+        </section>
+      )}
 
       {/* 3. ACTIVE PROJECTS (CLEAN 4-CARD GRID & TIGHT VERTICAL SPACING) */}
       <section id="projects" style={{ backgroundColor: '#F0ECE1', padding: '24px 0 10px' }}>
@@ -1122,6 +1218,302 @@ export function GramBondhonHome() {
               )}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* INVESTOR PROFILE & DASHBOARD OVERLAY (PHOTOS 1, 2, 3) */}
+      {isInvestorDashOpen && (
+        <div 
+          className="investor-dashboard-view active"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            display: 'flex',
+            background: '#EDF7F2',
+            fontFamily: "'Plus Jakarta Sans', sans-serif"
+          }}
+        >
+          {/* PHOTO 1: SIDEBAR (#02221A DEEP DARK GREEN) */}
+          <aside 
+            className="dash-sidebar" 
+            style={{
+              width: 250,
+              backgroundColor: '#02221A',
+              color: '#FFF',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              padding: '24px 16px',
+              flexShrink: 0
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '4px 8px 24px', borderBottom: '1px solid rgba(255,255,255,0.08)', marginBottom: 20 }}>
+                <div style={{ width: 38, height: 38, borderRadius: '50%', background: '#0B4434', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid #10B981' }}>
+                  🌱
+                </div>
+                <span style={{ fontSize: '1.2rem', fontWeight: 800, color: '#FFF', fontFamily: 'Georgia, serif' }}>Gram-Bondhon</span>
+              </div>
+
+              <nav style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {[
+                  { key: 'dashboard', label: 'Dashboard', icon: '🔲' },
+                  { key: 'projects', label: 'Projects', icon: '🚜' },
+                  { key: 'marketplace', label: 'Marketplace', icon: '🏪' },
+                  { key: 'financials', label: 'Financials', icon: '💵' },
+                  { key: 'airisk', label: 'AI Based Risk Analysis', icon: '📈' },
+                  { key: 'settings', label: 'Settings', icon: '⚙️' },
+                  { key: 'support', label: 'Support', icon: '❓' },
+                ].map(item => (
+                  <button 
+                    key={item.key} 
+                    onClick={() => setInvestorDashTab(item.key)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 12,
+                      padding: '10px 14px',
+                      borderRadius: 10,
+                      background: investorDashTab === item.key ? '#FFFFFF' : 'transparent',
+                      color: investorDashTab === item.key ? '#02221A' : '#D1D5DB',
+                      fontWeight: investorDashTab === item.key ? 700 : 500,
+                      border: 'none',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem'
+                    }}
+                  >
+                    <span>{item.icon}</span>
+                    <span>{item.label}</span>
+                  </button>
+                ))}
+              </nav>
+            </div>
+
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 16, display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <button 
+                onClick={() => alert('Feedback submitted! Thank you.')}
+                style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', borderRadius: 10, background: 'transparent', color: '#FBBF24', border: 'none', cursor: 'pointer', fontSize: '0.875rem' }}
+              >
+                <span>⚠️</span>
+                <span>FeedBack GIVE</span>
+              </button>
+
+              <button 
+                onClick={() => {
+                  setIsLoggedIn(false);
+                  setIsInvestorDashOpen(false);
+                }}
+                style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', borderRadius: 10, background: 'transparent', color: '#FCA5A5', border: 'none', cursor: 'pointer', fontSize: '0.875rem' }}
+              >
+                <span>🚪</span>
+                <span>Logout</span>
+              </button>
+            </div>
+          </aside>
+
+          {/* MAIN AREA */}
+          <main style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+            {/* PHOTO 2: TOP NAVBAR */}
+            <header style={{ background: '#FFF', borderTop: '4px solid #02221A', borderBottom: '1px solid #E2E8F0', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 28px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1px solid #64748B', borderRadius: 9999, padding: '6px 16px', width: 340, background: '#FFF' }}>
+                  <span>🔍</span>
+                  <input type="text" placeholder="Search projects..." style={{ border: 'none', outline: 'none', width: '100%', fontSize: '0.85rem' }} />
+                </div>
+                <button 
+                  onClick={() => setIsInvestorDashOpen(false)}
+                  style={{ background: '#E8F5EE', border: '1px solid #A7F3D0', color: '#065F46', padding: '6px 14px', borderRadius: 8, fontSize: '0.825rem', fontWeight: 700, cursor: 'pointer' }}
+                >
+                  ← Back to Active Projects
+                </button>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                <span style={{ cursor: 'pointer' }}>🔔</span>
+                <span style={{ cursor: 'pointer' }}>❓</span>
+                <div style={{ width: 1, height: 24, background: '#E2E8F0' }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>Investor User</span>
+                  <div style={{ width: 34, height: 34, borderRadius: '50%', border: '2px solid #10B981', background: '#02221A', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 700 }}>
+                    TR
+                  </div>
+                </div>
+              </div>
+            </header>
+
+            {/* PHOTO 3: PORTFOLIO OVERVIEW */}
+            <div style={{ flex: 1, overflowY: 'auto', padding: '24px 32px 60px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+                <div>
+                  <h1 style={{ fontSize: '1.65rem', fontWeight: 800, color: '#06281E', margin: 0 }}>Portfolio Overview</h1>
+                  <p style={{ fontSize: '0.85rem', color: '#52635C', margin: 0 }}>Real-time performance metrics for AgroVest Bangladesh operations.</p>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <span style={{ background: '#E8F5EE', color: '#0D684D', padding: '4px 12px', borderRadius: 9999, fontSize: '0.775rem', fontWeight: 700, border: '1px solid #A7F3D0' }}>
+                    ● Live Updates
+                  </span>
+                  <button onClick={() => alert('Exporting PDF...')} style={{ background: '#FFF', border: '1px solid #CBD5E1', padding: '6px 14px', borderRadius: 8, fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}>
+                    Export PDF
+                  </button>
+                </div>
+              </div>
+
+              {/* CONDITIONAL DASHBOARD TABS */}
+              {investorDashTab === 'marketplace' ? (
+                <div>
+                  <div style={{ background: 'linear-gradient(135deg, #02221A 0%, #064E3B 100%)', borderRadius: 16, padding: '24px 28px', color: '#FFF', marginBottom: 20 }}>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800, margin: '0 0 6px 0' }}>Village Marketplace • গ্রামীণ হস্তশিল্প ও কৃষি বাজার</h2>
+                    <p style={{ fontSize: '0.875rem', margin: 0, opacity: 0.9 }}>Direct fair-trade goods produced by our vetted rural farmers & women artisan cooperatives across Bangladesh.</p>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 16 }}>
+                    {ACTIVE_PROJECTS.slice(0, 8).map(p => (
+                      <div key={p.id} style={{ background: '#FFF', borderRadius: 12, overflow: 'hidden', border: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column' }}>
+                        <img src={p.image} alt={p.name} style={{ width: '100%', height: 140, objectFit: 'cover' }} />
+                        <div style={{ padding: 14, display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+                          <div>
+                            <h4 style={{ fontSize: '0.925rem', fontWeight: 700, margin: '0 0 4px 0', color: '#06281E' }}>{p.name}</h4>
+                            <p style={{ fontSize: '0.775rem', color: '#64748B', margin: '0 0 10px 0' }}>{p.bengaliName}</p>
+                          </div>
+                          <div>
+                            <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#047857', marginBottom: 10 }}>৳ {p.pricePerShareBDT.toLocaleString()}</div>
+                            <button onClick={() => alert(`Added ${p.name} to bag!`)} style={{ width: '100%', background: '#02221A', color: '#FFF', border: 'none', padding: '8px 12px', borderRadius: 8, fontWeight: 700, cursor: 'pointer', fontSize: '0.8rem' }}>
+                              + Add to Bag
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {/* ROW 1: THREE FINANCIAL CARDS (STRICTLY UNDER 5 LAKH) */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 18, marginBottom: 18 }}>
+                    <div style={{ background: '#05261C', color: '#FFF', borderRadius: 14, padding: 20 }}>
+                      <div style={{ fontSize: '0.8rem', color: '#94A3B8' }}>Total Investment (Till Now)</div>
+                      <div style={{ fontSize: '1.75rem', fontWeight: 800 }}>৳ 450,000</div>
+                      <div style={{ fontSize: '0.75rem', color: '#94A3B8', marginTop: 10 }}>Annual Investment: ৳ 320,000</div>
+                    </div>
+
+                    <div style={{ background: '#E8F5EF', borderRadius: 14, padding: 20, border: '1px solid #D1EADE' }}>
+                      <div style={{ fontSize: '0.8rem', color: '#64748B' }}>Total Profit (Till Now)</div>
+                      <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#064E3B' }}>৳ 68,500</div>
+                      <div style={{ fontSize: '0.75rem', color: '#64748B', marginTop: 10 }}>Annual Profit: ৳ 48,200</div>
+                    </div>
+
+                    <div style={{ background: '#DCF0E8', borderRadius: 14, padding: 20, border: '1px solid #C3E7D8' }}>
+                      <div style={{ fontSize: '0.8rem', color: '#64748B' }}>Total Account Balance (Pool)</div>
+                      <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#064E3B' }}>৳ 185,000</div>
+                      <div style={{ fontSize: '0.75rem', color: '#64748B', marginTop: 10 }}>Savings: ৳ 120,000 • Insurance: ৳ 65,000</div>
+                    </div>
+                  </div>
+
+                  {/* ROW 2: CRITICAL SQUARE PROJECT STATUS BOXES */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 18, marginBottom: 24 }}>
+                    <div style={{ background: '#FFF', borderRadius: 14, padding: 20, border: '1px solid #E2E8F0', borderLeft: '4px solid #F59E0B' }}>
+                      <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#D97706' }}>RECENT PROJECTS</div>
+                      <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#B45309' }}>3</div>
+                      <div style={{ fontSize: '0.775rem', color: '#475569', marginTop: 4 }}>Invested, not started yet</div>
+                    </div>
+
+                    <div style={{ background: '#FFF', borderRadius: 14, padding: 20, border: '1px solid #E2E8F0', borderLeft: '4px solid #3B82F6' }}>
+                      <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#2563EB' }}>ONGOING PROJECTS</div>
+                      <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#1D4ED8' }}>5</div>
+                      <div style={{ fontSize: '0.775rem', color: '#475569', marginTop: 4 }}>Invested, deploying on field</div>
+                    </div>
+
+                    <div style={{ background: '#FFF', borderRadius: 14, padding: 20, border: '1px solid #E2E8F0', borderLeft: '4px solid #10B981' }}>
+                      <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#059669' }}>COMPLETED PROJECTS</div>
+                      <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#047857' }}>8</div>
+                      <div style={{ fontSize: '0.775rem', color: '#475569', marginTop: 4 }}>Finished & received money</div>
+                    </div>
+                  </div>
+
+                  {/* MIDDLE: MAP & DONUT */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1.35fr 1fr', gap: 18, marginBottom: 24 }}>
+                    <div style={{ background: '#FFF', borderRadius: 14, padding: 20, border: '1px solid #E2E8F0' }}>
+                      <h3 style={{ fontSize: '1.05rem', margin: '0 0 12px 0', color: '#06281E' }}>Geographical Distribution</h3>
+                      <div style={{ background: '#2D584C', borderRadius: 10, height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FDE68A', fontWeight: 700 }}>
+                        Sylhet (৳12.4M) • Rangpur (৳8.1M) • Chittagong (৳24.6M) • Rajshahi (৳15.2M)
+                      </div>
+                    </div>
+
+                    <div style={{ background: '#FFF', borderRadius: 14, padding: 20, border: '1px solid #E2E8F0', textAlign: 'center' }}>
+                      <h3 style={{ fontSize: '1.05rem', margin: '0 0 12px 0', color: '#06281E' }}>Quarterly Platform Profit</h3>
+                      <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#06281E', margin: '20px 0' }}>৳ 4.2M</div>
+                      <div style={{ fontSize: '0.8rem', color: '#475569' }}>
+                        Farmers 35% • Women 30% • Investors 25% • Platform 10%
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* LOWER: PERSONAL INVESTOR ACTIVITY TABLE & SUMMARY */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 18 }}>
+                    <div style={{ background: '#FFF', borderRadius: 14, padding: 20, border: '1px solid #E2E8F0' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                        <h3 style={{ fontSize: '1.05rem', margin: 0, color: '#06281E' }}>My Recent Investment Activity</h3>
+                        <span style={{ fontSize: '0.75rem', color: '#10B981', fontWeight: 700 }}>Verified Ledger</span>
+                      </div>
+                      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
+                        <thead>
+                          <tr style={{ borderBottom: '1px solid #E2E8F0', color: '#64748B', textAlign: 'left' }}>
+                            <th style={{ padding: '8px 10px' }}>Transaction</th>
+                            <th style={{ padding: '8px 10px' }}>Destination</th>
+                            <th style={{ padding: '8px 10px' }}>Status</th>
+                            <th style={{ padding: '8px 10px' }}>Time</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr style={{ borderBottom: '1px solid #F1F5F9' }}>
+                            <td style={{ padding: '10px' }}><strong>Dividend Payout Credited (+৳8,200)</strong></td>
+                            <td style={{ padding: '10px' }}>bKash Wallet</td>
+                            <td style={{ padding: '10px', color: '#047857', fontWeight: 700 }}>COMPLETED</td>
+                            <td style={{ padding: '10px', color: '#64748B' }}>Today, 11:30 AM</td>
+                          </tr>
+                          <tr style={{ borderBottom: '1px solid #F1F5F9' }}>
+                            <td style={{ padding: '10px' }}><strong>Investment Confirmed: Poultry (৳50,000)</strong></td>
+                            <td style={{ padding: '10px' }}>Gazipur Farm</td>
+                            <td style={{ padding: '10px', color: '#2563EB', fontWeight: 700 }}>LIVE</td>
+                            <td style={{ padding: '10px', color: '#64748B' }}>Yesterday</td>
+                          </tr>
+                          <tr>
+                            <td style={{ padding: '10px' }}><strong>Field Audit Passed: Rice Cluster</strong></td>
+                            <td style={{ padding: '10px' }}>Rangpur Site</td>
+                            <td style={{ padding: '10px', color: '#D97706', fontWeight: 700 }}>VERIFIED</td>
+                            <td style={{ padding: '10px', color: '#64748B' }}>2 days ago</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div style={{ background: '#FFF', borderRadius: 14, padding: 20, border: '1px solid #E2E8F0' }}>
+                      <h3 style={{ fontSize: '1.05rem', margin: '0 0 14px 0', color: '#06281E' }}>My Portfolio Summary & Payouts</h3>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 12px', background: '#F8FAFC', borderRadius: 8, fontSize: '0.8rem' }}>
+                          <span>🌾 Active Farming Projects</span>
+                          <strong>8 Backed</strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 12px', background: '#F8FAFC', borderRadius: 8, fontSize: '0.8rem' }}>
+                          <span>💰 Total Returns Credited</span>
+                          <strong style={{ color: '#047857' }}>৳ 68,500</strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 12px', background: '#F8FAFC', borderRadius: 8, fontSize: '0.8rem' }}>
+                          <span>📅 Next Projected Payout</span>
+                          <strong>15 Oct 2026</strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 12px', background: '#F8FAFC', borderRadius: 8, fontSize: '0.8rem' }}>
+                          <span>📜 Shariah Compliance</span>
+                          <strong style={{ color: '#10B981' }}>100% Halal Asset-Backed</strong>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </main>
         </div>
       )}
 

@@ -41,7 +41,7 @@ export class MarketplaceController {
   private currentCategory: string = 'all';
   private searchQuery: string = '';
   private appliedVoucher: { code: string; discountBDT: number } | null = null;
-  private selectedPaymentMethod: 'bKash' | 'Nagad' | 'Cash on Delivery' = 'bKash';
+  private selectedPaymentMethod: 'bKash' | 'Nagad' | 'Bank Transfer' | 'Cash on Delivery' = 'bKash';
   private currentProfileTab: 'on_the_way' | 'delivered' | 'cancelled' | 'settings' = 'on_the_way';
   private buyerSession: BuyerUser | null = null;
   private orders: BuyerOrder[] = [];
@@ -408,8 +408,12 @@ export class MarketplaceController {
               ←
             </button>
             <div class="market-brand-badge">
-              <div class="market-brand-title">
-                <span>🌾 GramBondhon</span>
+              <div class="market-brand-title" style="display:flex;align-items:center;gap:6px;">
+                <svg class="brand-leaf-icon" viewBox="0 0 24 24" fill="none" style="width:20px;height:20px;">
+                  <path d="M21 3C13.5 3.5 6 9 4 17.5C3.5 19.5 4.5 21 6.5 21.5C8 22 10 21.5 12 20C17.5 16 20.5 10 21 3Z" fill="#10B981"/>
+                  <path d="M8.5 17C12 13.5 15.5 10 19 5.5" stroke="#02221A" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+                <span style="font-weight:800;color:#02221A;">GramBandhan</span>
                 <span style="font-size:0.75rem;background:#10B981;color:#FFF;padding:1px 6px;border-radius:10px;">Store</span>
               </div>
             </div>
@@ -563,6 +567,8 @@ export class MarketplaceController {
   // --------------------------------------------------------------------------
   // SEARCH AUTOCOMPLETE WITH 'R' RECOMMENDATION LOGIC
   // --------------------------------------------------------------------------
+  // SEARCH AUTOCOMPLETE WITH 'R' -> RICE RECOMMENDATION LOGIC
+  // --------------------------------------------------------------------------
   private handleSearchAutocomplete(query: string): void {
     const dropdown = document.getElementById('market-search-dropdown');
     if (!dropdown) return;
@@ -573,20 +579,29 @@ export class MarketplaceController {
       return;
     }
 
+    const isRiceProduct = (p: Product) => 
+      p.id.toLowerCase().includes('rice') ||
+      p.name.toLowerCase().includes('rice') ||
+      p.bengaliName.includes('চাল') ||
+      p.bengaliName.includes('ধান') ||
+      (p.craftType && p.craftType.toLowerCase().includes('paddy'));
+
+    const isRiceSearch = trimmed === 'r' || trimmed === 'র' || trimmed.startsWith('ri') || trimmed === 'rice' || trimmed === 'chal' || trimmed === 'চাল';
+
     // Filter products:
-    // If query starts with 'r', prioritize products starting with 'r'
+    // If query is 'r' or 'rice', prioritize all authentic Rice products first
     let matching = MARKETPLACE_PRODUCTS.filter(p => 
       p.name.toLowerCase().includes(trimmed) ||
       p.bengaliName.toLowerCase().includes(trimmed) ||
       p.artisanDistrict.toLowerCase().includes(trimmed) ||
-      p.category.toLowerCase().includes(trimmed)
+      p.category.toLowerCase().includes(trimmed) ||
+      (isRiceSearch && isRiceProduct(p))
     );
 
-    if (trimmed === 'r' || trimmed === 'র') {
-      // Prioritize products that start with R
-      const startWithR = matching.filter(p => p.name.toLowerCase().startsWith('r'));
-      const other = matching.filter(p => !p.name.toLowerCase().startsWith('r'));
-      matching = [...startWithR, ...other];
+    if (isRiceSearch) {
+      const riceProducts = matching.filter(isRiceProduct);
+      const otherProducts = matching.filter(p => !isRiceProduct(p));
+      matching = [...riceProducts, ...otherProducts];
     }
 
     if (matching.length === 0) {
@@ -603,8 +618,8 @@ export class MarketplaceController {
       return;
     }
 
-    const headerText = (trimmed === 'r' || trimmed === 'র')
-      ? `✨ Recommended Products starting with "R" (${matching.length} items)`
+    const headerText = isRiceSearch
+      ? `🌾 Recommended Rice & Heritage Grains (সুগন্ধি চাল ও শস্য) (${matching.length} items)`
       : `✨ Suggested Matches for "${query}" (${matching.length} items)`;
 
     dropdown.innerHTML = `
@@ -613,22 +628,27 @@ export class MarketplaceController {
         <span style="color:#059669;font-weight:800;">Fast Delivery</span>
       </div>
       <div class="search-drop-list">
-        ${matching.slice(0, 8).map(p => `
-          <div class="search-drop-item" data-product-id="${p.id}">
-            <img src="${p.image}" alt="${p.name}" class="search-drop-img" />
-            <div class="search-drop-info">
-              <div class="search-drop-name">${p.name}</div>
-              <div class="search-drop-meta">
-                <span class="search-drop-tag">${p.category}</span>
-                <span>📍 ${p.artisanDistrict}</span>
-                <span>★ ${p.rating}</span>
+        ${matching.slice(0, 8).map(p => {
+          const isRice = isRiceProduct(p);
+          return `
+            <div class="search-drop-item" data-product-id="${p.id}">
+              <img src="${p.image}" alt="${p.name}" class="search-drop-img" />
+              <div class="search-drop-info">
+                <div class="search-drop-name">${p.name}</div>
+                <div class="search-drop-meta">
+                  <span class="search-drop-tag" ${isRice ? 'style="background:#DCFCE7;color:#166534;font-weight:700;"' : ''}>
+                    ${isRice ? '🌾 Rice Special' : p.category}
+                  </span>
+                  <span>📍 ${p.artisanDistrict}</span>
+                  <span>★ ${p.rating}</span>
+                </div>
+              </div>
+              <div class="search-drop-price">
+                ৳${p.priceBDT.toLocaleString()}
               </div>
             </div>
-            <div class="search-drop-price">
-              ৳${p.priceBDT.toLocaleString()}
-            </div>
-          </div>
-        `).join('')}
+          `;
+        }).join('')}
       </div>
     `;
 
@@ -841,10 +861,18 @@ export class MarketplaceController {
         p.category.toLowerCase().includes(q)
       );
 
-      if (q === 'r' || q === 'র') {
-        const startR = items.filter(p => p.name.toLowerCase().startsWith('r'));
-        const other = items.filter(p => !p.name.toLowerCase().startsWith('r'));
-        items = [...startR, ...other];
+      const isRiceProduct = (p: Product) => 
+        p.id.toLowerCase().includes('rice') ||
+        p.name.toLowerCase().includes('rice') ||
+        p.bengaliName.includes('চাল') ||
+        p.bengaliName.includes('ধান') ||
+        (p.craftType && p.craftType.toLowerCase().includes('paddy'));
+
+      const isRiceSearch = q === 'r' || q === 'র' || q.startsWith('ri') || q === 'rice' || q === 'chal' || q === 'চাল';
+      if (isRiceSearch) {
+        const riceItems = items.filter(isRiceProduct);
+        const other = items.filter(p => !isRiceProduct(p));
+        items = [...riceItems, ...other];
       }
     }
 
@@ -1387,6 +1415,45 @@ export class MarketplaceController {
                   </div>
                 </div>
 
+                <!-- Bank Transfer (ইসলামী ব্যাংক / BEFTN) -->
+                <div class="payment-method-card bank-card ${this.selectedPaymentMethod === 'Bank Transfer' ? 'selected' : ''}" data-method="Bank Transfer">
+                  <div class="payment-method-header">
+                    <div class="payment-brand-label">
+                      <input type="radio" name="pay_opt" class="payment-radio" ${this.selectedPaymentMethod === 'Bank Transfer' ? 'checked' : ''} />
+                      <div class="payment-logo-wrap">
+                        <span style="font-size:1.5rem;">🏛️</span>
+                        <div>
+                          <strong style="color:#047857;font-size:1.05rem;">Bank Transfer (ইসলামী ব্যাংক / BEFTN)</strong>
+                          <div style="font-size:0.75rem;color:#64748B;">Direct Bank Transfer to GramBandhan Shariah Escrow</div>
+                        </div>
+                      </div>
+                    </div>
+                    <span style="font-size:0.72rem;background:#DCFCE7;color:#166534;padding:3px 8px;border-radius:12px;font-weight:700;">Shariah</span>
+                  </div>
+
+                  <div class="payment-method-body">
+                    <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:0.8rem;color:#166534;">
+                      <div><strong>Bank:</strong> Islami Bank Bangladesh Ltd (IBBL)</div>
+                      <div><strong>Account:</strong> GramBandhan Agro Shariah Escrow Fund Ltd</div>
+                      <div><strong>A/C No:</strong> 2050 7710 8899 001 (Branch: Dilkusha C/A, Dhaka)</div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
+                      <div>
+                        <label class="payment-input-label">Your Bank & Branch</label>
+                        <input type="text" class="payment-account-input" id="bank-name-input" placeholder="e.g. City Bank, Gulshan" />
+                      </div>
+                      <div>
+                        <label class="payment-input-label">Your Account Number</label>
+                        <input type="text" class="payment-account-input" id="bank-acc-input" placeholder="e.g. 110284912001" />
+                      </div>
+                    </div>
+                    <div>
+                      <label class="payment-input-label">Deposit Slip No. / TrxID / Reference</label>
+                      <input type="text" class="payment-account-input" id="bank-trx-input" placeholder="e.g. FT-2026-98124 or Slip #4019" />
+                    </div>
+                  </div>
+                </div>
+
                 <!-- Cash on Delivery -->
                 <div class="payment-method-card ${this.selectedPaymentMethod === 'Cash on Delivery' ? 'selected' : ''}" data-method="Cash on Delivery">
                   <div class="payment-method-header">
@@ -1432,23 +1499,23 @@ export class MarketplaceController {
                 <span>৳${subtotal.toLocaleString()}</span>
               </div>
               <div style="display:flex;justify-content:space-between;">
-                <span>Shipping Fee</span>
-                <span>${shippingFee === 0 ? '<strong style="color:#059669;">FREE</strong>' : `৳${shippingFee}`}</span>
+                <span>Delivery Charge</span>
+                <span>${shippingFee === 0 ? '<span style="color:#047857;font-weight:700;">FREE</span>' : `৳${shippingFee}`}</span>
               </div>
               ${discount > 0 ? `
-                <div style="display:flex;justify-content:space-between;color:#059669;font-weight:700;">
-                  <span>Voucher Discount</span>
-                  <span>−৳${discount.toLocaleString()}</span>
+                <div style="display:flex;justify-content:space-between;color:#047857;">
+                  <span>Promo Voucher</span>
+                  <span>-৳${discount.toLocaleString()}</span>
                 </div>
               ` : ''}
-              <div style="display:flex;justify-content:space-between;font-size:1.15rem;font-weight:800;color:#0D382A;border-top:1px dashed #CBD5E1;padding-top:8px;margin-top:4px;">
+              <div style="display:flex;justify-content:space-between;border-top:1px dashed #CBD5E1;padding-top:8px;margin-top:4px;font-weight:800;font-size:1.05rem;color:#0F172A;">
                 <span>Total Amount</span>
                 <span>৳${grandTotal.toLocaleString()}</span>
               </div>
             </div>
 
-            <button class="btn-place-order" id="btn-confirm-place-order">
-              Place Order (অর্ডার নিশ্চিত করুন) • ৳${grandTotal.toLocaleString()}
+            <button class="btn-confirm-order" id="btn-confirm-place-order">
+              Confirm Order (অর্ডার নিশ্চিত করুন) • ৳${grandTotal.toLocaleString()}
             </button>
 
             <div style="font-size:0.72rem;text-align:center;color:#64748B;">
@@ -1467,7 +1534,7 @@ export class MarketplaceController {
     // Payment method selector
     container.querySelectorAll('.payment-method-card').forEach(card => {
       card.addEventListener('click', () => {
-        const method = card.getAttribute('data-method') as 'bKash' | 'Nagad' | 'Cash on Delivery';
+        const method = card.getAttribute('data-method') as 'bKash' | 'Nagad' | 'Bank Transfer' | 'Cash on Delivery';
         if (method) {
           this.selectedPaymentMethod = method;
           this.renderCheckoutView(container);
@@ -1523,6 +1590,13 @@ export class MarketplaceController {
     // Prepend to orders
     this.orders.unshift(newOrder);
     this.saveOrders();
+
+    // Auto-upgrade logged-in user to include Buyer role without requiring re-auth
+    if (authManager.isAuthenticated()) {
+      authManager.addRole('buyer');
+      const updatedRoles = authManager.getRoleBadgeText();
+      this.showToast(`🎉 Order Placed! Your account is now active as ${updatedRoles}.`);
+    }
 
     // Clear cart
     this.cart = [];

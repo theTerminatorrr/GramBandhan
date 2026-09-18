@@ -9,6 +9,8 @@
  * =========================================================================
  */
 
+import { authManager } from './auth';
+
 export class JoinAsFarmerController {
   private portalModal: HTMLElement | null = null;
   private closeBtn: HTMLElement | null = null;
@@ -76,8 +78,9 @@ export class JoinAsFarmerController {
 
     // 1-Click Demo Farmer
     this.btnDemoFarmer?.addEventListener('click', () => {
+      authManager.demoLogin('farmer');
       this.showProducerDashboard(
-        'মোঃ রফিকুল ইসলাম (Md. Rafiqul Islam)',
+        'Md. Rafiqul Islam (মোঃ রফিকুল ইসলাম)',
         '🌾 Bio-Secure Poultry Farmer • Gazipur Upazila',
         'Gazipur Broiler Poultry Shed #GB-2026-04',
         '45% Backed by 12 Investors (৳1,20,000 Goal)',
@@ -88,8 +91,9 @@ export class JoinAsFarmerController {
 
     // 1-Click Demo Artisan
     this.btnDemoArtisan?.addEventListener('click', () => {
+      authManager.demoLogin('farmer');
       this.showProducerDashboard(
-        'ফাতেমা বেগম (Fatima Begum)',
+        'Fatima Begum (ফাতেমা বেগম)',
         '🧵 Rural Nakshi Kantha Artisan • Islampur, Jamalpur',
         'Jamalpur Women Artisan Handicraft Collective',
         '24 Hand-Stitched Quilts Live in Marketplace',
@@ -102,8 +106,17 @@ export class JoinAsFarmerController {
     this.formFarmer?.addEventListener('submit', (e) => {
       e.preventDefault();
       const nameInput = (document.getElementById('farmer-name') as HTMLInputElement)?.value.trim() || 'Md. Rafiqul Islam';
+      const phoneInput = (document.getElementById('farmer-phone') as HTMLInputElement)?.value.trim() || '01712-345678';
       const district = (document.getElementById('farmer-district') as HTMLSelectElement)?.value || 'Gazipur';
       const category = (document.getElementById('farmer-category') as HTMLSelectElement)?.value || 'Poultry';
+
+      // Auto-upgrade logged in user to Farmer role without needing separate registration
+      if (authManager.isAuthenticated()) {
+        authManager.addRole('farmer');
+      } else {
+        authManager.signUp(nameInput, phoneInput, ['farmer']);
+      }
+
       this.showProducerDashboard(
         nameInput,
         `🌾 ${category} Producer • ${district} Hub`,
@@ -111,14 +124,23 @@ export class JoinAsFarmerController {
         'Under Agronomist Review (GPS Verified)',
         'bKash Account Verified'
       );
-      this.notifyToast(`🌾 Proposal submitted successfully! Welcome, ${nameInput}.`);
+      const roleBadge = authManager.getRoleBadgeText();
+      this.notifyToast(`🌾 Project proposal submitted successfully! Your account now has ${roleBadge} privileges.`);
     });
 
     this.formArtisan?.addEventListener('submit', (e) => {
       e.preventDefault();
       const nameInput = (document.getElementById('artisan-name') as HTMLInputElement)?.value.trim() || 'Fatima Begum';
+      const phoneInput = (document.getElementById('artisan-phone') as HTMLInputElement)?.value.trim() || '01823-456789';
       const district = (document.getElementById('artisan-district') as HTMLSelectElement)?.value || 'Jamalpur';
       const craft = (document.getElementById('artisan-craft') as HTMLSelectElement)?.value || 'Nakshi Kantha';
+
+      if (authManager.isAuthenticated()) {
+        authManager.addRole('farmer');
+      } else {
+        authManager.signUp(nameInput, phoneInput, ['farmer']);
+      }
+
       this.showProducerDashboard(
         nameInput,
         `🧵 ${craft} Artisan • ${district}`,
@@ -126,10 +148,12 @@ export class JoinAsFarmerController {
         'Active Marketplace Storefront',
         'bKash / Nagad Verified'
       );
-      this.notifyToast(`🧵 Store opened successfully! Welcome, ${nameInput}.`);
+      const roleBadge = authManager.getRoleBadgeText();
+      this.notifyToast(`🧵 Store opened successfully! Your account now has ${roleBadge} privileges.`);
     });
 
     this.btnProducerLogout?.addEventListener('click', () => {
+      authManager.logout();
       this.resetProducerState();
       this.notifyToast('Logged out of Producer account');
     });
@@ -189,32 +213,12 @@ export class JoinAsFarmerController {
     if (elStatus) elStatus.textContent = status;
     if (elWallet) elWallet.textContent = wallet;
 
-    // Update navbar badge
-    const navLoginBtn = document.getElementById('nav-login-btn');
-    const navUserBadge = document.getElementById('nav-user-badge');
-    if (navLoginBtn) navLoginBtn.style.display = 'none';
-    if (navUserBadge) {
-      navUserBadge.style.display = 'inline-flex';
-      navUserBadge.innerHTML = `
-        <span class="user-pill-avatar" style="background:#0D382A;color:#FFF;border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;">🌾</span>
-        <span class="user-pill-name" style="font-weight:600;font-size:0.85rem;color:#0D382A;">${name.split(' ')[0]} (Producer)</span>
-        <button class="user-logout-btn" id="logout-producer-nav" title="Logout" style="background:none;border:none;cursor:pointer;margin-left:4px;">✕</button>
-      `;
-      document.getElementById('logout-producer-nav')?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        this.resetProducerState();
-        this.notifyToast('Logged out of Producer session');
-      });
-    }
+    // Central authManager will reactively update the navbar badge and single logout button
   }
 
   public resetProducerState(): void {
     if (this.dashboard) this.dashboard.style.display = 'none';
     this.switchTab('farmer');
-    const navLoginBtn = document.getElementById('nav-login-btn');
-    const navUserBadge = document.getElementById('nav-user-badge');
-    if (navLoginBtn) navLoginBtn.style.display = 'inline-block';
-    if (navUserBadge) navUserBadge.style.display = 'none';
   }
 
   private notifyToast(message: string): void {
